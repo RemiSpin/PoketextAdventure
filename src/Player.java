@@ -1,20 +1,17 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Player {
-    private String name;
+    private final String name;
     private int money;
-    private List<Pokemon> party; // Maximum of 6 Pokémon in the party
-    private List<Pokemon> pc;    // Storage for additional caught Pokémon
-    private Map<Item, Integer> inventory;  // Items and their quantities
-    private List<String> badges;  // List of earned gym badges
-    private Map<PokemonSpecies, Boolean> pokedex;  // Pokémon species and their captured status
+    private final List<Pokemon> party;
+    private final List<Pokemon> pc;
+    private final Map<Item, Integer> inventory;
+    private final List<String> badges;
+    private final Map<PokemonSpecies, Boolean> pokedex;
 
     public Player(String name) {
         this.name = name;
-        this.money = 1000;  // Initial money
+        this.money = 1000;
         this.party = new ArrayList<>();
         this.pc = new ArrayList<>();
         this.inventory = new HashMap<>();
@@ -30,40 +27,40 @@ public class Player {
         return money;
     }
 
+    public List<Pokemon> getParty() {
+        return Collections.unmodifiableList(party);
+    }
+
+    public List<Pokemon> getPC() {
+        return Collections.unmodifiableList(pc);
+    }
+
+    public Map<Item, Integer> getInventory() {
+        return Collections.unmodifiableMap(inventory);
+    }
+
+    public List<String> getBadges() {
+        return Collections.unmodifiableList(badges);
+    }
+
+    public Map<PokemonSpecies, Boolean> getPokedex() {
+        return Collections.unmodifiableMap(pokedex);
+    }
+
     public void addMoney(int amount) {
         money += amount;
     }
 
     public void subtractMoney(int amount) {
-        money -= amount;
-    }
-
-    public List<Pokemon> getParty() {
-        return party;
-    }
-
-    public List<Pokemon> getPC() {
-        return pc;
-    }
-
-    public Map<Item, Integer> getInventory() {
-        return inventory;
-    }
-
-    public List<String> getBadges() {
-        return badges;
-    }
-
-    public Map<PokemonSpecies, Boolean> getPokedex() {
-        return pokedex;
+        if (money - amount >= 0) {
+            money -= amount;
+        } else {
+            System.out.println("Insufficient funds.");
+        }
     }
 
     public void addToInventory(Item item, int quantity) {
-        if (inventory.containsKey(item)) {
-            inventory.put(item, inventory.get(item) + quantity);
-        } else {
-            inventory.put(item, quantity);
-        }
+        inventory.put(item, inventory.getOrDefault(item, 0) + quantity);
     }
 
     public void removeFromInventory(Item item, int quantity) {
@@ -74,6 +71,8 @@ public class Player {
             } else {
                 inventory.put(item, currentQuantity - quantity);
             }
+        } else {
+            System.out.println("Item not found in inventory.");
         }
     }
 
@@ -95,12 +94,16 @@ public class Player {
         if (party.size() < 6) {
             party.add(pokemon);
         } else {
-            // Party is full; add to PC instead
             pc.add(pokemon);
         }
     }
 
     public void removePokemonFromParty(Pokemon pokemon) {
-        party.remove(pokemon);
+        if (party.contains(pokemon)) {
+            party.remove(pokemon);
+            pc.add(pokemon);
+        } else {
+            System.out.println("The specified Pokémon is not in your party.");
+        }
     }
 }
