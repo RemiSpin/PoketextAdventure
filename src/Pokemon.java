@@ -8,27 +8,31 @@ import java.io.IOException;
 import java.util.Random;
 
 public class Pokemon {
-    public byte level;
-    public int number;
-    public String name;
-    public String nickname;
-    public int ivHP;
-    public int ivAttack;
-    public int ivDefense;
-    public int ivSpAtk;
-    public int ivSpDef;
-    public int ivSpeed;
-    public int Hp;
-    public int Attack;
-    public int Defense;
-    public int SpecialAttack;
-    public int SpecialDefense;
-    public int Speed;
-    public String type1;
-    public String type2;
-    public String evolution;
-    public int evolutionLevel;
-    public StatusCondition statusCondition;
+    private byte level;
+    private int number;
+    private String name;
+    private String nickname;
+    private int ivHP;
+    private int ivAttack;
+    private int ivDefense;
+    private int ivSpAtk;
+    private int ivSpDef;
+    private int ivSpeed;
+    private int Hp;
+    private int Attack;
+    private int Defense;
+    private int SpecialAttack;
+    private int SpecialDefense;
+    private int Speed;
+    private String type1;
+    private String type2;
+    private String evolution;
+    private int evolutionLevel;
+    private StatusCondition statusCondition;
+    private int baseExperience;
+    private int experience;
+    private String experienceGrowth;
+    private int levelTreshhold;
     private JSONObject jsonData;
 
     public void setNumber(int number) {
@@ -79,43 +83,19 @@ public class Pokemon {
         this.evolutionLevel = evolutionLevel;
     }
 
-    public int getBaseExperience() {
-        if (jsonData != null && jsonData.has("BaseExperience")) {
-            return jsonData.getInt("BaseExperience");
-        }
-        return 0;
+    private void setExperienceGrowth(String experienceGrowth) {
+        this.experienceGrowth = experienceGrowth;
     }
 
-    public double getExperienceMultiplier() {
-        if (jsonData != null && jsonData.has("ExperienceMultiplier")) {
-            return jsonData.getDouble("ExperienceMultiplier");
-        }
-        return 1.0;
-    }
-    public void gainExperience(int defeatedPokemonLevel) {
-        int baseExperience = getBaseExperience();
-        double experienceMultiplier = getExperienceMultiplier();
-
-        int levelDifference = defeatedPokemonLevel - level;
-
-        double levelFactor = 1.0;  // Default multiplier
-
-        if (levelDifference >= 10) {
-            levelFactor = 0.5; // 10 or more level difference
-        } else if (levelDifference >= 5) {
-            levelFactor = 0.8; // 5 or more level difference
-        } else if (levelDifference >= 3) {
-            levelFactor = 0.9; // 3 or more level difference
-        }
-
-        int experienceGained = (int) (baseExperience * experienceMultiplier * levelFactor);
+    private void setBaseExperience(int baseExperience) {
+        this.baseExperience = baseExperience;
     }
 
     // Constructor with name and level that loads data from the JSON file
     public Pokemon(String name, int level) throws IOException, JSONException {
         this.name = name;
         this.level = (byte) level;
-        this.nickname = null;
+
 
         // Initialize IVs
         Random random = new Random();
@@ -126,16 +106,50 @@ public class Pokemon {
         ivSpDef = random.nextInt(33);
         ivSpeed = random.nextInt(33);
 
-        // Initialize status condition
-        statusCondition = StatusCondition.NONE;
-
         // Load data from the JSON file based on the name
         loadPokemonDataFromJson();
+
+        // Calculate stats using base stats, IVs, and level
+        int hp = Hp;
+        int attack = Attack;
+        int defense = Defense;
+        int specialAttack = SpecialAttack;
+        int specialDefense = SpecialDefense;
+        int speed = Speed;
+        setHp(calculateHP(hp, ivHP));
+        setAttack(calculateStat(attack, ivAttack));
+        setDefense(calculateStat(defense, ivDefense));
+        setSpecialAttack(calculateStat(specialAttack, ivSpAtk));
+        setSpecialDefense(calculateStat(specialDefense, ivSpDef));
+        setSpeed(calculateStat(speed, ivSpeed));
+
+        // Set levelThreshold based on experienceGrowth
+        switch(experienceGrowth){
+            case "Fast": {
+                levelTreshhold = (int) (0.8 * Math.pow(level, 3));
+                break;
+            }
+            case "MFast": {
+                levelTreshhold = (int) (Math.pow(level, 3));
+                break;
+            }
+            case "MSlow": {
+                levelTreshhold = (int) (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140);
+                break;
+            }
+            case "Slow": {
+                levelTreshhold = (int) (1.25 * Math.pow(level, 3));
+                break;
+            }
+        }
+        nickname = name;
+        experience = 0;
     }
 
-    private String readJsonFile(String jsonFilePath) throws IOException {
+
+    private String readJsonFile() throws IOException {
         StringBuilder jsonContent = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(jsonFilePath))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("pokemon.json"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 jsonContent.append(line);
@@ -147,7 +161,7 @@ public class Pokemon {
     // Method to load data from the JSON file based on the name
     private void loadPokemonDataFromJson() throws IOException, JSONException {
 
-        String jsonContent = readJsonFile("pokemon.json");
+        String jsonContent = readJsonFile();
         JSONArray jsonArray = new JSONArray(jsonContent);
 
         // Find the JSON object that matches the name
@@ -176,39 +190,71 @@ public class Pokemon {
         if (jsonObject.has("EvolutionLevel") && !jsonObject.isNull("EvolutionLevel")) {
             setEvolutionLevel(jsonObject.getInt("EvolutionLevel"));
         }
+        setBaseExperience(jsonObject.getInt("BaseExperience"));
+        setExperienceGrowth(jsonObject.getString("ExperienceGrowth"));
     }
 
-        public String getName() {
+    public void gainExperience() {
+        int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
+        experience += experienceGained;
+        if(experience >= levelTreshhold){
+            level++;
+            experience = experience - levelTreshhold;
+        }
+    }
+
+    // Calculate HP using the formula
+    private int calculateHP(int base, int iv) {
+        return (int) (Math.floor(0.01 * (2 * base + iv) * level) + level + 10);
+    }
+
+    // Calculate other stats using the formula
+    private int calculateStat(int base, int iv) {
+        return (int) (Math.floor(0.01 * (2 * base + iv) * level) + 5);
+    }
+
+    public String getName() {
         return name;
     }
 
-        public String getType1() {
+    public String getNickname(){
+        return nickname;
+    }
+
+    public String getType1() {
         return type1;
     }
 
-        public String getType2() {
+    public String getType2() {
         return type2;
     }
 
-        public StatusCondition getStatusCondition() {
+    public StatusCondition getStatusCondition() {
         return statusCondition;
     }
 
-        public void setStatusCondition(StatusCondition condition) {
+    public void setStatusCondition(StatusCondition condition) {
         statusCondition = condition;
     }
 
+    public enum StatusCondition {
+        NONE, BURNED, PARALYZED, ASLEEP, FROZEN, POISONED;
+    }
 
-        public enum StatusCondition {
-            NONE, BURNED, PARALYZED, ASLEEP, FROZEN, POISONED;
-        }
-
-        @Override
-        public String toString() {
+    @Override
+    public String toString() {
         return "Name: " + name +
                 "\nSpecies Name: " + nickname +
                 "\nType 1: " + type1 +
                 "\nType 2: " + type2 +
-                "\nStatus: " + statusCondition;
+                "\nLevel: " + level +
+                "\nStatus: " + statusCondition +
+                "\nHP: " + Hp +
+                "\nAttack: " + Attack +
+                "\nDefense: " + Defense +
+                "\nSpecial Attack: " + SpecialAttack +
+                "\nSpecial Defense: " + SpecialDefense +
+                "\nSpeed: " + Speed +
+                "\nExperience: " + experience + " / " + levelTreshhold;
     }
 }

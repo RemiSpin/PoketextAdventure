@@ -12,8 +12,8 @@
         "Speed": 45,
         "Evolution": "Ivysaur",
         "EvolutionLevel": 16,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 64,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 2,
@@ -28,8 +28,8 @@
         "Speed": 60,
         "Evolution": "Venusaur",
         "EvolutionLevel": 32,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 141,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 3,
@@ -44,8 +44,8 @@
         "Speed": 80,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 208,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 4,
@@ -60,8 +60,8 @@
         "Speed": 65,
         "Evolution": "Charmeleon",
         "EvolutionLevel": 16,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 65,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 5,
@@ -76,8 +76,8 @@
         "Speed": 80,
         "Evolution": "Charizard",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 142,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 6,
@@ -92,8 +92,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 209,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 7,
@@ -108,8 +108,8 @@
         "Speed": 43,
         "Evolution": "Wartortle",
         "EvolutionLevel": 16,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 66,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 8,
@@ -124,8 +124,8 @@
         "Speed": 58,
         "Evolution": "Blastoise",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 143,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 9,
@@ -140,8 +140,8 @@
         "Speed": 78,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 209,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 10,
@@ -156,8 +156,8 @@
         "Speed": 45,
         "Evolution": "Metapod",
         "EvolutionLevel": 7,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 53,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 11,
@@ -172,8 +172,8 @@
         "Speed": 30,
         "Evolution": "Butterfree",
         "EvolutionLevel": 10,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 72,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 12,
@@ -188,8 +188,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 160,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 13,
@@ -204,8 +204,8 @@
         "Speed": 50,
         "Evolution": "Kakuna",
         "EvolutionLevel": 7,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 52,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 14,
@@ -220,8 +220,8 @@
         "Speed": 35,
         "Evolution": "Beedrill",
         "EvolutionLevel": 10,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 71,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 15,
@@ -236,8 +236,8 @@
         "Speed": 75,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 159,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 16,
@@ -252,8 +252,8 @@
         "Speed": 56,
         "Evolution": "Pidgeotto",
         "EvolutionLevel": 18,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 55,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 17,
@@ -268,8 +268,8 @@
         "Speed": 71,
         "Evolution": "Pidgeotto",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 113,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 18,
@@ -284,8 +284,8 @@
         "Speed": 101,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 172,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 19,
@@ -300,8 +300,8 @@
         "Speed": 72,
         "Evolution": "Raticate",
         "EvolutionLevel": 20,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 57,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 20,
@@ -316,8 +316,8 @@
         "Speed": 97,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 116,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 21,
@@ -332,8 +332,8 @@
         "Speed": 70,
         "Evolution": "Fearow",
         "EvolutionLevel": 20,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 58,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 22,
@@ -348,8 +348,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 162,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 23,
@@ -364,8 +364,8 @@
         "Speed": 55,
         "Evolution": "Arbok",
         "EvolutionLevel": 22,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 62,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 24,
@@ -380,8 +380,8 @@
         "Speed": 80,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 147,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 25,
@@ -396,8 +396,8 @@
         "Speed": 90,
         "Evolution": "Raichu",
         "EvolutionLevel": 25,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 82,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 26,
@@ -412,8 +412,8 @@
         "Speed": 110,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 122,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 27,
@@ -428,8 +428,8 @@
         "Speed": 40,
         "Evolution": "Sandslash",
         "EvolutionLevel": 22,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 93,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 28,
@@ -444,12 +444,12 @@
         "Speed": 65,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 163,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 29,
-        "Name": "NidoranM",
+        "Name": "NidoranF",
         "Type 1": "Poison",
         "Type 2": "",
         "HP": 55,
@@ -460,8 +460,8 @@
         "Speed": 41,
         "Evolution": "Nidorina",
         "EvolutionLevel": 16,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 59,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 30,
@@ -476,8 +476,8 @@
         "Speed": 56,
         "Evolution": "Nidoqueen",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 117,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 31,
@@ -492,12 +492,12 @@
         "Speed": 76,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 194,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 32,
-        "Name": "NidoranF",
+        "Name": "NidoranM",
         "Type 1": "Poison",
         "Type 2": "",
         "HP": 46,
@@ -508,8 +508,8 @@
         "Speed": 50,
         "Evolution": "Nidorino",
         "EvolutionLevel": 16,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 60,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 33,
@@ -524,8 +524,8 @@
         "Speed": 65,
         "Evolution": "Nidoking",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 118,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 34,
@@ -540,8 +540,8 @@
         "Speed": 85,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 195,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 35,
@@ -556,8 +556,8 @@
         "Speed": 35,
         "Evolution": "Clefable",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 68,
+        "ExperienceGrowth": "Fast"
     },
     {
         "#": 36,
@@ -572,8 +572,8 @@
         "Speed": 60,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 129,
+        "ExperienceGrowth": "Fast"
     },
     {
         "#": 37,
@@ -588,8 +588,8 @@
         "Speed": 65,
         "Evolution": "Ninetales",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 63,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 38,
@@ -604,8 +604,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 178,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 39,
@@ -620,8 +620,8 @@
         "Speed": 20,
         "Evolution": "Wigglytuff",
         "EvolutionLevel": 25,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 76,
+        "ExperienceGrowth": "Fast"
     },
     {
         "#": 40,
@@ -636,8 +636,8 @@
         "Speed": 45,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 109,
+        "ExperienceGrowth": "Fast"
     },
     {
         "#": 41,
@@ -652,8 +652,8 @@
         "Speed": 55,
         "Evolution": "Golbat",
         "EvolutionLevel": 22,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 54,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 42,
@@ -668,8 +668,8 @@
         "Speed": 90,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 171,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 43,
@@ -684,8 +684,8 @@
         "Speed": 30,
         "Evolution": "Gloom",
         "EvolutionLevel": 21,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 78,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 44,
@@ -700,8 +700,8 @@
         "Speed": 40,
         "Evolution": "Vileplume",
         "EvolutionLevel": 32,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 132,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 45,
@@ -716,8 +716,8 @@
         "Speed": 50,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 184,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 46,
@@ -732,8 +732,8 @@
         "Speed": 25,
         "Evolution": "Parasect",
         "EvolutionLevel": 24,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 70,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 47,
@@ -748,8 +748,8 @@
         "Speed": 30,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 128,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 48,
@@ -764,8 +764,8 @@
         "Speed": 45,
         "Evolution": "Venomoth",
         "EvolutionLevel": 31,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 75,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 49,
@@ -780,8 +780,8 @@
         "Speed": 90,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 138,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 50,
@@ -796,8 +796,8 @@
         "Speed": 95,
         "Evolution": "Dugtrio",
         "EvolutionLevel": 26,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 81,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 51,
@@ -812,8 +812,8 @@
         "Speed": 120,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 153,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 52,
@@ -828,8 +828,8 @@
         "Speed": 90,
         "Evolution": "Persian",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 69,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 53,
@@ -844,8 +844,8 @@
         "Speed": 115,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 148,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 54,
@@ -860,8 +860,8 @@
         "Speed": 55,
         "Evolution": "Golduck",
         "EvolutionLevel": 33,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 80,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 55,
@@ -876,8 +876,8 @@
         "Speed": 85,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 174,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 56,
@@ -892,8 +892,8 @@
         "Speed": 70,
         "Evolution": "Primeape",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 74,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 57,
@@ -908,8 +908,8 @@
         "Speed": 95,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 149,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 58,
@@ -924,8 +924,8 @@
         "Speed": 60,
         "Evolution": "Arcanine",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 91,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 59,
@@ -940,8 +940,8 @@
         "Speed": 95,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 213,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 60,
@@ -956,8 +956,8 @@
         "Speed": 90,
         "Evolution": "Poliwhirl",
         "EvolutionLevel": 25,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 77,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 61,
@@ -972,8 +972,8 @@
         "Speed": 90,
         "Evolution": "Poliwrath",
         "EvolutionLevel": 34,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 131,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 62,
@@ -988,8 +988,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 185,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 63,
@@ -1004,8 +1004,8 @@
         "Speed": 90,
         "Evolution": "Kadabra",
         "EvolutionLevel": 20,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 73,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 64,
@@ -1020,8 +1020,8 @@
         "Speed": 105,
         "Evolution": "Alakazam",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 145,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 65,
@@ -1036,8 +1036,8 @@
         "Speed": 120,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 186,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 66,
@@ -1052,8 +1052,8 @@
         "Speed": 35,
         "Evolution": "Machoke",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 88,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 67,
@@ -1068,8 +1068,8 @@
         "Speed": 45,
         "Evolution": "Machamp",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 146,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 68,
@@ -1084,8 +1084,8 @@
         "Speed": 55,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 193,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 69,
@@ -1100,8 +1100,8 @@
         "Speed": 40,
         "Evolution": "Weepinbell",
         "EvolutionLevel": 21,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 84,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 70,
@@ -1116,8 +1116,8 @@
         "Speed": 55,
         "Evolution": "Victreebel",
         "EvolutionLevel": 32,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 151,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 71,
@@ -1132,8 +1132,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 191,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 72,
@@ -1148,8 +1148,8 @@
         "Speed": 70,
         "Evolution": "Tentacruel",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 105,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 73,
@@ -1164,8 +1164,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 205,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 74,
@@ -1180,8 +1180,8 @@
         "Speed": 20,
         "Evolution": "Graveler",
         "EvolutionLevel": 25,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 86,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 75,
@@ -1196,8 +1196,8 @@
         "Speed": 35,
         "Evolution": "Golem",
         "EvolutionLevel": 34,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 134,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 76,
@@ -1212,8 +1212,8 @@
         "Speed": 45,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 177,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 77,
@@ -1228,8 +1228,8 @@
         "Speed": 90,
         "Evolution": "Rapidash",
         "EvolutionLevel": 40,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 152,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 78,
@@ -1244,8 +1244,8 @@
         "Speed": 105,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 192,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 79,
@@ -1260,8 +1260,8 @@
         "Speed": 15,
         "Evolution": "Slowbro",
         "EvolutionLevel": 37,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 99,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 80,
@@ -1276,8 +1276,8 @@
         "Speed": 30,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 164,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 81,
@@ -1292,8 +1292,8 @@
         "Speed": 45,
         "Evolution": "Magneton",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 89,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 82,
@@ -1308,8 +1308,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 169,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 83,
@@ -1324,8 +1324,8 @@
         "Speed": 60,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 94,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 84,
@@ -1340,8 +1340,8 @@
         "Speed": 75,
         "Evolution": "Dodrio",
         "EvolutionLevel": 31,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 96,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 85,
@@ -1356,8 +1356,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 158,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 86,
@@ -1373,7 +1373,7 @@
         "Evolution": "Dewgong",
         "EvolutionLevel": 34,
         "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 87,
@@ -1388,8 +1388,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 176,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 88,
@@ -1404,8 +1404,8 @@
         "Speed": 25,
         "Evolution": "Muk",
         "EvolutionLevel": 38,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 90,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 89,
@@ -1420,8 +1420,8 @@
         "Speed": 50,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 157,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 90,
@@ -1436,8 +1436,8 @@
         "Speed": 40,
         "Evolution": "Cloyster",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 97,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 91,
@@ -1452,8 +1452,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 203,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 92,
@@ -1468,8 +1468,8 @@
         "Speed": 80,
         "Evolution": "Haunter",
         "EvolutionLevel": 25,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 95,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 93,
@@ -1484,8 +1484,8 @@
         "Speed": 95,
         "Evolution": "Gengar",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 126,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 94,
@@ -1500,8 +1500,8 @@
         "Speed": 110,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 190,
+        "ExperienceGrowth": "MSlow"
     },
     {
         "#": 95,
@@ -1516,8 +1516,8 @@
         "Speed": 70,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 108,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 96,
@@ -1532,8 +1532,8 @@
         "Speed": 42,
         "Evolution": "Hypno",
         "EvolutionLevel": 26,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 102,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 97,
@@ -1548,8 +1548,8 @@
         "Speed": 67,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 165,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 98,
@@ -1564,8 +1564,8 @@
         "Speed": 50,
         "Evolution": "Kingler",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 115,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 99,
@@ -1580,8 +1580,8 @@
         "Speed": 75,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 206,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 100,
@@ -1596,8 +1596,8 @@
         "Speed": 100,
         "Evolution": "Electrode",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 103,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 101,
@@ -1612,8 +1612,8 @@
         "Speed": 140,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 150,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 102,
@@ -1628,8 +1628,8 @@
         "Speed": 40,
         "Evolution": "Exeggutor",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 98,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 103,
@@ -1644,8 +1644,8 @@
         "Speed": 55,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 212,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 104,
@@ -1660,8 +1660,8 @@
         "Speed": 35,
         "Evolution": "Marowak",
         "EvolutionLevel": 28,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 87,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 105,
@@ -1676,8 +1676,8 @@
         "Speed": 45,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 124,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 106,
@@ -1692,8 +1692,8 @@
         "Speed": 87,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 139,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 107,
@@ -1708,8 +1708,8 @@
         "Speed": 76,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 140,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 108,
@@ -1724,8 +1724,8 @@
         "Speed": 30,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 127,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 109,
@@ -1740,8 +1740,8 @@
         "Speed": 35,
         "Evolution": "Weezing",
         "EvolutionLevel": 35,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 114,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 110,
@@ -1756,8 +1756,8 @@
         "Speed": 60,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 173,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 111,
@@ -1772,8 +1772,8 @@
         "Speed": 25,
         "Evolution": "Rhydon",
         "EvolutionLevel": 42,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 135,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 112,
@@ -1788,8 +1788,8 @@
         "Speed": 40,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 204,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 113,
@@ -1804,8 +1804,8 @@
         "Speed": 50,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 255,
+        "ExperienceGrowth": "Fast"
     },
     {
         "#": 114,
@@ -1820,8 +1820,8 @@
         "Speed": 60,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 166,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 115,
@@ -1836,8 +1836,8 @@
         "Speed": 90,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 175,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 116,
@@ -1852,8 +1852,8 @@
         "Speed": 60,
         "Evolution": "Seadra",
         "EvolutionLevel": 32,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 83,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 117,
@@ -1868,8 +1868,8 @@
         "Speed": 85,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 155,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 118,
@@ -1884,8 +1884,8 @@
         "Speed": 63,
         "Evolution": "Seaking",
         "EvolutionLevel": 33,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 111,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 119,
@@ -1900,8 +1900,8 @@
         "Speed": 68,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 170,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 120,
@@ -1916,8 +1916,8 @@
         "Speed": 85,
         "Evolution": "Starmie",
         "EvolutionLevel": 36,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 106,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 121,
@@ -1932,8 +1932,8 @@
         "Speed": 115,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 207,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 122,
@@ -1948,8 +1948,8 @@
         "Speed": 90,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 136,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 123,
@@ -1964,8 +1964,8 @@
         "Speed": 105,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 187,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 124,
@@ -1980,8 +1980,8 @@
         "Speed": 95,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 137,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 125,
@@ -1996,8 +1996,8 @@
         "Speed": 105,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 156,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 126,
@@ -2012,8 +2012,8 @@
         "Speed": 93,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 167,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 127,
@@ -2028,8 +2028,8 @@
         "Speed": 85,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 200,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 128,
@@ -2044,8 +2044,8 @@
         "Speed": 110,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 211,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 129,
@@ -2060,8 +2060,8 @@
         "Speed": 80,
         "Evolution": "Gyarados",
         "EvolutionLevel": 20,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 20,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 130,
@@ -2076,8 +2076,8 @@
         "Speed": 81,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 214,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 131,
@@ -2092,8 +2092,8 @@
         "Speed": 60,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 219,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 132,
@@ -2108,8 +2108,8 @@
         "Speed": 48,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 61,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 133,
@@ -2124,8 +2124,8 @@
         "Speed": 55,
         "Evolution": "",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 92,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 134,
@@ -2140,8 +2140,8 @@
         "Speed": 65,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 196,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 135,
@@ -2156,8 +2156,8 @@
         "Speed": 130,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 197,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 136,
@@ -2172,8 +2172,8 @@
         "Speed": 65,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 198,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 137,
@@ -2188,8 +2188,8 @@
         "Speed": 40,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 130,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 138,
@@ -2204,8 +2204,8 @@
         "Speed": 35,
         "Evolution": "Omastar",
         "EvolutionLevel": 40,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 120,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 139,
@@ -2220,8 +2220,8 @@
         "Speed": 55,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 199,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 140,
@@ -2236,8 +2236,8 @@
         "Speed": 55,
         "Evolution": "Kabutops",
         "EvolutionLevel": 40,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 119,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 141,
@@ -2252,8 +2252,8 @@
         "Speed": 80,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 201,
+        "ExperienceGrowth": "MFast"
     },
     {
         "#": 142,
@@ -2268,8 +2268,8 @@
         "Speed": 130,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 202,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 143,
@@ -2284,8 +2284,8 @@
         "Speed": 30,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 154,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 144,
@@ -2300,8 +2300,8 @@
         "Speed": 85,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 215,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 145,
@@ -2316,8 +2316,8 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 216,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 146,
@@ -2332,8 +2332,8 @@
         "Speed": 90,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 217,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 147,
@@ -2348,8 +2348,8 @@
         "Speed": 50,
         "Evolution": "Dragonair",
         "EvolutionLevel": 30,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 67,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 148,
@@ -2364,8 +2364,8 @@
         "Speed": 70,
         "Evolution": "Dragonite",
         "EvolutionLevel": 55,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 144,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 149,
@@ -2380,8 +2380,8 @@
         "Speed": 80,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 218,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 150,
@@ -2396,8 +2396,8 @@
         "Speed": 130,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 220,
+        "ExperienceGrowth": "Slow"
     },
     {
         "#": 151,
@@ -2412,7 +2412,7 @@
         "Speed": 100,
         "Evolution": "",
         "EvolutionLevel": null,
-        "BaseExperience": 100,
-        "ExperienceMultiplier": 1.5
+        "BaseExperience": 154,
+        "ExperienceGrowth": "MSlow"
     }
 ]
