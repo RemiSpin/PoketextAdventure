@@ -1,3 +1,6 @@
+package PokemonLogic;
+
+import PokemonLogic.Pokemon;
 import org.json.JSONObject;
 
 public class trainerPokemon {

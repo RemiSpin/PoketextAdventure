@@ -1,3 +1,5 @@
+package PokemonLogic;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -174,9 +176,9 @@ public class Pokemon {
         }
     }
 
-    // Method to populate the Pokemon object from a JSON object
+    // Method to populate the PokemonLogic.Pokemon object from a JSON object
     private void populatePokemonFromJson(JSONObject jsonObject) throws JSONException {
-        // Populate the Pokemon object from JSON data
+        // Populate the PokemonLogic.Pokemon object from JSON data
         setNumber(jsonObject.getInt("#"));
         setType1(jsonObject.getString("Type 1"));
         setType2(jsonObject.optString("Type 2", ""));
@@ -194,24 +196,51 @@ public class Pokemon {
         setExperienceGrowth(jsonObject.getString("ExperienceGrowth"));
     }
 
-    public String gainExperience() {
+    public void gainExperience() throws IOException {
         int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
         experience += experienceGained;
 
-        StringBuilder message = new StringBuilder();
+        // Display the experience gained message
+        System.out.println(nickname + " gained " + experienceGained + " experience points.");
 
         while (experience >= levelTreshhold) {
             level++;
             experience -= levelTreshhold;
 
             if (level == evolutionLevel && !evolution.isEmpty()) {
+                String originalName = nickname; // Store the original name
                 // Perform evolution
-                message.append("Congratulations! ").append(nickname).append(" has evolved into ").append(evolution).append("!\n");
-                name = evolution;
+                if (nickname.equals(name)) {
+                    // If the nickname is the same as the species name, set it to the evolved form's name
+                    name = evolution;
+                    nickname = name;
+                } else {
+                    // Keep the custom nickname and change only the species name
+                    name = evolution;
+                }
+                System.out.println("Congratulations! " + originalName + " has evolved into " + name + "!");
+                loadPokemonDataFromJson(); // Reload data for the evolved form
+            } else {
+                System.out.println(nickname + " leveled up to " + level + "!");
             }
 
-            // Recalculate levelTreshhold after each level up
-            switch(experienceGrowth){
+            // Recalculate stats when leveling up
+            int hp = Hp;
+            int attack = Attack;
+            int defense = Defense;
+            int specialAttack = SpecialAttack;
+            int specialDefense = SpecialDefense;
+            int speed = Speed;
+
+            setHp(calculateHP(hp, ivHP));
+            setAttack(calculateStat(attack, ivAttack));
+            setDefense(calculateStat(defense, ivDefense));
+            setSpecialAttack(calculateStat(specialAttack, ivSpAtk));
+            setSpecialDefense(calculateStat(specialDefense, ivSpDef));
+            setSpeed(calculateStat(speed, ivSpeed));
+
+            // Recalculate levelTreshhold for the next level
+            switch (experienceGrowth) {
                 case "Fast": {
                     levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
                     break;
@@ -229,14 +258,17 @@ public class Pokemon {
                     break;
                 }
             }
-        }
 
-        if (message.length() == 0) {
-            message.append(nickname).append(" gained ").append(experienceGained).append(" experience points.");
+            // Print the updated PokemonLogic.Pokemon info
+            System.out.println("Name: " + nickname);
+            System.out.println("Level: " + level);
+            System.out.println("Experience: " + experience + " / " + levelTreshhold);
         }
-
-        return message.toString();
     }
+
+
+
+
 
     // Calculate HP using the formula
     private int calculateHP(int base, int iv) {
@@ -278,8 +310,8 @@ public class Pokemon {
 
     @Override
     public String toString() {
-        return "Name: " + name +
-                "\nSpecies Name: " + nickname +
+        return "Name: " + nickname +
+                "\nSpecies Name: " + name +
                 "\nType 1: " + type1 +
                 "\nType 2: " + type2 +
                 "\nLevel: " + level +
