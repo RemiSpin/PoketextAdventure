@@ -126,19 +126,19 @@ public class Pokemon {
         // Set levelThreshold based on experienceGrowth
         switch(experienceGrowth){
             case "Fast": {
-                levelTreshhold = (int) (0.8 * Math.pow(level, 3));
+                levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
                 break;
             }
             case "MFast": {
-                levelTreshhold = (int) (Math.pow(level, 3));
+                levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
                 break;
             }
             case "MSlow": {
-                levelTreshhold = (int) (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140);
+                levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
                 break;
             }
             case "Slow": {
-                levelTreshhold = (int) (1.25 * Math.pow(level, 3));
+                levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
                 break;
             }
         }
@@ -194,13 +194,48 @@ public class Pokemon {
         setExperienceGrowth(jsonObject.getString("ExperienceGrowth"));
     }
 
-    public void gainExperience() {
+    public String gainExperience() {
         int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
         experience += experienceGained;
-        if(experience >= levelTreshhold){
+
+        StringBuilder message = new StringBuilder();
+
+        while (experience >= levelTreshhold) {
             level++;
-            experience = experience - levelTreshhold;
+            experience -= levelTreshhold;
+
+            if (level == evolutionLevel && !evolution.isEmpty()) {
+                // Perform evolution
+                message.append("Congratulations! ").append(nickname).append(" has evolved into ").append(evolution).append("!\n");
+                name = evolution;
+            }
+
+            // Recalculate levelTreshhold after each level up
+            switch(experienceGrowth){
+                case "Fast": {
+                    levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
+                    break;
+                }
+                case "MFast": {
+                    levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
+                    break;
+                }
+                case "MSlow": {
+                    levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
+                    break;
+                }
+                case "Slow": {
+                    levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
+                    break;
+                }
+            }
         }
+
+        if (message.length() == 0) {
+            message.append(nickname).append(" gained ").append(experienceGained).append(" experience points.");
+        }
+
+        return message.toString();
     }
 
     // Calculate HP using the formula
