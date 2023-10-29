@@ -98,7 +98,6 @@ public class Pokemon {
         this.name = name;
         this.level = (byte) level;
 
-
         // Initialize IVs
         Random random = new Random();
         ivHP = random.nextInt(33);
@@ -262,6 +261,12 @@ public class Pokemon {
             // Print the updated PokemonLogic.Pokemon info
             System.out.println("Name: " + nickname);
             System.out.println("Level: " + level);
+            System.out.println("HP: " + Hp);
+            System.out.println("Attack: " + Attack);
+            System.out.println("Defense: " + Defense);
+            System.out.println("Special Attack: " + SpecialAttack);
+            System.out.println("Special Defense: " + SpecialDefense);
+            System.out.println("Speed: " + Speed);
             System.out.println("Experience: " + experience + " / " + levelTreshhold);
         }
     }
