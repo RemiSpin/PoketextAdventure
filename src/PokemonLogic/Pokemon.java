@@ -110,19 +110,13 @@ public class Pokemon {
         // Load data from the JSON file based on the name
         loadPokemonDataFromJson();
 
-        // Calculate stats using base stats, IVs, and level
-        int hp = Hp;
-        int attack = Attack;
-        int defense = Defense;
-        int specialAttack = SpecialAttack;
-        int specialDefense = SpecialDefense;
-        int speed = Speed;
-        setHp(calculateHP(hp, ivHP));
-        setAttack(calculateStat(attack, ivAttack));
-        setDefense(calculateStat(defense, ivDefense));
-        setSpecialAttack(calculateStat(specialAttack, ivSpAtk));
-        setSpecialDefense(calculateStat(specialDefense, ivSpDef));
-        setSpeed(calculateStat(speed, ivSpeed));
+        // Recalculate stats when leveling up
+        setHp(calculateHP(Hp, ivHP));
+        setAttack(calculateStat(Attack, ivAttack));
+        setDefense(calculateStat(Defense, ivDefense));
+        setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
+        setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
+        setSpeed(calculateStat(Speed, ivSpeed));
 
         // Set levelThreshold based on experienceGrowth
         switch(experienceGrowth){
@@ -206,6 +200,15 @@ public class Pokemon {
             level++;
             experience -= levelTreshhold;
 
+            loadPokemonDataFromJson();
+            setHp(calculateHP(Hp, ivHP));
+            setAttack(calculateStat(Attack, ivAttack));
+            setDefense(calculateStat(Defense, ivDefense));
+            setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
+            setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
+            setSpeed(calculateStat(Speed, ivSpeed));
+
+
             if (level == evolutionLevel && !evolution.isEmpty()) {
                 String originalName = nickname; // Store the original name
                 // Perform evolution
@@ -217,26 +220,19 @@ public class Pokemon {
                     // Keep the custom nickname and change only the species name
                     name = evolution;
                 }
+
+                // Update the stats based on the evolved form
+                loadPokemonDataFromJson();
+                setHp(calculateHP(Hp, ivHP));
+                setAttack(calculateStat(Attack, ivAttack));
+                setDefense(calculateStat(Defense, ivDefense));
+                setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
+                setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
+                setSpeed(calculateStat(Speed, ivSpeed));
                 System.out.println("Congratulations! " + originalName + " has evolved into " + name + "!");
-                loadPokemonDataFromJson(); // Reload data for the evolved form
             } else {
                 System.out.println(nickname + " leveled up to " + level + "!");
             }
-
-            // Recalculate stats when leveling up
-            int hp = Hp;
-            int attack = Attack;
-            int defense = Defense;
-            int specialAttack = SpecialAttack;
-            int specialDefense = SpecialDefense;
-            int speed = Speed;
-
-            setHp(calculateHP(hp, ivHP));
-            setAttack(calculateStat(attack, ivAttack));
-            setDefense(calculateStat(defense, ivDefense));
-            setSpecialAttack(calculateStat(specialAttack, ivSpAtk));
-            setSpecialDefense(calculateStat(specialDefense, ivSpDef));
-            setSpeed(calculateStat(speed, ivSpeed));
 
             // Recalculate levelTreshhold for the next level
             switch (experienceGrowth) {
@@ -258,7 +254,7 @@ public class Pokemon {
                 }
             }
 
-            // Print the updated PokemonLogic.Pokemon info
+            // Print the updated Pokemon info
             System.out.println("Name: " + nickname);
             System.out.println("Level: " + level);
             System.out.println("HP: " + Hp);
@@ -270,10 +266,6 @@ public class Pokemon {
             System.out.println("Experience: " + experience + " / " + levelTreshhold);
         }
     }
-
-
-
-
 
     // Calculate HP using the formula
     private int calculateHP(int base, int iv) {

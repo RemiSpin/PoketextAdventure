@@ -1,12 +1,10 @@
 package BattleLogic;
-import PokemonLogic.*;
 
 public interface Move {
     String getName();
     int getPower();
     int getAccuracy();
     String getType();
-    void perform(Pokemon user, Pokemon target);
     void reduceAttack(int stages);
     void reduceAttack(int stages, int chance);
     void reduceDefense(int stages);

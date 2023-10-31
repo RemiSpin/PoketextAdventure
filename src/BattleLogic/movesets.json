@@ -1,0 +1,29 @@
+{
+  "Bulbasaur": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Leech Seed", "level": 7 },
+      { "move": "Vine Whip", "level": 10 },
+      { "move": "PoisonPowder", "level": 15 },
+      { "move": "Sleep Powder", "level": 15 }
+    ]
+  },
+  "Charmander": {
+    "moveset": [
+      { "move": "Scratch", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Ember", "level": 7 },
+      { "move": "Metal Claw", "level": 13 }
+    ]
+  },
+  "Squirtle": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Tail Whip", "level": 1 },
+      { "move": "Bubble", "level": 7 },
+      { "move": "Withdraw", "level": 10 },
+      { "move": "Water Gun", "level": 13 }
+    ]
+  }
+}
