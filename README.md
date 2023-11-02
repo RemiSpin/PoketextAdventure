@@ -1,4 +1,10 @@
-Things to ask:
-1. Library recommendation
-2. JSON or CSV?
-3. problem with the parameter in pokemonloader. ask about overloaded constructor. should I even use pokemonloader?
+pokemon movesets tied to the pokemon
+implement sprites in file
+battle system
+finish trainer
+routes
+random encounters
+trainer battles
+towns
+pokemon centers
+save system

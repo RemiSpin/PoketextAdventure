@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="PokeText Adventure:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -55,37 +60,38 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/PokeTextAdventure/src/BattleLogic",
+    "last_opened_file_path": "C:/Users/Darian/Desktop",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/Darian/IdeaProjects/PokeText Adventure/PokeText Adventure/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "JavaScript.Libraries",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\PokeTextAdventure\src\BattleLogic" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure" />
+      <recent name="D:\PokeTextAdventure\src\BattleLogic" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src" />
+      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\WindowThings" />
+      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src\PokemonLogic" />
       <recent name="D:\PokeTextAdventure" />
       <recent name="D:\PokeTextAdventure\src\PokemonLogic" />
-      <recent name="D:\PokeTextAdventure\src\BattleLogic" />
-      <recent name="D:\PokeTextAdventure\src" />
-      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\PokeText Adventure" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="PokeText_Adventure" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="PokeText_Adventure" />
       <module name="PokeText Adventure" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Darian\Downloads\javafx-sdk-21.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -146,5 +152,9 @@
     </ignored-roots>
     <MESSAGE value="test" />
     <option name="LAST_COMMIT_MESSAGE" value="test" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

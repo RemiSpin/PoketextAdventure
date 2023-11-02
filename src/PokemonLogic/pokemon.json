@@ -13,7 +13,8 @@
         "Evolution": "Ivysaur",
         "EvolutionLevel": 16,
         "BaseExperience": 64,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_001.gif"
     },
     {
         "#": 2,
@@ -29,7 +30,8 @@
         "Evolution": "Venusaur",
         "EvolutionLevel": 32,
         "BaseExperience": 141,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_002.gif"
     },
     {
         "#": 3,
@@ -45,7 +47,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 208,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_003_m.gif"
     },
     {
         "#": 4,
@@ -61,7 +64,8 @@
         "Evolution": "Charmeleon",
         "EvolutionLevel": 16,
         "BaseExperience": 65,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_004.gif"
     },
     {
         "#": 5,
@@ -77,7 +81,8 @@
         "Evolution": "Charizard",
         "EvolutionLevel": 36,
         "BaseExperience": 142,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_005.gif"
     },
     {
         "#": 6,
@@ -93,7 +98,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 209,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_006.gif"
     },
     {
         "#": 7,
@@ -109,7 +115,8 @@
         "Evolution": "Wartortle",
         "EvolutionLevel": 16,
         "BaseExperience": 66,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_007.gif"
     },
     {
         "#": 8,
@@ -125,7 +132,8 @@
         "Evolution": "Blastoise",
         "EvolutionLevel": 36,
         "BaseExperience": 143,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_008.gif"
     },
     {
         "#": 9,
@@ -141,7 +149,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 209,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_009.gif"
     },
     {
         "#": 10,
@@ -157,7 +166,8 @@
         "Evolution": "Metapod",
         "EvolutionLevel": 7,
         "BaseExperience": 53,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_010.gif"
     },
     {
         "#": 11,
@@ -173,7 +183,8 @@
         "Evolution": "Butterfree",
         "EvolutionLevel": 10,
         "BaseExperience": 72,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_011.gif"
     },
     {
         "#": 12,
@@ -189,7 +200,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 160,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_012_f.gif"
     },
     {
         "#": 13,
@@ -205,7 +217,8 @@
         "Evolution": "Kakuna",
         "EvolutionLevel": 7,
         "BaseExperience": 52,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_013.gif"
     },
     {
         "#": 14,
@@ -221,7 +234,8 @@
         "Evolution": "Beedrill",
         "EvolutionLevel": 10,
         "BaseExperience": 71,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_014.gif"
     },
     {
         "#": 15,
@@ -237,7 +251,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 159,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_015.gif"
     },
     {
         "#": 16,
@@ -253,7 +268,8 @@
         "Evolution": "Pidgeotto",
         "EvolutionLevel": 18,
         "BaseExperience": 55,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_016.gif"
     },
     {
         "#": 17,
@@ -269,7 +285,8 @@
         "Evolution": "Pidgeotto",
         "EvolutionLevel": 36,
         "BaseExperience": 113,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_017.gif"
     },
     {
         "#": 18,
@@ -285,7 +302,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 172,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_018.gif"
     },
     {
         "#": 19,
@@ -301,7 +319,8 @@
         "Evolution": "Raticate",
         "EvolutionLevel": 20,
         "BaseExperience": 57,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_019_f.gif"
     },
     {
         "#": 20,
@@ -317,7 +336,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 116,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_020_f.gif"
     },
     {
         "#": 21,
@@ -333,7 +353,8 @@
         "Evolution": "Fearow",
         "EvolutionLevel": 20,
         "BaseExperience": 58,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_021.gif"
     },
     {
         "#": 22,
@@ -349,7 +370,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 162,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_022.gif"
     },
     {
         "#": 23,
@@ -365,7 +387,8 @@
         "Evolution": "Arbok",
         "EvolutionLevel": 22,
         "BaseExperience": 62,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_023.gif"
     },
     {
         "#": 24,
@@ -381,7 +404,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 147,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_024.gif"
     },
     {
         "#": 25,
@@ -397,7 +421,8 @@
         "Evolution": "Raichu",
         "EvolutionLevel": 25,
         "BaseExperience": 82,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_025_m.gif"
     },
     {
         "#": 26,
@@ -413,7 +438,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 122,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_026_m.gif"
     },
     {
         "#": 27,
@@ -429,7 +455,8 @@
         "Evolution": "Sandslash",
         "EvolutionLevel": 22,
         "BaseExperience": 93,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_027.gif"
     },
     {
         "#": 28,
@@ -445,7 +472,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 163,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_028.gif"
     },
     {
         "#": 29,
@@ -461,7 +489,8 @@
         "Evolution": "Nidorina",
         "EvolutionLevel": 16,
         "BaseExperience": 59,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_029.gif"
     },
     {
         "#": 30,
@@ -477,7 +506,8 @@
         "Evolution": "Nidoqueen",
         "EvolutionLevel": 30,
         "BaseExperience": 117,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_030.gif"
     },
     {
         "#": 31,
@@ -493,7 +523,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 194,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_031.gif"
     },
     {
         "#": 32,
@@ -509,7 +540,8 @@
         "Evolution": "Nidorino",
         "EvolutionLevel": 16,
         "BaseExperience": 60,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_032.gif"
     },
     {
         "#": 33,
@@ -525,7 +557,8 @@
         "Evolution": "Nidoking",
         "EvolutionLevel": 30,
         "BaseExperience": 118,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_033.gif"
     },
     {
         "#": 34,
@@ -541,7 +574,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 195,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_034.gif"
     },
     {
         "#": 35,
@@ -557,7 +591,8 @@
         "Evolution": "Clefable",
         "EvolutionLevel": 30,
         "BaseExperience": 68,
-        "ExperienceGrowth": "Fast"
+        "ExperienceGrowth": "Fast",
+        "Sprite": "GIFs/ani_bw_035.gif"
     },
     {
         "#": 36,
@@ -573,7 +608,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 129,
-        "ExperienceGrowth": "Fast"
+        "ExperienceGrowth": "Fast",
+        "Sprite": "GIFs/ani_bw_036.gif"
     },
     {
         "#": 37,
@@ -589,7 +625,8 @@
         "Evolution": "Ninetales",
         "EvolutionLevel": 28,
         "BaseExperience": 63,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_037.gif"
     },
     {
         "#": 38,
@@ -605,7 +642,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 178,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_038.gif"
     },
     {
         "#": 39,
@@ -621,7 +659,8 @@
         "Evolution": "Wigglytuff",
         "EvolutionLevel": 25,
         "BaseExperience": 76,
-        "ExperienceGrowth": "Fast"
+        "ExperienceGrowth": "Fast",
+        "Sprite": "GIFs/ani_bw_039.gif"
     },
     {
         "#": 40,
@@ -637,7 +676,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 109,
-        "ExperienceGrowth": "Fast"
+        "ExperienceGrowth": "Fast",
+        "Sprite": "GIFs/ani_bw_040.gif"
     },
     {
         "#": 41,
@@ -653,7 +693,8 @@
         "Evolution": "Golbat",
         "EvolutionLevel": 22,
         "BaseExperience": 54,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_041_f.gif"
     },
     {
         "#": 42,
@@ -669,7 +710,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 171,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_042_f.gif"
     },
     {
         "#": 43,
@@ -685,7 +727,8 @@
         "Evolution": "Gloom",
         "EvolutionLevel": 21,
         "BaseExperience": 78,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_043.gif"
     },
     {
         "#": 44,
@@ -701,7 +744,8 @@
         "Evolution": "Vileplume",
         "EvolutionLevel": 32,
         "BaseExperience": 132,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_044_m.gif"
     },
     {
         "#": 45,
@@ -717,7 +761,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 184,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_045_m.gif"
     },
     {
         "#": 46,
@@ -733,7 +778,8 @@
         "Evolution": "Parasect",
         "EvolutionLevel": 24,
         "BaseExperience": 70,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_046.gif"
     },
     {
         "#": 47,
@@ -749,7 +795,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 128,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_047.gif"
     },
     {
         "#": 48,
@@ -765,7 +812,8 @@
         "Evolution": "Venomoth",
         "EvolutionLevel": 31,
         "BaseExperience": 75,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_048.gif"
     },
     {
         "#": 49,
@@ -781,7 +829,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 138,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_049.gif"
     },
     {
         "#": 50,
@@ -797,7 +846,8 @@
         "Evolution": "Dugtrio",
         "EvolutionLevel": 26,
         "BaseExperience": 81,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_050.gif"
     },
     {
         "#": 51,
@@ -813,7 +863,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 153,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_051.gif"
     },
     {
         "#": 52,
@@ -829,7 +880,8 @@
         "Evolution": "Persian",
         "EvolutionLevel": 28,
         "BaseExperience": 69,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_052.gif"
     },
     {
         "#": 53,
@@ -845,7 +897,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 148,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_053.gif"
     },
     {
         "#": 54,
@@ -861,7 +914,8 @@
         "Evolution": "Golduck",
         "EvolutionLevel": 33,
         "BaseExperience": 80,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_054.gif"
     },
     {
         "#": 55,
@@ -877,7 +931,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 174,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_055.gif"
     },
     {
         "#": 56,
@@ -893,7 +948,8 @@
         "Evolution": "Primeape",
         "EvolutionLevel": 28,
         "BaseExperience": 74,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_056.gif"
     },
     {
         "#": 57,
@@ -909,7 +965,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 149,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_057.gif"
     },
     {
         "#": 58,
@@ -925,7 +982,8 @@
         "Evolution": "Arcanine",
         "EvolutionLevel": 30,
         "BaseExperience": 91,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_058.gif"
     },
     {
         "#": 59,
@@ -941,7 +999,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 213,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_059.gif"
     },
     {
         "#": 60,
@@ -957,7 +1016,8 @@
         "Evolution": "Poliwhirl",
         "EvolutionLevel": 25,
         "BaseExperience": 77,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_060.gif"
     },
     {
         "#": 61,
@@ -973,7 +1033,8 @@
         "Evolution": "Poliwrath",
         "EvolutionLevel": 34,
         "BaseExperience": 131,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_061.gif"
     },
     {
         "#": 62,
@@ -989,7 +1050,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 185,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_062.gif"
     },
     {
         "#": 63,
@@ -1005,7 +1067,8 @@
         "Evolution": "Kadabra",
         "EvolutionLevel": 20,
         "BaseExperience": 73,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_063.gif"
     },
     {
         "#": 64,
@@ -1021,7 +1084,8 @@
         "Evolution": "Alakazam",
         "EvolutionLevel": 36,
         "BaseExperience": 145,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_064_f.gif"
     },
     {
         "#": 65,
@@ -1037,7 +1101,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 186,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_065_m.gif"
     },
     {
         "#": 66,
@@ -1053,7 +1118,8 @@
         "Evolution": "Machoke",
         "EvolutionLevel": 28,
         "BaseExperience": 88,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_066.gif"
     },
     {
         "#": 67,
@@ -1069,7 +1135,8 @@
         "Evolution": "Machamp",
         "EvolutionLevel": 36,
         "BaseExperience": 146,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_067.gif"
     },
     {
         "#": 68,
@@ -1085,7 +1152,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 193,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_0068.gif"
     },
     {
         "#": 69,
@@ -1101,7 +1169,8 @@
         "Evolution": "Weepinbell",
         "EvolutionLevel": 21,
         "BaseExperience": 84,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_069.gif"
     },
     {
         "#": 70,
@@ -1117,7 +1186,8 @@
         "Evolution": "Victreebel",
         "EvolutionLevel": 32,
         "BaseExperience": 151,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_070.gif"
     },
     {
         "#": 71,
@@ -1133,7 +1203,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 191,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_071.gif"
     },
     {
         "#": 72,
@@ -1149,7 +1220,8 @@
         "Evolution": "Tentacruel",
         "EvolutionLevel": 30,
         "BaseExperience": 105,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_072.gif"
     },
     {
         "#": 73,
@@ -1165,7 +1237,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 205,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_073.gif"
     },
     {
         "#": 74,
@@ -1181,7 +1254,8 @@
         "Evolution": "Graveler",
         "EvolutionLevel": 25,
         "BaseExperience": 86,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_074.gif"
     },
     {
         "#": 75,
@@ -1197,7 +1271,8 @@
         "Evolution": "Golem",
         "EvolutionLevel": 34,
         "BaseExperience": 134,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_075.gif"
     },
     {
         "#": 76,
@@ -1213,7 +1288,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 177,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_076.gif"
     },
     {
         "#": 77,
@@ -1229,7 +1305,8 @@
         "Evolution": "Rapidash",
         "EvolutionLevel": 40,
         "BaseExperience": 152,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_077.gif"
     },
     {
         "#": 78,
@@ -1245,7 +1322,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 192,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_078.gif"
     },
     {
         "#": 79,
@@ -1261,7 +1339,8 @@
         "Evolution": "Slowbro",
         "EvolutionLevel": 37,
         "BaseExperience": 99,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_079.gif"
     },
     {
         "#": 80,
@@ -1277,7 +1356,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 164,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_080.gif"
     },
     {
         "#": 81,
@@ -1293,7 +1373,8 @@
         "Evolution": "Magneton",
         "EvolutionLevel": 30,
         "BaseExperience": 89,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_081.gif"
     },
     {
         "#": 82,
@@ -1309,7 +1390,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 169,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_082.gif"
     },
     {
         "#": 83,
@@ -1325,7 +1407,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 94,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_083.gif"
     },
     {
         "#": 84,
@@ -1341,7 +1424,8 @@
         "Evolution": "Dodrio",
         "EvolutionLevel": 31,
         "BaseExperience": 96,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_084_m.gif"
     },
     {
         "#": 85,
@@ -1357,7 +1441,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 158,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_085_m.gif"
     },
     {
         "#": 86,
@@ -1373,7 +1458,8 @@
         "Evolution": "Dewgong",
         "EvolutionLevel": 34,
         "BaseExperience": 100,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_086.gif"
     },
     {
         "#": 87,
@@ -1389,7 +1475,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 176,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_087.gif"
     },
     {
         "#": 88,
@@ -1405,7 +1492,8 @@
         "Evolution": "Muk",
         "EvolutionLevel": 38,
         "BaseExperience": 90,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_088.gif"
     },
     {
         "#": 89,
@@ -1421,7 +1509,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 157,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_089.gif"
     },
     {
         "#": 90,
@@ -1437,7 +1526,8 @@
         "Evolution": "Cloyster",
         "EvolutionLevel": 36,
         "BaseExperience": 97,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_090.gif"
     },
     {
         "#": 91,
@@ -1453,7 +1543,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 203,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_091.gif"
     },
     {
         "#": 92,
@@ -1469,7 +1560,8 @@
         "Evolution": "Haunter",
         "EvolutionLevel": 25,
         "BaseExperience": 95,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_092.gif"
     },
     {
         "#": 93,
@@ -1485,7 +1577,8 @@
         "Evolution": "Gengar",
         "EvolutionLevel": 36,
         "BaseExperience": 126,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_093.gif"
     },
     {
         "#": 94,
@@ -1501,7 +1594,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 190,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_094.gif"
     },
     {
         "#": 95,
@@ -1517,7 +1611,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 108,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_095.gif"
     },
     {
         "#": 96,
@@ -1533,7 +1628,8 @@
         "Evolution": "Hypno",
         "EvolutionLevel": 26,
         "BaseExperience": 102,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_096.gif"
     },
     {
         "#": 97,
@@ -1549,7 +1645,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 165,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_097_f.gif"
     },
     {
         "#": 98,
@@ -1565,7 +1662,8 @@
         "Evolution": "Kingler",
         "EvolutionLevel": 28,
         "BaseExperience": 115,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_098.gif"
     },
     {
         "#": 99,
@@ -1581,7 +1679,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 206,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_099.gif"
     },
     {
         "#": 100,
@@ -1597,7 +1696,8 @@
         "Evolution": "Electrode",
         "EvolutionLevel": 30,
         "BaseExperience": 103,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_100.gif"
     },
     {
         "#": 101,
@@ -1613,7 +1713,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 150,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_101.gif"
     },
     {
         "#": 102,
@@ -1629,7 +1730,8 @@
         "Evolution": "Exeggutor",
         "EvolutionLevel": 30,
         "BaseExperience": 98,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_102.gif"
     },
     {
         "#": 103,
@@ -1645,7 +1747,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 212,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_103.gif"
     },
     {
         "#": 104,
@@ -1661,7 +1764,8 @@
         "Evolution": "Marowak",
         "EvolutionLevel": 28,
         "BaseExperience": 87,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_104.gif"
     },
     {
         "#": 105,
@@ -1677,7 +1781,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 124,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_105.gif"
     },
     {
         "#": 106,
@@ -1693,7 +1798,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 139,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_106.gif"
     },
     {
         "#": 107,
@@ -1709,7 +1815,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 140,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_107.gif"
     },
     {
         "#": 108,
@@ -1725,7 +1832,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 127,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_108.gif"
     },
     {
         "#": 109,
@@ -1741,7 +1849,8 @@
         "Evolution": "Weezing",
         "EvolutionLevel": 35,
         "BaseExperience": 114,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_109.gif"
     },
     {
         "#": 110,
@@ -1757,7 +1866,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 173,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_110.gif"
     },
     {
         "#": 111,
@@ -1773,7 +1883,8 @@
         "Evolution": "Rhydon",
         "EvolutionLevel": 42,
         "BaseExperience": 135,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_111.gif"
     },
     {
         "#": 112,
@@ -1789,7 +1900,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 204,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_112.gif"
     },
     {
         "#": 113,
@@ -1805,7 +1917,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 255,
-        "ExperienceGrowth": "Fast"
+        "ExperienceGrowth": "Fast",
+        "Sprite": "GIFs/ani_bw_113.gif"
     },
     {
         "#": 114,
@@ -1821,7 +1934,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 166,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_114.gif"
     },
     {
         "#": 115,
@@ -1837,7 +1951,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 175,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_115.gif"
     },
     {
         "#": 116,
@@ -1853,7 +1968,8 @@
         "Evolution": "Seadra",
         "EvolutionLevel": 32,
         "BaseExperience": 83,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_116.gif"
     },
     {
         "#": 117,
@@ -1869,7 +1985,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 155,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_117.gif"
     },
     {
         "#": 118,
@@ -1885,7 +2002,8 @@
         "Evolution": "Seaking",
         "EvolutionLevel": 33,
         "BaseExperience": 111,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_118_m.gif"
     },
     {
         "#": 119,
@@ -1901,7 +2019,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 170,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_119_m.gif"
     },
     {
         "#": 120,
@@ -1917,7 +2036,8 @@
         "Evolution": "Starmie",
         "EvolutionLevel": 36,
         "BaseExperience": 106,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_120.gif"
     },
     {
         "#": 121,
@@ -1933,7 +2053,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 207,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_121.gif"
     },
     {
         "#": 122,
@@ -1949,7 +2070,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 136,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_122.gif"
     },
     {
         "#": 123,
@@ -1965,7 +2087,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 187,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_123_m.gif"
     },
     {
         "#": 124,
@@ -1981,7 +2104,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 137,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_124.gif"
     },
     {
         "#": 125,
@@ -1997,7 +2121,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 156,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_125.gif"
     },
     {
         "#": 126,
@@ -2013,7 +2138,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 167,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_126.gif"
     },
     {
         "#": 127,
@@ -2029,7 +2155,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 200,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_127.gif"
     },
     {
         "#": 128,
@@ -2045,7 +2172,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 211,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_128.gif"
     },
     {
         "#": 129,
@@ -2061,7 +2189,8 @@
         "Evolution": "Gyarados",
         "EvolutionLevel": 20,
         "BaseExperience": 20,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_129_m.gif"
     },
     {
         "#": 130,
@@ -2077,7 +2206,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 214,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_130_m.gif"
     },
     {
         "#": 131,
@@ -2093,7 +2223,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 219,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_131.gif"
     },
     {
         "#": 132,
@@ -2109,7 +2240,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 61,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_132.gif"
     },
     {
         "#": 133,
@@ -2125,7 +2257,8 @@
         "Evolution": "",
         "EvolutionLevel": 30,
         "BaseExperience": 92,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_133.gif"
     },
     {
         "#": 134,
@@ -2141,7 +2274,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 196,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_134.gif"
     },
     {
         "#": 135,
@@ -2157,7 +2291,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 197,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_135.gif"
     },
     {
         "#": 136,
@@ -2173,7 +2308,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 198,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_136.gif"
     },
     {
         "#": 137,
@@ -2189,7 +2325,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 130,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_137.gif"
     },
     {
         "#": 138,
@@ -2205,7 +2342,8 @@
         "Evolution": "Omastar",
         "EvolutionLevel": 40,
         "BaseExperience": 120,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_138.gif"
     },
     {
         "#": 139,
@@ -2221,7 +2359,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 199,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_139.gif"
     },
     {
         "#": 140,
@@ -2237,7 +2376,8 @@
         "Evolution": "Kabutops",
         "EvolutionLevel": 40,
         "BaseExperience": 119,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_140.gif"
     },
     {
         "#": 141,
@@ -2253,7 +2393,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 201,
-        "ExperienceGrowth": "MFast"
+        "ExperienceGrowth": "MFast",
+        "Sprite": "GIFs/ani_bw_141.gif"
     },
     {
         "#": 142,
@@ -2269,7 +2410,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 202,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_142.gif"
     },
     {
         "#": 143,
@@ -2285,7 +2427,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 154,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_143.gif"
     },
     {
         "#": 144,
@@ -2301,7 +2444,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 215,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_144.gif"
     },
     {
         "#": 145,
@@ -2317,7 +2461,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 216,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_145.gif"
     },
     {
         "#": 146,
@@ -2333,7 +2478,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 217,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_146.gif"
     },
     {
         "#": 147,
@@ -2349,7 +2495,8 @@
         "Evolution": "Dragonair",
         "EvolutionLevel": 30,
         "BaseExperience": 67,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_147.gif"
     },
     {
         "#": 148,
@@ -2365,7 +2512,8 @@
         "Evolution": "Dragonite",
         "EvolutionLevel": 55,
         "BaseExperience": 144,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_148.gif"
     },
     {
         "#": 149,
@@ -2381,7 +2529,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 218,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_149.gif"
     },
     {
         "#": 150,
@@ -2397,7 +2546,8 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 220,
-        "ExperienceGrowth": "Slow"
+        "ExperienceGrowth": "Slow",
+        "Sprite": "GIFs/ani_bw_150.gif"
     },
     {
         "#": 151,
@@ -2413,6 +2563,7 @@
         "Evolution": "",
         "EvolutionLevel": null,
         "BaseExperience": 154,
-        "ExperienceGrowth": "MSlow"
+        "ExperienceGrowth": "MSlow",
+        "Sprite": "GIFs/ani_bw_151.gif"
     }
 ]

@@ -1,5 +1,6 @@
 package PokemonLogic;
 
+import BattleLogic.Move;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,7 +8,7 @@ import org.json.JSONObject;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Random;
+import java.util.*;
 
 public class Pokemon {
     private byte level;
@@ -36,6 +37,7 @@ public class Pokemon {
     private String experienceGrowth;
     private int levelTreshhold;
     private JSONObject jsonData;
+    private List<Move> moveset;
 
     public void setNumber(int number) {
         this.number = number;
@@ -92,11 +94,15 @@ public class Pokemon {
     private void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
     }
+    public void setMoveset(List<Move> moveset) {
+        this.moveset = moveset;
+    }
 
     // Constructor with name and level that loads data from the JSON file
     public Pokemon(String name, int level) throws IOException, JSONException {
         this.name = name;
         this.level = (byte) level;
+        moveset = new ArrayList<>();
 
         // Initialize IVs
         Random random = new Random();
@@ -141,10 +147,9 @@ public class Pokemon {
         experience = 0;
     }
 
-
     private String readJsonFile() throws IOException {
         StringBuilder jsonContent = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader("pokemon.json"))) {
+        try (BufferedReader br = new BufferedReader(new FileReader("src/PokemonLogic/pokemon.json"))) {
             String line;
             while ((line = br.readLine()) != null) {
                 jsonContent.append(line);
