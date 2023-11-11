@@ -1,6 +1,6 @@
 package PokemonLogic;
 
-import BattleLogic.Move;
+import BattleLogic.*;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,7 +38,12 @@ public class Pokemon {
     private int levelTreshhold;
     private JSONObject jsonData;
     private List<Move> moveset;
+    private moveFactory moveFactory;
+    private List<Move> moves;
 
+    public void setMoves(List<Move> moves) {
+        this.moves = moves;
+    }
     public void setNumber(int number) {
         this.number = number;
     }
@@ -94,15 +99,16 @@ public class Pokemon {
     private void setBaseExperience(int baseExperience) {
         this.baseExperience = baseExperience;
     }
-    public void setMoveset(List<Move> moveset) {
-        this.moveset = moveset;
+    public void setMoveFactory(moveFactory factory) {
+        this.moveFactory = factory;
     }
 
     // Constructor with name and level that loads data from the JSON file
     public Pokemon(String name, int level) throws IOException, JSONException {
         this.name = name;
         this.level = (byte) level;
-        moveset = new ArrayList<>();
+        statusCondition = StatusCondition.none;
+        this.moveset = new ArrayList<>();
 
         // Initialize IVs
         Random random = new Random();
@@ -113,8 +119,15 @@ public class Pokemon {
         ivSpDef = random.nextInt(33);
         ivSpeed = random.nextInt(33);
 
+        moveFactory = new moveFactory(); // replace with your actual instantiation
+        moveFactory.loadPokemonLearnsets(); // Load the learnsets
+        setMoveFactory(moveFactory);
+        moves = moveFactory.createMovesFromJson();
+
         // Load data from the JSON file based on the name
         loadPokemonDataFromJson();
+        initializeMoves();
+        assignMovesBasedOnLevel();
 
         // Recalculate stats when leveling up
         setHp(calculateHP(Hp, ivHP));
@@ -195,38 +208,16 @@ public class Pokemon {
     }
 
     public void gainExperience() throws IOException {
-        int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
-        experience += experienceGained;
+        if (level < 100){
+            int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
+            experience += experienceGained;
 
-        // Display the experience gained message
-        System.out.println(nickname + " gained " + experienceGained + " experience points.");
+            System.out.println(nickname + " gained " + experienceGained + " experience points.");
 
-        while (experience >= levelTreshhold) {
-            level++;
-            experience -= levelTreshhold;
+            while (experience >= levelTreshhold) {
+                level++;
+                experience -= levelTreshhold;
 
-            loadPokemonDataFromJson();
-            setHp(calculateHP(Hp, ivHP));
-            setAttack(calculateStat(Attack, ivAttack));
-            setDefense(calculateStat(Defense, ivDefense));
-            setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
-            setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
-            setSpeed(calculateStat(Speed, ivSpeed));
-
-
-            if (level == evolutionLevel && !evolution.isEmpty()) {
-                String originalName = nickname; // Store the original name
-                // Perform evolution
-                if (nickname.equals(name)) {
-                    // If the nickname is the same as the species name, set it to the evolved form's name
-                    name = evolution;
-                    nickname = name;
-                } else {
-                    // Keep the custom nickname and change only the species name
-                    name = evolution;
-                }
-
-                // Update the stats based on the evolved form
                 loadPokemonDataFromJson();
                 setHp(calculateHP(Hp, ivHP));
                 setAttack(calculateStat(Attack, ivAttack));
@@ -234,41 +225,60 @@ public class Pokemon {
                 setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
                 setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
                 setSpeed(calculateStat(Speed, ivSpeed));
-                System.out.println("Congratulations! " + originalName + " has evolved into " + name + "!");
-            } else {
-                System.out.println(nickname + " leveled up to " + level + "!");
-            }
+                assignMovesBasedOnLevel();
 
-            // Recalculate levelTreshhold for the next level
-            switch (experienceGrowth) {
-                case "Fast": {
-                    levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
-                    break;
-                }
-                case "MFast": {
-                    levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
-                    break;
-                }
-                case "MSlow": {
-                    levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
-                    break;
-                }
-                case "Slow": {
-                    levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
-                    break;
-                }
-            }
+                if (level >= evolutionLevel && !evolution.isEmpty()) {
+                    String originalName = nickname; // Store the original name
+                    // Perform evolution
+                    if (nickname.equals(name)) {
+                        // If the nickname is the same as the species name, set it to the evolved form's name
+                        name = evolution;
+                        nickname = name;
+                    } else {
+                        // Keep the custom nickname and change only the species name
+                        name = evolution;
+                    }
 
-            // Print the updated Pokemon info
-            System.out.println("Name: " + nickname);
-            System.out.println("Level: " + level);
-            System.out.println("HP: " + Hp);
-            System.out.println("Attack: " + Attack);
-            System.out.println("Defense: " + Defense);
-            System.out.println("Special Attack: " + SpecialAttack);
-            System.out.println("Special Defense: " + SpecialDefense);
-            System.out.println("Speed: " + Speed);
-            System.out.println("Experience: " + experience + " / " + levelTreshhold);
+                    loadPokemonDataFromJson();
+                    setHp(calculateHP(Hp, ivHP));
+                    setAttack(calculateStat(Attack, ivAttack));
+                    setDefense(calculateStat(Defense, ivDefense));
+                    setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
+                    setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
+                    setSpeed(calculateStat(Speed, ivSpeed));
+                    System.out.println("Congratulations! " + originalName + " has evolved into " + name + "!");
+                } else {
+                    System.out.println(nickname + " leveled up to " + level + "!");
+                }
+
+                switch (experienceGrowth) {
+                    case "Fast": {
+                        levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
+                        break;
+                    }
+                    case "MFast": {
+                        levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
+                        break;
+                    }
+                    case "MSlow": {
+                        levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
+                        break;
+                    }
+                    case "Slow": {
+                        levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
+                        break;
+                    }
+                }
+//                System.out.println("Name: " + nickname);
+//                System.out.println("Level: " + level);
+//                System.out.println("HP: " + Hp);
+//                System.out.println("Attack: " + Attack);
+//                System.out.println("Defense: " + Defense);
+//                System.out.println("Special Attack: " + SpecialAttack);
+//                System.out.println("Special Defense: " + SpecialDefense);
+//                System.out.println("Speed: " + Speed);
+//                System.out.println("Experience: " + experience + " / " + levelTreshhold);
+            }
         }
     }
 
@@ -280,6 +290,92 @@ public class Pokemon {
     // Calculate other stats using the formula
     private int calculateStat(int base, int iv) {
         return (int) (Math.floor(0.01 * (2 * base + iv) * level) + 5);
+    }
+
+    public void initializeMoves() {
+        Map<Integer, List<String>> learnset = moveFactory.pokemonLearnsets.get(name);
+
+        for (int currentLevel = this.level; currentLevel >= 1; currentLevel--) {
+            List<String> moveNames = learnset.get(currentLevel);
+            if (moveNames != null) {
+                for (String moveName : moveNames) {
+                    Move move = findMoveByName(moveName);
+                    if (move != null && !moveset.contains(move)) {
+                        if (moveset.size() < 4) { // Limit the moveset size to 4
+                            moveset.add(move);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void assignMovesBasedOnLevel() {
+        Map<Integer, List<String>> learnset = moveFactory.pokemonLearnsets.get(name);
+
+        for (int currentLevel = this.level; currentLevel >= level; currentLevel--) {
+            List<String> moveNames = learnset.get(currentLevel);
+            if (moveNames != null) {
+                for (String moveName : moveNames) {
+                    Move move = findMoveByName(moveName);
+                    if (move != null && !moveset.contains(move)) {
+                        boolean learnedInCurrentLevel = currentLevel == this.level;
+
+                        if (moveset.size() < 4) { // Limit the moveset size to 4
+                            moveset.add(move);
+
+                            // Display the move learned message only for the current level
+                            if (learnedInCurrentLevel) {
+                                System.out.println(name + " learned " + moveName + "!");
+                            }
+                        } else {
+                            System.out.println(name + " is trying to learn " + moveName + "!");
+                            System.out.println("But " + name + " already knows 4 moves.");
+
+                            // Prompt the player to choose a move to replace or skip
+                            System.out.println("Choose a move to forget (1-4), or enter 5 to skip:");
+                            displayMoveset();
+
+                            Scanner scanner = new Scanner(System.in);
+                            int moveIndex = scanner.nextInt();
+
+                            // Check if the input is within the valid range or 5 to skip
+                            if (moveIndex >= 1 && moveIndex <= 4) {
+                                // Replace the chosen move with the new move
+                                Move replacedMove = moveset.set(moveIndex - 1, move);
+
+                                // Display the move learned message only for the current level
+                                if (learnedInCurrentLevel) {
+                                    System.out.println(name + " forgot " + replacedMove.getName() + " and learned " + moveName + "!");
+                                }
+                            } else if (moveIndex == 5) {
+                                // Skip move replacement
+                                System.out.println(name + " decided not to learn " + moveName + ".");
+                                return; // Exit the method
+                            } else {
+                                System.out.println("Invalid move index. " + name + " couldn't learn " + moveName + ".");
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    public void displayMoveset() {
+        for (int i = 0; i < moveset.size(); i++) {
+            System.out.println(moveset.get(i).getName());
+        }
+    }
+
+    private Move findMoveByName(String moveName) {
+        for (Move move : moves) {
+            if (move.getName().equals(moveName)) {
+                return move;
+            }
+        }
+        return null;
     }
 
     public String getName() {
@@ -307,7 +403,7 @@ public class Pokemon {
     }
 
     public enum StatusCondition {
-        NONE, BURNED, PARALYZED, ASLEEP, FROZEN, POISONED;
+        none, BRN, PAR, SLP, FRZ, PSN;
     }
 
     @Override

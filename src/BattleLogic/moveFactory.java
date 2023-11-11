@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 public class moveFactory {
-    private Map<String, Map<Integer, List<String>>> pokemonLearnsets;
+    public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>();
+
     public static List<Move> createMovesFromJson() {
         List<Move> moves = new ArrayList<>();
 

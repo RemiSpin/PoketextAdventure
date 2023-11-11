@@ -8,3 +8,6 @@ trainer battles
 towns
 pokemon centers
 save system
+
+
+

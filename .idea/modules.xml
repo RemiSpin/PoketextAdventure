@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/PokeText Adventure.iml" filepath="$PROJECT_DIR$/PokeText Adventure.iml" />
+      <module fileurl="file://$PROJECT_DIR$/PokeTextAdventure.iml" filepath="$PROJECT_DIR$/PokeTextAdventure.iml" />
     </modules>
   </component>
 </project>
