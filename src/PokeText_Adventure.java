@@ -39,102 +39,132 @@
 //    }
 //}
 
-//import PokemonLogic.Pokemon;
-//import javafx.application.Application;
-//import javafx.scene.Scene;
-//import javafx.scene.control.TextArea;
-//import javafx.scene.text.Font;
-//import javafx.stage.Stage;
-//
-//import java.io.IOException;
-//import java.io.OutputStream;
-//import java.io.PrintStream;
-//
-//public class PokeText_Adventure extends Application {
-//    private TextArea textArea = new TextArea();
-//    private PrintStream standardOut = System.out; // Store the original standard output
-//
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-//
-//    @Override
-//    public void start(Stage primaryStage) throws IOException {
-//        textArea.setEditable(false);
-//
-//        // Create a new scene
-//        Scene scene = new Scene(textArea, 700, 700);
-//
-//        // Creating a custom font
-//        Font customFont = Font.loadFont(getClass().getResourceAsStream("WindowThings/RBYGSC.ttf"), 16);
-//
-//        // Set the stage's title
-//        primaryStage.setTitle("PokeText");
-//
-//        // Set Font
-//        textArea.setFont(customFont);
-//
-//        // Set the scene for the stage
-//        primaryStage.setScene(scene);
-//
-//        // Show the stage
-//        primaryStage.show();
-//
-//        // Redirect System.out to the custom TextAreaOutputStream
-//        System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
-//
-//        Pokemon pokemon = new Pokemon("Bulbasaur", 15);
-//        pokemon.gainExperience();pokemon.gainExperience();pokemon.gainExperience();pokemon.gainExperience();pokemon.gainExperience();
-//
-//        System.out.println(pokemon);
-//    }
-//
-//    public static class TextAreaOutputStream extends OutputStream {
-//        private TextArea textArea;
-//
-//        public TextAreaOutputStream(TextArea textArea) {
-//            this.textArea = textArea;
-//        }
-//
-//        @Override
-//        public void write(int b) throws IOException {
-//            textArea.appendText(String.valueOf((char) b));
-//        }
-//    }
-//}
 
-import BattleLogic.Move;
-import BattleLogic.moveFactory;
+import PlayerRelated.Player;
+import PokemonLogic.Exceptions;
 import PokemonLogic.Pokemon;
-import org.json.JSONException;
+import Overworld.*;
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
 
-public class PokeText_Adventure {
+public class PokeText_Adventure extends Application {
+
+    private TextArea textArea = new TextArea();
+    private TextField inputField = new TextField();
+    private Button sendButton = new Button("Send");
+    private final PrintStream standardOut = System.out;
+
     public static void main(String[] args) {
-        // Load available moves from moves.json
-        List<Move> moves = moveFactory.createMovesFromJson();
+            launch(args);
+    }
 
-        // Create an instance of the moveFactory to load Pokémon move sets
-        moveFactory factory = new moveFactory();
-        factory.loadPokemonLearnsets();
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        textArea.setEditable(false);
 
-        try {
-            // Create a Pokémon (e.g., Bulbasaur) and pass the moves list to it
-            Pokemon pokemon = new Pokemon("Bulbasaur", 5);
-            pokemon.setMoveFactory(factory);
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("WindowThings/RBYGSC.ttf"), 16);
 
-            // Simulate gaining experience (this should trigger learning moves at certain levels)
-            for (int i = 0; i < 23; i++) {
-                pokemon.gainExperience();
+        System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
+
+        textArea.setFont(customFont);
+        sendButton.setFont(customFont);
+        inputField.setFont(customFont);
+
+        sendButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+
+        textArea.setWrapText(true);
+
+        BorderPane root = new BorderPane();
+        root.setCenter(textArea);
+
+        HBox inputBox = new HBox();
+        inputBox.setAlignment(Pos.CENTER);
+        inputBox.getChildren().addAll(inputField, sendButton);
+
+        HBox.setHgrow(inputField, Priority.ALWAYS);
+
+        root.setBottom(inputBox);
+
+        Scene scene = new Scene(root, 700, 700);
+
+        primaryStage.setTitle("PokeText");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+
+        Pokemon pokemon = null;
+
+        if (getParameters().getRaw().size() == 2) {
+            // Parse command line arguments
+            String pokemonName = getParameters().getRaw().get(0);
+            int pokemonLevel = Integer.parseInt(getParameters().getRaw().get(1));
+            // Create a new Pokemon instance
+            try {
+                pokemon = new Pokemon(pokemonName, pokemonLevel);
+            } catch (Exceptions.PokemonLevelException | Exceptions.PokemonNameException e) {
+                throw new RuntimeException(e);
             }
+        }
 
-            // Print the Pokémon's information to check its moveset
-            pokemon.displayMoveset();
+        Pallet pallet = new Pallet();
+        Player player = new Player();
+        Player.setName();
+        System.out.println(player.getName());
+        player.addPokemonToParty(pokemon);
+        System.out.println(pokemon);
+        pallet.enter(player);
 
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
+        openSpriteWindow(pokemon);
+    }
+
+    private void openSpriteWindow(Pokemon pokemon) {
+        Stage spriteStage = new Stage();
+        spriteStage.setTitle("Pokemon Sprite");
+
+        InputStream stream = getClass().getResourceAsStream(pokemon.getSpritePath());
+        Image spriteImage = new Image(stream);
+
+        ImageView imageView = new ImageView(spriteImage);
+
+        VBox vBox = new VBox(imageView);
+        vBox.setAlignment(Pos.CENTER);
+
+        Scene spriteScene = new Scene(vBox, 300, 300);
+        spriteStage.setScene(spriteScene);
+
+        //Blocks interaction with the main window
+        spriteStage.initModality(Modality.APPLICATION_MODAL);
+
+        spriteStage.show();
+    }
+
+    public static class TextAreaOutputStream extends OutputStream {
+        private TextArea textArea;
+
+        public TextAreaOutputStream(TextArea textArea) {
+            this.textArea = textArea;
+        }
+
+        @Override
+        public void write(int b) throws IOException {
+            textArea.appendText(String.valueOf((char) b));
         }
     }
 }

@@ -1,6 +1,7 @@
 package PokemonLogic;
 
 import BattleLogic.*;
+import javafx.scene.control.TextInputDialog;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +41,15 @@ public class Pokemon {
     private List<Move> moveset;
     private moveFactory moveFactory;
     private List<Move> moves;
+    private boolean fainted;
+    private String spritePath;
 
+    private void setSpritePath(String spritePath) {
+        this.spritePath = spritePath;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
     public void setMoves(List<Move> moves) {
         this.moves = moves;
     }
@@ -104,11 +113,13 @@ public class Pokemon {
     }
 
     // Constructor with name and level that loads data from the JSON file
-    public Pokemon(String name, int level) throws IOException, JSONException {
+    public Pokemon(String name, int level) throws IOException, JSONException, Exceptions.PokemonLevelException, Exceptions.PokemonNameException {
         this.name = name;
         this.level = (byte) level;
         statusCondition = StatusCondition.none;
         this.moveset = new ArrayList<>();
+        this.fainted = false;
+
 
         // Initialize IVs
         Random random = new Random();
@@ -118,6 +129,10 @@ public class Pokemon {
         ivSpAtk = random.nextInt(33);
         ivSpDef = random.nextInt(33);
         ivSpeed = random.nextInt(33);
+
+        if (level < 1 || level > 100) {
+            throw new Exceptions.PokemonLevelException();
+        }
 
         moveFactory = new moveFactory(); // replace with your actual instantiation
         moveFactory.loadPokemonLearnsets(); // Load the learnsets
@@ -160,7 +175,7 @@ public class Pokemon {
         experience = 0;
     }
 
-    private String readJsonFile() throws IOException {
+    private String readJsonFile() throws IOException{
         StringBuilder jsonContent = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader("src/PokemonLogic/pokemon.json"))) {
             String line;
@@ -172,8 +187,7 @@ public class Pokemon {
     }
 
     // Method to load data from the JSON file based on the name
-    private void loadPokemonDataFromJson() throws IOException, JSONException {
-
+    private void loadPokemonDataFromJson() throws IOException, JSONException, Exceptions.PokemonNameException {
         String jsonContent = readJsonFile();
         JSONArray jsonArray = new JSONArray(jsonContent);
 
@@ -185,11 +199,11 @@ public class Pokemon {
                 return;
             }
         }
+        throw new Exceptions.PokemonNameException();
     }
 
     // Method to populate the PokemonLogic.Pokemon object from a JSON object
     private void populatePokemonFromJson(JSONObject jsonObject) throws JSONException {
-        // Populate the PokemonLogic.Pokemon object from JSON data
         setNumber(jsonObject.getInt("#"));
         setType1(jsonObject.getString("Type 1"));
         setType2(jsonObject.optString("Type 2", ""));
@@ -205,9 +219,10 @@ public class Pokemon {
         }
         setBaseExperience(jsonObject.getInt("BaseExperience"));
         setExperienceGrowth(jsonObject.getString("ExperienceGrowth"));
+        setSpritePath(jsonObject.getString("Sprite"));
     }
 
-    public void gainExperience() throws IOException {
+    public void gainExperience() throws IOException, Exceptions.PokemonNameException {
         if (level < 100){
             int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
             experience += experienceGained;
@@ -282,12 +297,10 @@ public class Pokemon {
         }
     }
 
-    // Calculate HP using the formula
-    private int calculateHP(int base, int iv) {
+        private int calculateHP(int base, int iv) {
         return (int) (Math.floor(0.01 * (2 * base + iv) * level) + level + 10);
     }
 
-    // Calculate other stats using the formula
     private int calculateStat(int base, int iv) {
         return (int) (Math.floor(0.01 * (2 * base + iv) * level) + 5);
     }
@@ -320,7 +333,7 @@ public class Pokemon {
                     if (move != null && !moveset.contains(move)) {
                         boolean learnedInCurrentLevel = currentLevel == this.level;
 
-                        if (moveset.size() < 4) { // Limit the moveset size to 4
+                        if (moveset.size() < 4) {
                             moveset.add(move);
 
                             // Display the move learned message only for the current level
@@ -332,11 +345,7 @@ public class Pokemon {
                             System.out.println("But " + name + " already knows 4 moves.");
 
                             // Prompt the player to choose a move to replace or skip
-                            System.out.println("Choose a move to forget (1-4), or enter 5 to skip:");
-                            displayMoveset();
-
-                            Scanner scanner = new Scanner(System.in);
-                            int moveIndex = scanner.nextInt();
+                            int moveIndex = promptUserForMove();
 
                             // Check if the input is within the valid range or 5 to skip
                             if (moveIndex >= 1 && moveIndex <= 4) {
@@ -349,8 +358,8 @@ public class Pokemon {
                                 }
                             } else if (moveIndex == 5) {
                                 // Skip move replacement
-                                System.out.println(name + " decided not to learn " + moveName + ".");
-                                return; // Exit the method
+                                System.out.println(name + " did not learn " + moveName + ".");
+                                return;
                             } else {
                                 System.out.println("Invalid move index. " + name + " couldn't learn " + moveName + ".");
                             }
@@ -361,6 +370,24 @@ public class Pokemon {
         }
     }
 
+    private int promptUserForMove() {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Move Replacement");
+        dialog.setHeaderText("Choose a move to forget (1-4), or enter 5 to skip:");
+        this.displayMoveset();
+        dialog.setContentText("Move Index:");
+
+        java.util.Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            try {
+                return Integer.parseInt(result.get());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid move index.");
+                return promptUserForMove();
+            }
+        }
+        return 5;
+    }
 
 
     public void displayMoveset() {
@@ -400,6 +427,9 @@ public class Pokemon {
 
     public void setStatusCondition(StatusCondition condition) {
         statusCondition = condition;
+    }
+    public String getSpritePath() {
+        return spritePath;
     }
 
     public enum StatusCondition {

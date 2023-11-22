@@ -18,8 +18,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JavaFXApplication" />
+        <option value="CSS File" />
+        <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -63,6 +65,7 @@
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Darian/IdeaProjects/PokeTextAdventure&quot;,
+    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -72,7 +75,8 @@
     &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.ide.settings.uml&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -82,17 +86,18 @@
       <recent name="D:\PokeTextAdventure\src\BattleLogic" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src" />
+      <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src\WindowThings" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src\WindowThings" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure" />
-      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\WindowThings" />
-      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src\PokemonLogic" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="PokeText_Adventure" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="PokeText_Adventure" />
       <module name="PokeTextAdventure" />
+      <option name="PROGRAM_PARAMETERS" value="Bulbasaur 15" />
       <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Darian\Downloads\javafx-sdk-21.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -127,7 +132,12 @@
       <workItem from="1699354455525" duration="7057000" />
       <workItem from="1699365118364" duration="12988000" />
       <workItem from="1699429329403" duration="8762000" />
-      <workItem from="1699615539722" duration="13846000" />
+      <workItem from="1699615539722" duration="14197000" />
+      <workItem from="1699795900593" duration="103000" />
+      <workItem from="1699796223838" duration="65205000" />
+      <workItem from="1700562253512" duration="3755000" />
+      <workItem from="1700570413661" duration="6105000" />
+      <workItem from="1700660344779" duration="4986000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
