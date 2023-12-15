@@ -12,19 +12,19 @@ import java.util.List;
 import java.util.Map;
 
 public class moveFactory {
-    public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>();
+    public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their learnsets, with their name being the key
 
     public static List<Move> createMovesFromJson() {
         List<Move> moves = new ArrayList<>();
 
         try (FileReader reader = new FileReader("src/BattleLogic/moves.json")) {
-            JSONTokener tokener = new JSONTokener(reader);
-            JSONArray moveArray = new JSONArray(tokener);
+            JSONTokener tokener = new JSONTokener(reader); // reads JSON from stream
+            JSONArray moveArray = new JSONArray(tokener); // creates an array from JSON objects
 
             for (int i = 0; i < moveArray.length(); i++) {
-                JSONObject moveJson = moveArray.getJSONObject(i);
-                Move move = createMoveFromJson(moveJson);
-                moves.add(move);
+                JSONObject moveJson = moveArray.getJSONObject(i); // JSON from i
+                Move move = createMoveFromJson(moveJson); // creates the move
+                moves.add(move); // adds it to the list of moves
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -38,34 +38,34 @@ public class moveFactory {
             JSONTokener tokener = new JSONTokener(reader);
             JSONObject data = new JSONObject(tokener);
 
-            for (String pokemonName : data.keySet()) {
-                JSONObject pokemonData = data.getJSONObject(pokemonName);
-                JSONArray movesetArray = pokemonData.getJSONArray("moveset");
+            for (String pokemonName : data.keySet()) { // iterate through the keys
+                JSONObject pokemonData = data.getJSONObject(pokemonName); // get the data from the key
+                JSONArray movesetArray = pokemonData.getJSONArray("moveset"); // get the moveset with the help of the key
 
-                Map<Integer, List<String>> learnset = new HashMap<>();
-                for (int i = 0; i < movesetArray.length(); i++) {
-                    JSONObject moveData = movesetArray.getJSONObject(i);
-                    String moveName = moveData.getString("move");
-                    int level = moveData.getInt("level");
+                Map<Integer, List<String>> learnset = new HashMap<>(); //create a new map for the learnset
+                for (int i = 0; i < movesetArray.length(); i++) { //iterate through moveset
+                    JSONObject moveData = movesetArray.getJSONObject(i); // get data from learnset
+                    String moveName = moveData.getString("move"); // get move name
+                    int level = moveData.getInt("level"); // get level
 
-                    learnset.computeIfAbsent(level, k -> new ArrayList<>()).add(moveName);
+                    learnset.computeIfAbsent(level, k -> new ArrayList<>()).add(moveName); // add move to learnset
                 }
 
-                pokemonLearnsets.put(pokemonName, learnset);
+                pokemonLearnsets.put(pokemonName, learnset); // add learnset to pokemon
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     private static Move createMoveFromJson(JSONObject moveJson) {
-        // Extract move attributes from the JSON object
         String name = moveJson.getString("name");
         String type = moveJson.getString("type");
         String category = moveJson.getString("category");
         int power = moveJson.getInt("power");
         double accuracy = moveJson.getDouble("accuracy");
+        int pp = moveJson.getInt("pp");
 
-        // Create a concrete class that implements the Move interface
+        // Concrete class that implements the Move interface
         Move move = new Move() {
             @Override
             public String getName() {
@@ -85,6 +85,11 @@ public class moveFactory {
             @Override
             public String getType() {
                 return type;
+            }
+
+            @Override
+            public int getPp() {
+                return pp;
             }
 
             @Override

@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class Pokemon {
-    private byte level;
+    private byte level; // variables galore
     private int number;
     private String name;
     private String nickname;
@@ -37,12 +37,12 @@ public class Pokemon {
     private int experience;
     private String experienceGrowth;
     private int levelTreshhold;
-    private JSONObject jsonData;
     private List<Move> moveset;
     private moveFactory moveFactory;
     private List<Move> moves;
     private boolean fainted;
     private String spritePath;
+    private int remainingHealth;
 
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
@@ -56,11 +56,6 @@ public class Pokemon {
     public void setNumber(int number) {
         this.number = number;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setType1(String type1) {
         this.type1 = type1;
     }
@@ -113,7 +108,7 @@ public class Pokemon {
     }
 
     // Constructor with name and level that loads data from the JSON file
-    public Pokemon(String name, int level) throws IOException, JSONException, Exceptions.PokemonLevelException, Exceptions.PokemonNameException {
+    public Pokemon(String name, int level) throws IOException, JSONException{
         this.name = name;
         this.level = (byte) level;
         statusCondition = StatusCondition.none;
@@ -130,11 +125,7 @@ public class Pokemon {
         ivSpDef = random.nextInt(33);
         ivSpeed = random.nextInt(33);
 
-        if (level < 1 || level > 100) {
-            throw new Exceptions.PokemonLevelException();
-        }
-
-        moveFactory = new moveFactory(); // replace with your actual instantiation
+        moveFactory = new moveFactory();
         moveFactory.loadPokemonLearnsets(); // Load the learnsets
         setMoveFactory(moveFactory);
         moves = moveFactory.createMovesFromJson();
@@ -173,6 +164,7 @@ public class Pokemon {
         }
         nickname = name;
         experience = 0;
+        remainingHealth = Hp;
     }
 
     private String readJsonFile() throws IOException{
@@ -187,7 +179,7 @@ public class Pokemon {
     }
 
     // Method to load data from the JSON file based on the name
-    private void loadPokemonDataFromJson() throws IOException, JSONException, Exceptions.PokemonNameException {
+    private void loadPokemonDataFromJson() throws IOException, JSONException{
         String jsonContent = readJsonFile();
         JSONArray jsonArray = new JSONArray(jsonContent);
 
@@ -196,10 +188,8 @@ public class Pokemon {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             if (jsonObject.getString("Name").equalsIgnoreCase(name)) {
                 populatePokemonFromJson(jsonObject);
-                return;
             }
         }
-        throw new Exceptions.PokemonNameException();
     }
 
     // Method to populate the PokemonLogic.Pokemon object from a JSON object
@@ -222,7 +212,7 @@ public class Pokemon {
         setSpritePath(jsonObject.getString("Sprite"));
     }
 
-    public void gainExperience() throws IOException, Exceptions.PokemonNameException {
+    public void gainExperience() throws IOException{
         if (level < 100){
             int experienceGained = (int) (100 /* PUT ENEMY BASE EXPERIENCE HERE WHEN DONE */ * 5 /* PUT ENEMY LEVEL HERE WHEN DONE */ * 1.5) / 7;
             experience += experienceGained;
@@ -284,15 +274,15 @@ public class Pokemon {
                         break;
                     }
                 }
-//                System.out.println("Name: " + nickname);
-//                System.out.println("Level: " + level);
-//                System.out.println("HP: " + Hp);
-//                System.out.println("Attack: " + Attack);
-//                System.out.println("Defense: " + Defense);
-//                System.out.println("Special Attack: " + SpecialAttack);
-//                System.out.println("Special Defense: " + SpecialDefense);
-//                System.out.println("Speed: " + Speed);
-//                System.out.println("Experience: " + experience + " / " + levelTreshhold);
+                System.out.println("Name: " + nickname);
+                System.out.println("Level: " + level);
+                System.out.println("HP: " + Hp);
+                System.out.println("Attack: " + Attack);
+                System.out.println("Defense: " + Defense);
+                System.out.println("Special Attack: " + SpecialAttack);
+                System.out.println("Special Defense: " + SpecialDefense);
+                System.out.println("Speed: " + Speed);
+                System.out.println("Experience: " + experience + " / " + levelTreshhold);
             }
         }
     }
@@ -303,6 +293,13 @@ public class Pokemon {
 
     private int calculateStat(int base, int iv) {
         return (int) (Math.floor(0.01 * (2 * base + iv) * level) + 5);
+    }
+
+    public void setRemainingHealth(int remainingHealth) {
+        this.remainingHealth = remainingHealth;
+        if (this.remainingHealth <= 0) {
+            faint();
+        }
     }
 
     public void initializeMoves() {
@@ -396,7 +393,7 @@ public class Pokemon {
         }
     }
 
-    private Move findMoveByName(String moveName) {
+    public Move findMoveByName(String moveName) {
         for (Move move : moves) {
             if (move.getName().equals(moveName)) {
                 return move;
@@ -407,6 +404,14 @@ public class Pokemon {
 
     public String getName() {
         return name;
+    }
+
+    public int getRemainingHealth() {
+        return remainingHealth;
+    }
+
+    private void faint() {
+        this.fainted = true;
     }
 
     public String getNickname(){
@@ -432,24 +437,38 @@ public class Pokemon {
         return spritePath;
     }
 
+    public int getHp() {
+        return Hp;
+    }
+
     public enum StatusCondition {
         none, BRN, PAR, SLP, FRZ, PSN;
     }
 
-    @Override
-    public String toString() {
-        return "Name: " + nickname +
-                "\nSpecies Name: " + name +
-                "\nType 1: " + type1 +
-                "\nType 2: " + type2 +
-                "\nLevel: " + level +
-                "\nStatus: " + statusCondition +
-                "\nHP: " + Hp +
-                "\nAttack: " + Attack +
-                "\nDefense: " + Defense +
-                "\nSpecial Attack: " + SpecialAttack +
-                "\nSpecial Defense: " + SpecialDefense +
-                "\nSpeed: " + Speed +
-                "\nExperience: " + experience + " / " + levelTreshhold;
+@Override
+public String toString() {
+    StringBuilder moves = new StringBuilder();
+    for (Move move : moveset) {
+        moves.append(move.getName()).append("\n");
     }
+    // Remove the trailing comma and space
+    if (moves.length() > 0) {
+        moves.setLength(moves.length() - 1);
+    }
+
+    return "Name: " + nickname +
+            "\nSpecies Name: " + name +
+            "\nType 1: " + type1 +
+            "\nType 2: " + type2 +
+            "\nLevel: " + level +
+            "\nStatus: " + statusCondition +
+            "\nHP: " + Hp +
+            "\nAttack: " + Attack +
+            "\nDefense: " + Defense +
+            "\nSpecial Attack: " + SpecialAttack +
+            "\nSpecial Defense: " + SpecialDefense +
+            "\nSpeed: " + Speed + "\n" +
+            moves.toString() +
+            "\nExperience: " + experience + " / " + levelTreshhold;
+}
 }

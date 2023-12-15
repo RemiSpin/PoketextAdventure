@@ -5,6 +5,9 @@ public interface Move {
     int getPower();
     int getAccuracy();
     String getType();
+
+    int getPp();
+
     void reduceAttack(int stages);
     void reduceAttack(int stages, int chance);
     void reduceDefense(int stages);

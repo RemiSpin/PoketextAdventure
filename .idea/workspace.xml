@@ -86,18 +86,17 @@
       <recent name="D:\PokeTextAdventure\src\BattleLogic" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src\WindowThings\Assets" />
+      <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src\BattleLogic" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeTextAdventure\src\WindowThings" />
       <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src\WindowThings" />
-      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure\src" />
-      <recent name="C:\Users\Darian\IdeaProjects\PokeText Adventure" />
     </key>
   </component>
   <component name="RunManager">
     <configuration name="PokeText_Adventure" type="Application" factoryName="Application" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="PokeText_Adventure" />
+      <option name="MAIN_CLASS_NAME" value="WindowThings.PokeText_Adventure" />
       <module name="PokeTextAdventure" />
-      <option name="PROGRAM_PARAMETERS" value="Bulbasaur 15" />
       <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Darian\Downloads\javafx-sdk-21.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -137,7 +136,15 @@
       <workItem from="1699796223838" duration="65205000" />
       <workItem from="1700562253512" duration="3755000" />
       <workItem from="1700570413661" duration="6105000" />
-      <workItem from="1700660344779" duration="4986000" />
+      <workItem from="1700660344779" duration="5810000" />
+      <workItem from="1700667420042" duration="29000" />
+      <workItem from="1700743946073" duration="30000" />
+      <workItem from="1700765680205" duration="10477000" />
+      <workItem from="1701103713580" duration="1271000" />
+      <workItem from="1701194917389" duration="7371000" />
+      <workItem from="1701609524252" duration="654000" />
+      <workItem from="1701876214117" duration="362000" />
+      <workItem from="1701954676665" duration="38693000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />
