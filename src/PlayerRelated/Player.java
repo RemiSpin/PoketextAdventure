@@ -14,6 +14,7 @@ public class Player {
     private final List<Pokemon> party;
     private final List<Pokemon> pc;
     private final List<String> badges;
+    private Pokemon currentPokemon;
 
     public Player() {
         this.money = 1000;
@@ -58,7 +59,6 @@ public class Player {
             name = newName;
         });
     }
-
     public void subtractMoney(int amount) {
         if (money - amount >= 0) {
             money -= amount;
@@ -96,5 +96,22 @@ public class Player {
         } else {
             System.out.println("The specified Pokémon is not in your party.");
         }
+    }
+
+    public boolean hasUsablePokemon() {
+        for (Pokemon pokemon : party) {
+            if (pokemon.getRemainingHealth() > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Pokemon getCurrentPokemon() {
+        return currentPokemon;
+    }
+
+    public void setCurrentPokemon(Pokemon pokemon) {
+        this.currentPokemon = pokemon;
     }
 }

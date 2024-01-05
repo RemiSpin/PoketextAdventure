@@ -441,34 +441,66 @@ public class Pokemon {
         return Hp;
     }
 
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getLevelTreshhold() {
+        return levelTreshhold;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getAttack() {
+        return Attack;
+    }
+
+    public int getDefense() {
+        return Defense;
+    }
+
+    public int getSpecialAttack() {
+        return SpecialAttack;
+    }
+
+    public int getSpecialDefense() {
+        return SpecialDefense;
+    }
+
+    public int getSpeed() {
+        return Speed;
+    }
+
+    public String getMoves() {
+        StringBuilder moves = new StringBuilder("\n");
+        for (Move move : moveset) {
+            moves.append(move.getName()).append("\n");
+        }
+        // Remove the trailing newline
+        if (moves.length() > 0) {
+            moves.setLength(moves.length() - 1);
+        }
+        return moves.toString();
+    }
+
+    public void useMove(Move move, trainerPokemon target) {
+        // Apply the effects of the move to the target Pokemon
+        // This is a simplified example, you should replace this with your actual move logic
+        int damage = move.getPower();
+        target.setRemainingHealth(target.getRemainingHealth() - damage);
+    }
+
+    public List<Move> getMovesList() {
+        return moveset;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
     public enum StatusCondition {
         none, BRN, PAR, SLP, FRZ, PSN;
     }
-
-@Override
-public String toString() {
-    StringBuilder moves = new StringBuilder();
-    for (Move move : moveset) {
-        moves.append(move.getName()).append("\n");
-    }
-    // Remove the trailing comma and space
-    if (moves.length() > 0) {
-        moves.setLength(moves.length() - 1);
-    }
-
-    return "Name: " + nickname +
-            "\nSpecies Name: " + name +
-            "\nType 1: " + type1 +
-            "\nType 2: " + type2 +
-            "\nLevel: " + level +
-            "\nStatus: " + statusCondition +
-            "\nHP: " + Hp +
-            "\nAttack: " + Attack +
-            "\nDefense: " + Defense +
-            "\nSpecial Attack: " + SpecialAttack +
-            "\nSpecial Defense: " + SpecialDefense +
-            "\nSpeed: " + Speed + "\n" +
-            moves.toString() +
-            "\nExperience: " + experience + " / " + levelTreshhold;
-}
 }

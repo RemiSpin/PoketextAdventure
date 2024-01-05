@@ -22,43 +22,43 @@ public class mainWindow extends Application {
     private TextField inputField = new TextField();
     private Button sendButton = new Button("Send");
 
-@Override
-public void start(Stage primaryStage) throws IOException {
-    BorderPane root = new BorderPane(); // Segments the window
-    Scene scene = new Scene(root, 700, 700);
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        BorderPane root = new BorderPane(); // Segments the window
+        Scene scene = new Scene(root, 700, 700);
 
-    textArea.setEditable(false);
+        textArea.setEditable(false);
 
-    Font customFont = Font.loadFont(getClass().getResourceAsStream("Assets/RBYGSC.ttf"), 16);
+        Font customFont = Font.loadFont(getClass().getResourceAsStream("Assets/RBYGSC.ttf"), 16);
 
-    System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
+        System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
 
-    textArea.setFont(customFont);
-    sendButton.setFont(customFont);
-    inputField.setFont(customFont);
+        textArea.setFont(customFont);
+        sendButton.setFont(customFont);
+        inputField.setFont(customFont);
 
-    sendButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
+        sendButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
 
-    textArea.setWrapText(true);
+        textArea.setWrapText(true);
 
-    root.setCenter(textArea);
+        root.setCenter(textArea);
 
-    HBox inputBox = new HBox(); // Makes input and button stick horizontally
-    inputBox.setAlignment(Pos.CENTER);
-    inputBox.getChildren().addAll(inputField, sendButton);
+        HBox inputBox = new HBox(); // Makes input and button stick horizontally
+        inputBox.setAlignment(Pos.CENTER);
+        inputBox.getChildren().addAll(inputField, sendButton);
 
-    HBox.setHgrow(inputField, Priority.ALWAYS); // Makes the Hbox expand
+        HBox.setHgrow(inputField, Priority.ALWAYS); // Makes the Hbox expand
 
-    root.setBottom(inputBox); // Puts the bottom things
+        root.setBottom(inputBox); // Puts the bottom things
 
-    primaryStage.setTitle("PokeText");
-    primaryStage.setScene(scene);
-    primaryStage.show();
+        primaryStage.setTitle("PokeText");
+        primaryStage.setScene(scene);
+        primaryStage.show();
 
-    // Call the start method of PokeText_Adventure
-    PokeText_Adventure pokeTextAdventure = new PokeText_Adventure();
-    pokeTextAdventure.start(primaryStage);
-}
+        // Call the start method of PokeText_Adventure
+        PokeText_Adventure pokeTextAdventure = new PokeText_Adventure();
+        pokeTextAdventure.start(primaryStage);
+    }
 
     public static class TextAreaOutputStream extends OutputStream {
         private TextArea textArea;

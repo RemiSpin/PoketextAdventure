@@ -1,12 +1,19 @@
 package BattleLogic;
+import java.util.List;
 
 public interface Move {
     String getName();
     int getPower();
     int getAccuracy();
     String getType();
-
     int getPp();
+
+    List<String> getSuperEffective();
+    List<String> getNotVeryEffective();
+    List<String> getNoEffect();
+    void setSuperEffective(List<String> types);
+    void setNotVeryEffective(List<String> types);
+    void setNoEffect(List<String> types);
 
     void reduceAttack(int stages);
     void reduceAttack(int stages, int chance);

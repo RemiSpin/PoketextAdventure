@@ -6,13 +6,27 @@ import org.json.JSONTokener;
 
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class moveFactory {
     public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their learnsets, with their name being the key
+    private static JSONObject typeChart; // JSON object of the type chart
+
+    public moveFactory() {
+        // Load the type chart from the JSON file
+        try {
+            String content = new String(Files.readAllBytes(Paths.get("src/BattleLogic/TypeChart.json")));
+            typeChart = new JSONObject(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static List<Move> createMovesFromJson() {
         List<Move> moves = new ArrayList<>();
@@ -29,7 +43,6 @@ public class moveFactory {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         return moves;
     }
 
@@ -65,8 +78,14 @@ public class moveFactory {
         double accuracy = moveJson.getDouble("accuracy");
         int pp = moveJson.getInt("pp");
 
+        // Get the type effectiveness from the type chart
+        JSONObject typeEffectiveness = typeChart.has(type) ? typeChart.getJSONObject(type) : new JSONObject();
+
         // Concrete class that implements the Move interface
         Move move = new Move() {
+            private List<String> superEffective;
+            private List<String> notVeryEffective;
+            private List<String> noEffect;
             @Override
             public String getName() {
                 return name;
@@ -90,6 +109,35 @@ public class moveFactory {
             @Override
             public int getPp() {
                 return pp;
+            }
+
+            @Override
+            public List<String> getSuperEffective() {
+                return this.superEffective;
+            }
+
+            @Override
+            public List<String> getNotVeryEffective() {
+                return this.notVeryEffective;
+            }
+
+            @Override
+            public List<String> getNoEffect() {
+                return this.noEffect;
+            }
+
+            public void setSuperEffective(List<String> types) {
+                this.superEffective = types;
+            }
+
+            @Override
+            public void setNotVeryEffective(List<String> types) {
+                this.notVeryEffective = types;
+            }
+
+            @Override
+            public void setNoEffect(List<String> types) {
+                this.noEffect = types;
             }
 
             @Override
@@ -252,6 +300,21 @@ public class moveFactory {
 
             }
         };
+
+        // Add the type effectiveness to the Move object
+        move.setSuperEffective(typeEffectiveness.has("superEffective") ?
+                new ArrayList<>(typeEffectiveness.optJSONArray("superEffective").toList().stream()
+                        .map(Object::toString)
+                        .collect(Collectors.toList())) : new ArrayList<>());
+        move.setNotVeryEffective(typeEffectiveness.has("notVeryEffective") ?
+                new ArrayList<>(typeEffectiveness.optJSONArray("notVeryEffective").toList().stream()
+                        .map(Object::toString)
+                        .collect(Collectors.toList())) : new ArrayList<>());
+        move.setNoEffect(typeEffectiveness.has("noEffect") ?
+                new ArrayList<>(typeEffectiveness.optJSONArray("noEffect").toList().stream()
+                        .map(Object::toString)
+                        .collect(Collectors.toList())) : new ArrayList<>());
+
         return move;
     }
 }

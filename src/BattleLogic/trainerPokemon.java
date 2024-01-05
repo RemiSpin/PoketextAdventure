@@ -39,15 +39,19 @@ public class trainerPokemon {
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
     }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
     public void setMoves(List<Move> moves) {
         this.moves = moves;
     }
+
     public void setNumber(int number) {
         this.number = number;
     }
+
     public void setType1(String type1) {
         this.type1 = type1;
     }
@@ -79,53 +83,55 @@ public class trainerPokemon {
     public void setSpeed(int speed) {
         Speed = speed;
     }
+
     public void setMoveFactory(moveFactory factory) {
         this.moveFactory = factory;
     }
-public trainerPokemon(String name, int level, String... moveNames) throws IOException, JSONException {
-    this.name = name;
-    this.level = (byte) level;
-    statusCondition = PokemonLogic.Pokemon.StatusCondition.none;
-    this.moveset = new ArrayList<>();
-    this.fainted = false;
 
-    // Initialize IVs
-    Random random = new Random();
-    ivHP = random.nextInt(33);
-    ivAttack = random.nextInt(33);
-    ivDefense = random.nextInt(33);
-    ivSpAtk = random.nextInt(33);
-    ivSpDef = random.nextInt(33);
-    ivSpeed = random.nextInt(33);
+    public trainerPokemon(String name, int level, String... moveNames) throws IOException, JSONException {
+        this.name = name;
+        this.level = (byte) level;
+        statusCondition = PokemonLogic.Pokemon.StatusCondition.none;
+        this.moveset = new ArrayList<>();
+        this.fainted = false;
 
-    moveFactory = new moveFactory();
-    moveFactory.loadPokemonLearnsets(); // Load the learnsets
-    setMoveFactory(moveFactory);
-    moves = moveFactory.createMovesFromJson();
+        // Initialize IVs
+        Random random = new Random();
+        ivHP = random.nextInt(33);
+        ivAttack = random.nextInt(33);
+        ivDefense = random.nextInt(33);
+        ivSpAtk = random.nextInt(33);
+        ivSpDef = random.nextInt(33);
+        ivSpeed = random.nextInt(33);
 
-    for (String moveName : moveNames) {
-        Move move = findMoveByName(moveName);
-        if (move != null) {
-            this.moveset.add(move);
+        moveFactory = new moveFactory();
+        moveFactory.loadPokemonLearnsets(); // Load the learnsets
+        setMoveFactory(moveFactory);
+        moves = moveFactory.createMovesFromJson();
+
+        for (String moveName : moveNames) {
+            Move move = findMoveByName(moveName);
+            if (move != null) {
+                this.moveset.add(move);
+            }
         }
+
+        // Load data from the JSON file based on the name
+        loadPokemonDataFromJson();
+
+        // Recalculate stats when leveling up
+        setHp(calculateHP(Hp, ivHP));
+        setAttack(calculateStat(Attack, ivAttack));
+        setDefense(calculateStat(Defense, ivDefense));
+        setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
+        setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
+        setSpeed(calculateStat(Speed, ivSpeed));
+
+        remainingHealth = Hp;
     }
 
-    // Load data from the JSON file based on the name
-    loadPokemonDataFromJson();
 
-    // Recalculate stats when leveling up
-    setHp(calculateHP(Hp, ivHP));
-    setAttack(calculateStat(Attack, ivAttack));
-    setDefense(calculateStat(Defense, ivDefense));
-    setSpecialAttack(calculateStat(SpecialAttack, ivSpAtk));
-    setSpecialDefense(calculateStat(SpecialDefense, ivSpDef));
-    setSpeed(calculateStat(Speed, ivSpeed));
-
-    remainingHealth = Hp;
-}
-
-
-    private String readJsonFile() throws IOException{
+    private String readJsonFile() throws IOException {
         StringBuilder jsonContent = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader("src/PokemonLogic/pokemon.json"))) {
             String line;
@@ -137,7 +143,7 @@ public trainerPokemon(String name, int level, String... moveNames) throws IOExce
     }
 
     // Method to load data from the JSON file based on the name
-    private void loadPokemonDataFromJson() throws IOException, JSONException{
+    private void loadPokemonDataFromJson() throws IOException, JSONException {
         String jsonContent = readJsonFile();
         JSONArray jsonArray = new JSONArray(jsonContent);
 
@@ -207,39 +213,61 @@ public trainerPokemon(String name, int level, String... moveNames) throws IOExce
     public void setStatusCondition(PokemonLogic.Pokemon.StatusCondition condition) {
         statusCondition = condition;
     }
+
     public String getSpritePath() {
         return spritePath;
     }
+
     public int getHp() {
         return Hp;
     }
+
     public int getRemainingHealth() {
         return remainingHealth;
     }
 
-@Override
-public String toString() {
-    StringBuilder moves = new StringBuilder();
-    for (Move move : moveset) {
-        moves.append(move.getName()).append("\n");
-    }
-    // Remove the trailing newline
-    if (moves.length() > 0) {
-        moves.setLength(moves.length() - 1);
+    public int getLevel() {
+        return level;
     }
 
-    return "Name: " + nickname +
-            "\nSpecies Name: " + name +
-            "\nType 1: " + type1 +
-            "\nType 2: " + type2 +
-            "\nLevel: " + level +
-            "\nStatus: " + statusCondition +
-            "\nHP: " + Hp +
-            "\nAttack: " + Attack +
-            "\nDefense: " + Defense +
-            "\nSpecial Attack: " + SpecialAttack +
-            "\nSpecial Defense: " + SpecialDefense +
-            "\nSpeed: " + Speed +
-            "\n" + moves.toString();
-}
+    @Override
+    public String toString() {
+        StringBuilder moves = new StringBuilder();
+        for (Move move : moveset) {
+            moves.append(move.getName()).append("\n");
+        }
+        // Remove the trailing newline
+        if (moves.length() > 0) {
+            moves.setLength(moves.length() - 1);
+        }
+
+        return "Name: " + nickname +
+                "\nSpecies Name: " + name +
+                "\nType 1: " + type1 +
+                "\nType 2: " + type2 +
+                "\nLevel: " + level +
+                "\nStatus: " + statusCondition +
+                "\nHP: " + Hp +
+                "\nAttack: " + Attack +
+                "\nDefense: " + Defense +
+                "\nSpecial Attack: " + SpecialAttack +
+                "\nSpecial Defense: " + SpecialDefense +
+                "\nSpeed: " + Speed +
+                "\n" + moves.toString();
+    }
+
+    public List<Move> getMoves() {
+        return moveset;
+    }
+
+    public int getAttack() {
+        return Attack;
+    }
+
+    public void setRemainingHealth(int remainingHealth) {
+        this.remainingHealth = remainingHealth;
+        if (this.remainingHealth <= 0) {
+            this.remainingHealth = 0;
+        }
+    }
 }
