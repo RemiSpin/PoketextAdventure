@@ -270,4 +270,8 @@ public class trainerPokemon {
             this.remainingHealth = 0;
         }
     }
+
+    public int getDefense() {
+        return Defense;
+    }
 }

@@ -13,17 +13,27 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Battle extends Application {
+    private static Battle instance;
+
     private Player player;
     private Trainer opponent;
 
-    public Battle(Player player, Trainer opponent) {
+    private Battle(Player player, Trainer opponent) {
         this.player = player;
         this.opponent = opponent;
     }
 
+    public static Battle getInstance(Player player, Trainer opponent) {
+        if (instance == null) {
+            instance = new Battle(player, opponent);
+        }
+        return instance;
+    }
         private void aiTurn() {
             // Create a new thread for the AI's turn
             new Thread(() -> {
@@ -81,6 +91,43 @@ public class Battle extends Application {
         }
     }
 
+    private void applyPlayerAction(String action) {
+        // Find the move with the given name in the player's Pokemon's moves
+        Move move = player.getParty().get(0).getMovesList().stream()
+                .filter(m -> m.getName().equals(action))
+                .findFirst()
+                .orElse(null);
+
+        // If the move was found, apply it
+        if (move != null) {
+            // Calculate the damage this move would deal to the AI's Pokemon
+            int damage = calculateDamage(move, player.getParty().get(0), opponent.getPokemonList().get(0));
+
+            // Reduce the AI's Pokemon's health by this amount
+            trainerPokemon aiPokemon = opponent.getPokemonList().get(0);
+            aiPokemon.setRemainingHealth(aiPokemon.getRemainingHealth() - damage);
+        }
+    }
+
+    private int calculateDamage(Move move, Pokemon attacker, trainerPokemon defender) {
+        // Calculate the base damage
+        int baseDamage = (((2 * attacker.getLevel()) / 5 + 2) * move.getPower() * (attacker.getAttack() / defender.getDefense()));
+
+        // Calculate the type effectiveness multiplier
+        double typeMultiplier = calculateTypeEffectivenessMultiplier(move, defender);
+
+        // Calculate the final damage
+        int finalDamage = (int) (baseDamage * typeMultiplier);
+
+        // 1/16 chance to deal double damage (critical hit)
+        Random rand = new Random();
+        if (rand.nextInt(16) == 0) {
+            finalDamage *= 2;
+        }
+
+        return finalDamage;
+    }
+
     private int calculateDamage(Move move, trainerPokemon attacker, Pokemon defender) {
         // Calculate the base damage
         int baseDamage = (((2 * attacker.getLevel()) / 5 + 2) * move.getPower() * (attacker.getAttack() / defender.getDefense()));
@@ -126,27 +173,78 @@ public class Battle extends Application {
         return multiplier;
     }
 
-    public void startBattle() {
-        // While both sides have usable Pokemon...
-        while (player.hasUsablePokemon() && opponent.hasUsablePokemon()) {
-            // Player's turn: get the player's action and apply it
-            // For now, let's assume the player always uses their first move
-            applyAction(player.getParty().get(0).getMovesList().get(0).getName());
+    private double calculateTypeEffectivenessMultiplier(Move move, trainerPokemon pokemon) {
+        double multiplier = 1.0;
 
-            // If the AI has no more usable Pokemon, end the battle
-            if (!opponent.hasUsablePokemon()) {
-                System.out.println("Player wins!");
+        // Check if the move is super effective against the Pokemon's type1
+        if (move.getSuperEffective().contains(pokemon.getType1())) {
+            multiplier *= 2;
+        }
+
+        // Check if the move is super effective against the Pokemon's type2
+        if (pokemon.getType2() != null && move.getSuperEffective().contains(pokemon.getType2())) {
+            multiplier *= 2;
+        }
+
+        // Check if the move is not very effective against the Pokemon's type1
+        if (move.getNotVeryEffective().contains(pokemon.getType1())) {
+            multiplier /= 2;
+        }
+
+        // Check if the move is not very effective against the Pokemon's type2
+        if (pokemon.getType2() != null && move.getNotVeryEffective().contains(pokemon.getType2())) {
+            multiplier /= 2;
+        }
+
+        return multiplier;
+    }
+
+    public void startBattle(String input) {
+        // Parse the user's input to an integer
+        int choice;
+        try {
+            choice = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Please enter a number.");
+            return;
+        }
+
+        switch (choice) {
+            case 1:
+                // Player's turn: get the player's action and apply it
+                // For now, let's assume the player always uses their first move
+                applyPlayerAction(player.getParty().get(0).getMovesList().get(0).getName());
+                break;
+            case 2:
+                // Use an item
+                // useItem();
+                break;
+            case 3:
+                // Switch Pokemon
+                player.switchPokemon();
+                break;
+            case 4:
+                // Run from the battle
+                System.out.println("You ran away!");
                 return;
-            }
+            default:
+                System.out.println("Invalid choice. Please choose again.");
+                break;
+        }
 
-            // AI's turn: start the AI's turn
-            aiTurn();
+        // If the AI has no more usable Pokemon, end the battle
+        if (!opponent.hasUsablePokemon()) {
+            System.out.println("Player wins!");
+            return;
+        }
 
-            // If the player has no more usable Pokemon, end the battle
-            if (!player.hasUsablePokemon()) {
-                System.out.println("AI wins!");
-                return;
-            }
+        // AI's turn: start the AI's turn
+        aiTurn();
+
+        // If the player has no more usable Pokemon, end the battle
+        if (!player.hasUsablePokemon()) {
+            System.out.println("AI wins!");
+            return;
         }
     }
 

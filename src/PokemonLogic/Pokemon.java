@@ -492,6 +492,10 @@ public class Pokemon {
         target.setRemainingHealth(target.getRemainingHealth() - damage);
     }
 
+    public boolean isUsable() {
+        return !fainted;
+    }
+
     public List<Move> getMovesList() {
         return moveset;
     }

@@ -1,5 +1,6 @@
 package WindowThings;
 
+import BattleLogic.Battle;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,6 +22,14 @@ public class mainWindow extends Application {
     private TextArea textArea = new TextArea();
     private TextField inputField = new TextField();
     private Button sendButton = new Button("Send");
+
+    // Define the application states
+    public enum AppState {
+        BATTLE
+    }
+
+    // Add a variable for the current state
+    private AppState currentState = AppState.BATTLE; // Set the initial state to BATTLE
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -58,6 +67,19 @@ public class mainWindow extends Application {
         // Call the start method of PokeText_Adventure
         PokeText_Adventure pokeTextAdventure = new PokeText_Adventure();
         pokeTextAdventure.start(primaryStage);
+
+        sendButton.setOnAction(e -> {
+            String input = inputField.getText();
+            inputField.clear();
+
+            // Process the input as a command
+            switch (currentState) {
+                case BATTLE:
+                    // Call the startBattle method with the user's input
+                    battle.startBattle(input);
+                    break;
+            }
+        });
     }
 
     public static class TextAreaOutputStream extends OutputStream {
