@@ -1,0 +1,128 @@
+{
+  "Bulbasaur": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Leech Seed", "level": 7 },
+      { "move": "Vine Whip", "level": 10 },
+      { "move": "PoisonPowder", "level": 14 },
+      { "move": "Sleep Powder", "level": 15 }
+    ]
+  },
+  "Charmander": {
+    "moveset": [
+      { "move": "Scratch", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Ember", "level": 7 },
+      { "move": "Metal Claw", "level": 13 }
+    ]
+  },
+  "Squirtle": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Tail Whip", "level": 1 },
+      { "move": "Bubble", "level": 7 },
+      { "move": "Withdraw", "level": 10 },
+      { "move": "Water Gun", "level": 13 }
+    ]
+  },
+  "Pidgey": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Sand Attack", "level": 5 },
+      { "move": "Gust", "level": 9 },
+      { "move": "Quick Attack", "level": 13 }
+    ]
+  },
+  "Rattata": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Tail Whip", "level": 1 },
+      { "move": "Quick Attack", "level": 7 },
+      { "move": "Hyper Fang", "level": 13 }
+    ]
+  },
+  "Mankey": {
+    "moveset": [
+      { "move": "Scratch", "level": 1 },
+      { "move": "Leer", "level": 1 },
+      { "move": "Low Kick", "level": 6 },
+      { "move": "Karate Chop", "level": 11 }
+    ]
+  },
+  "Spearow": {
+    "moveset": [
+      { "move": "Peck", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Leer", "level": 7 },
+      { "move": "Fury Attack", "level": 13 }
+    ]
+  },
+  "Caterpie": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "String Shot", "level": 1 }
+    ]
+  },
+  "Metapod": {
+    "moveset": [
+      { "move": "Harden", "level": 7 }
+    ]
+  },
+  "Butterfree": {
+    "moveset": [
+      { "move": "Confusion", "level": 10 },
+      { "move": "PoisonPowder", "level": 13 },
+      { "move": "Stun Spore", "level": 14 },
+      { "move": "Sleep Powder", "level": 15 }
+    ]
+  },
+  "Weedle": {
+    "moveset": [
+      { "move": "Poison Sting", "level": 1 },
+      { "move": "String Shot", "level": 1 }
+    ]
+  },
+  "Kakuna": {
+    "moveset": [
+      { "move": "Harden", "level": 7 }
+    ]
+  },
+  "Beedrill": {
+    "moveset": [
+      { "move": "Fury Attack", "level": 10 }
+    ]
+  },
+  "Pikachu": {
+    "moveset": [
+      { "move": "ThunderShock", "level": 1 },
+      { "move": "Growl", "level": 1 },
+      { "move": "Tail Whip", "level": 6 },
+      { "move": "Thunder Wave", "level": 8 },
+      { "move": "Quick Attack", "level": 11 },
+      { "move": "Double Team", "level": 15 }
+    ]
+  },
+  "Geodude": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Defense Curl", "level": 1 },
+      { "move": "Rock Throw", "level": 11 }
+    ]
+  },
+  "Sandshrew": {
+    "moveset": [
+      { "move": "Scratch", "level": 1 },
+      { "move": "Defense Curl", "level": 6 },
+      { "move": "Sand Attack", "level": 11 }
+    ]
+  },
+  "Onix": {
+    "moveset": [
+      { "move": "Tackle", "level": 1 },
+      { "move": "Screech", "level": 1 },
+      { "move": "Bind", "level": 8 },
+      { "move": "Rock Throw", "level": 12 }
+    ]
+  }
+}
