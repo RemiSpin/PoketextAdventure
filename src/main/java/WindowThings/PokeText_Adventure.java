@@ -20,7 +20,7 @@ public class PokeText_Adventure extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", 7);
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", 14);
         Pokemon pidgey = new Pokemon("Pidgey", 3);
         Pokemon rattata = new Pokemon("Rattata", 2);
         Pokemon pikachu = new Pokemon("Pikachu", 4);
@@ -34,6 +34,10 @@ public class PokeText_Adventure extends Application {
         player.addPokemonToParty(pikachu);
         player.addPokemonToParty(mankey);
         player.addPokemonToParty(caterpie);
+
+//        while (bulbasaur.getLevel() != 16){
+//            bulbasaur.gainExperience();
+//        }
 
         // Create a new Stage for each PokemonInfo window
         Stage bDetailsStage = new Stage();

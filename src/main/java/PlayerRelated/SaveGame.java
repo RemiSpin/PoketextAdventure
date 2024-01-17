@@ -28,6 +28,10 @@ public class SaveGame {
     }
 
     public void saveGame() {
+        if (!RoleManager.canSaveGame(player.getName())) {
+            System.out.println("You do not have permission to save the game.");
+            return;
+        }
         try {
             // Check if player exists
             PreparedStatement checkPlayerStmt = conn.prepareStatement("SELECT * FROM Player WHERE name = ?");
@@ -49,7 +53,7 @@ public class SaveGame {
                 playerStmt.executeUpdate();
             }
 
-            // Save Pokemon and Badges as before
+            // Save Pokemon and Badges
             PreparedStatement partyPokemonStmt = conn.prepareStatement("INSERT OR REPLACE INTO Party_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES ((SELECT pokemon_id FROM Party_Pokemon WHERE pokemon_id = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             PreparedStatement pcPokemonStmt = conn.prepareStatement("INSERT OR REPLACE INTO PC_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES ((SELECT pokemon_id FROM PC_Pokemon WHERE pokemon_id = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (Pokemon pokemon : player.getParty()) {
