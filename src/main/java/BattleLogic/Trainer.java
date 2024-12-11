@@ -40,4 +40,8 @@ public class Trainer {
     public trainerPokemon getCurrentPokemon() {
         return currentPokemon;
     }
+
+    public void setCurrentPokemon(trainerPokemon pokemon) {
+        this.currentPokemon = pokemon;
+    }
 }

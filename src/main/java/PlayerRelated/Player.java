@@ -87,47 +87,7 @@ public class Player {
         pokemon.setNickname(nickname);
     }
 
-    public void switchPokemon() {
-        Scanner scanner = new Scanner(System.in);
 
-        while (true) {
-            for (int i = 0; i < party.size(); i++) {
-                System.out.println((i + 1) + ". " + party.get(i).getNickname());
-            }
-
-            System.out.println("Choose a Pokemon to switch into battle (1-" + party.size() + "), or press 0 to go back:");
-            int choice = scanner.nextInt();
-
-            // Check if the user wants to go back
-            if (choice == 0) {
-                System.out.println("Going back to the previous menu.");
-                return;
-            }
-
-            // Validate the input
-            if (choice < 1 || choice > party.size()) {
-                System.out.println("Invalid choice. Please choose a number between 1 and " + party.size() + ", or press 0 to go back.");
-                continue;
-            }
-
-            // Adjust the choice to be zero-based
-            choice--;
-
-            // Check if the chosen Pokemon is usable
-            if (!party.get(choice).isUsable()) {
-                System.out.println("The chosen Pokemon is fainted. Please choose a different Pokemon.");
-                continue;
-            }
-
-            // Swap the chosen Pokemon with the first Pokemon in the party
-            Pokemon temp = party.get(0);
-            party.set(0, party.get(choice));
-            party.set(choice, temp);
-
-            System.out.println("Go " + party.get(0).getNickname() + "!");
-            break;
-        }
-    }
 
     public void switchPokemonOutsideBattle() {
         Scanner scanner = new Scanner(System.in);
