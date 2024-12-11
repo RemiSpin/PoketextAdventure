@@ -60,6 +60,7 @@
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;Application.PokeText_Adventure.executor&quot;: &quot;Run&quot;,
+    &quot;Application.mainWindow.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
@@ -75,7 +76,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/Darian/IdeaProjects/PokeTextAdventure/maven_something/src/main/java/org/example/Main.java&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
@@ -109,7 +110,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-f644763e9732-f98dd351" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103" />
       </set>
     </attachedChunks>
   </component>
@@ -168,7 +170,24 @@
       <workItem from="1705269840209" duration="3156000" />
       <workItem from="1705326235915" duration="137000" />
       <workItem from="1705326385569" duration="15343000" />
-      <workItem from="1705408541117" duration="16216000" />
+      <workItem from="1705408541117" duration="18418000" />
+      <workItem from="1709639700608" duration="72000" />
+      <workItem from="1709901650410" duration="1495000" />
+      <workItem from="1710253606254" duration="39000" />
+      <workItem from="1714950280099" duration="717000" />
+      <workItem from="1714951015573" duration="2470000" />
+      <workItem from="1715163168871" duration="30000" />
+      <workItem from="1715163298379" duration="725000" />
+      <workItem from="1717152395319" duration="149000" />
+      <workItem from="1717273334406" duration="1264000" />
+      <workItem from="1717278198039" duration="334000" />
+      <workItem from="1717344859301" duration="3125000" />
+      <workItem from="1717607290636" duration="1276000" />
+      <workItem from="1723619923449" duration="27000" />
+      <workItem from="1723623748800" duration="143000" />
+      <workItem from="1723631891356" duration="289000" />
+      <workItem from="1729141771019" duration="5000" />
+      <workItem from="1732613825680" duration="314000" />
     </task>
     <task id="LOCAL-00001" summary="test">
       <option name="closed" value="true" />

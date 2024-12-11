@@ -1,10 +1,5 @@
 package BattleLogic;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URISyntaxException;
@@ -15,6 +10,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 public class moveFactory {
     public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their learnsets, with their name being the key
@@ -137,6 +136,7 @@ public class moveFactory {
                 return this.noEffect;
             }
 
+            @Override
             public void setSuperEffective(List<String> types) {
                 this.superEffective = types;
             }

@@ -1,19 +1,22 @@
 package PokemonLogic;
 
-import BattleLogic.*;
-import javafx.scene.control.TextInputDialog;
-import org.json.JSONException;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONArray;
-import org.json.simple.parser.JSONParser;
-
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.UUID;
-import java.util.*;
+
+import org.json.JSONException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
+import BattleLogic.Move;
+import BattleLogic.moveFactory;
+import BattleLogic.trainerPokemon;
+import javafx.scene.control.TextInputDialog;
 
 public class Pokemon {
     private byte level; // variables galore
@@ -116,6 +119,7 @@ public class Pokemon {
     public Pokemon(String name, int level) throws JSONException{
         this.id = UUID.randomUUID();
         this.name = name;
+        this.nickname = name;
         this.level = (byte) level;
         statusCondition = StatusCondition.none;
         this.moveset = new ArrayList<>();

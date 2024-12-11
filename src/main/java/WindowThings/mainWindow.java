@@ -1,11 +1,15 @@
 package WindowThings;
 
-import PlayerRelated.SaveGame;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import PlayerRelated.Player;
-import javafx.scene.control.Button;
+import PlayerRelated.SaveGame;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -14,15 +18,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-
 public class mainWindow extends Application {
     private TextArea textArea = new TextArea();
     private TextField inputField = new TextField();
     private Button sendButton = new Button("Send");
-    Button saveButton = new Button("Save Game");
 
 //    // Define the application states
 //    public enum AppState {
@@ -35,11 +34,10 @@ public class mainWindow extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         Player player = PokeText_Adventure.player;
-        BorderPane root = new BorderPane(); // Segments the window
+        BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 700, 700);
 
         textArea.setEditable(false);
-
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 16);
 
         System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
@@ -49,43 +47,40 @@ public class mainWindow extends Application {
         inputField.setFont(customFont);
 
         sendButton.setStyle("-fx-background-color: white; -fx-text-fill: black;");
-
         textArea.setWrapText(true);
 
         root.setCenter(textArea);
 
-        HBox inputBox = new HBox(); // Makes input and button stick horizontally
+        HBox inputBox = new HBox();
         inputBox.setAlignment(Pos.CENTER);
-        inputBox.getChildren().addAll(inputField, sendButton, saveButton);
+        inputBox.getChildren().addAll(inputField, sendButton);
 
-        HBox.setHgrow(inputField, Priority.ALWAYS); // Makes the Hbox expand
-
-        root.setBottom(inputBox); // Puts the bottom things
+        HBox.setHgrow(inputField, Priority.ALWAYS);
+        root.setBottom(inputBox);
 
         primaryStage.setTitle("PokeText");
         primaryStage.setScene(scene);
         primaryStage.show();
 
-        // Call the start method of PokeText_Adventure
         PokeText_Adventure pokeTextAdventure = new PokeText_Adventure();
         pokeTextAdventure.start(primaryStage);
 
-//        sendButton.setOnAction(e -> {
-//            String input = inputField.getText();
-//            inputField.clear();
-//
-//            // Process the input as a command
-//            switch (currentState) {
-//                case BATTLE:
-//                    // Call the startBattle method with the user's input
-//                    break;
-//            }
-//        });
+        // Handle input when Send button is clicked
+        sendButton.setOnAction(e -> processInput());
+        
+        // Handle input when Enter is pressed
+        inputField.setOnAction(e -> processInput());
+    }
 
-        saveButton.setOnAction(event -> {
-            SaveGame saveGame = new SaveGame(player);
+    private void processInput() {
+        String input = inputField.getText().trim().toLowerCase();
+        inputField.clear();
+
+        if (input.equals("save")) {
+            SaveGame saveGame = new SaveGame(PokeText_Adventure.player);
             saveGame.saveGame();
-        });
+        }
+        // Add other command handling here
     }
 
     public static class TextAreaOutputStream extends OutputStream {

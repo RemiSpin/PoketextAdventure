@@ -1,9 +1,14 @@
 package PlayerRelated;
 
-import PokemonLogic.Pokemon;
-
 import java.io.File;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import PokemonLogic.Pokemon;
 
 public class SaveGame {
     private Connection conn;
@@ -28,10 +33,6 @@ public class SaveGame {
     }
 
     public void saveGame() {
-        if (!RoleManager.canSaveGame(player.getName())) {
-            System.out.println("You do not have permission to save the game.");
-            return;
-        }
         try {
             // Check if player exists
             PreparedStatement checkPlayerStmt = conn.prepareStatement("SELECT * FROM Player WHERE name = ?");

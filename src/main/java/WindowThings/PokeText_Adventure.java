@@ -1,16 +1,21 @@
 package WindowThings;
 
-import BattleLogic.*;
-import Overworld.*;
-import PlayerRelated.*;
-import PokemonLogic.*;
+import java.io.File;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import BattleLogic.Battle;
+import BattleLogic.Trainer;
+import BattleLogic.trainerPokemon;
+import PlayerRelated.Player;
+import PokemonLogic.Pokemon;
+import PokemonLogic.PokemonInfo;
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.File;
-import java.sql.*;
 
 public class PokeText_Adventure extends Application {
     public static void main(String[] args) {
@@ -35,9 +40,9 @@ public class PokeText_Adventure extends Application {
         player.addPokemonToParty(mankey);
         player.addPokemonToParty(caterpie);
 
-//        while (bulbasaur.getLevel() != 16){
-//            bulbasaur.gainExperience();
-//        }
+    //    while (bulbasaur.getLevel() != 16){
+    //        bulbasaur.gainExperience();
+    //    }
 
         // Create a new Stage for each PokemonInfo window
         Stage bDetailsStage = new Stage();

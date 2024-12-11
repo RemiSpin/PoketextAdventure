@@ -1,12 +1,12 @@
 package PlayerRelated;
 
-import PokemonLogic.Pokemon;
-import javafx.scene.control.TextInputDialog;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+
+import PokemonLogic.Pokemon;
+import javafx.scene.control.TextInputDialog;
 
 
 public class Player {
@@ -56,9 +56,7 @@ public class Player {
 
         java.util.Optional<String> result = dialog.showAndWait();
 
-        result.ifPresent(newName -> {
-            name = newName;
-        });
+        name = result.map(n -> n.trim().isEmpty() ? "Red" : n).orElse("Red");
     }
     public void subtractMoney(int amount) {
         if (money - amount >= 0) {
@@ -78,16 +76,15 @@ public class Player {
         } else {
             pc.add(pokemon);
         }
-        // Remove when PC is implemented
+
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Nickname for " + pokemon.getName());
         dialog.setHeaderText("Enter a nickname for your newly caught " + pokemon.getName() + "!:");
         dialog.setContentText("Nickname:");
 
         java.util.Optional<String> result = dialog.showAndWait();
-        result.ifPresent(nickname -> {
-            pokemon.setNickname(nickname);
-        });
+        String nickname = result.map(n -> n.trim().isEmpty() ? pokemon.getName() : n).orElse(pokemon.getName());
+        pokemon.setNickname(nickname);
     }
 
     public void switchPokemon() {
