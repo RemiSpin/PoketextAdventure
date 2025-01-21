@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 import org.json.JSONException;
 import org.json.simple.JSONArray;
@@ -50,7 +49,8 @@ public class Pokemon {
     private boolean fainted;
     private String spritePath;
     private int remainingHealth;
-    private UUID id;
+    private static int idCounter = 1;
+    private final int id;
 
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
@@ -117,7 +117,7 @@ public class Pokemon {
 
     // Constructor with name and level that loads data from the JSON file
     public Pokemon(String name, int level) throws JSONException{
-        this.id = UUID.randomUUID();
+        this.id = idCounter++;
         this.name = name;
         this.nickname = name;
         this.level = (byte) level;
@@ -484,7 +484,8 @@ public class Pokemon {
     public int getSpeed() {
         return Speed;
     }
-    public UUID getId() {
+
+    public int getId() {
         return id;
     }
 

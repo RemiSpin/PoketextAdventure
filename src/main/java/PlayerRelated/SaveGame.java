@@ -4,7 +4,6 @@ import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -34,29 +33,23 @@ public class SaveGame {
 
     public void saveGame() {
         try {
-            // Check if player exists
-            PreparedStatement checkPlayerStmt = conn.prepareStatement("SELECT * FROM Player WHERE name = ?");
-            checkPlayerStmt.setString(1, player.getName());
-            ResultSet rs = checkPlayerStmt.executeQuery();
-            System.out.println("Saving game...");
-
-            if (rs.next()) {
-                // Player exists, update player
-                PreparedStatement playerStmt = conn.prepareStatement("UPDATE Player SET money = ? WHERE name = ?");
-                playerStmt.setInt(1, player.getMoney());
-                playerStmt.setString(2, player.getName());
-                playerStmt.executeUpdate();
-            } else {
-                // Player does not exist, insert player
-                PreparedStatement playerStmt = conn.prepareStatement("INSERT INTO Player (name, money) VALUES (?, ?)");
-                playerStmt.setString(1, player.getName());
-                playerStmt.setInt(2, player.getMoney());
-                playerStmt.executeUpdate();
-            }
+            // First delete all existing data
+            Statement stmt = conn.createStatement();
+            stmt.execute("DELETE FROM Player");
+            stmt.execute("DELETE FROM Party_Pokemon");
+            stmt.execute("DELETE FROM PC_Pokemon");
+            stmt.execute("DELETE FROM Badges");
+            
+            // Now save the new data
+            System.out.println("Saving. Please wait...");
+            PreparedStatement playerStmt = conn.prepareStatement("INSERT INTO Player (name, money) VALUES (?, ?)");
+            playerStmt.setString(1, player.getName());
+            playerStmt.setInt(2, player.getMoney());
+            playerStmt.executeUpdate();
 
             // Save Pokemon and Badges
-            PreparedStatement partyPokemonStmt = conn.prepareStatement("INSERT OR REPLACE INTO Party_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES ((SELECT pokemon_id FROM Party_Pokemon WHERE pokemon_id = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            PreparedStatement pcPokemonStmt = conn.prepareStatement("INSERT OR REPLACE INTO PC_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES ((SELECT pokemon_id FROM PC_Pokemon WHERE pokemon_id = ?), ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement partyPokemonStmt = conn.prepareStatement("INSERT INTO Party_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            PreparedStatement pcPokemonStmt = conn.prepareStatement("INSERT INTO PC_Pokemon (pokemon_id, name, nickname, level, hp, attack, defense, specialAttack, specialDefense, speed, remaining_health, status_condition, spritePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             for (Pokemon pokemon : player.getParty()) {
                 savePokemon(partyPokemonStmt, pokemon);
             }
@@ -84,7 +77,7 @@ public class SaveGame {
     }
 
     private void savePokemon(PreparedStatement pokemonStmt, Pokemon pokemon) throws SQLException {
-        pokemonStmt.setString(1, pokemon.getId().toString());
+        pokemonStmt.setInt(1, pokemon.getId());
         pokemonStmt.setString(2, pokemon.getName());
         pokemonStmt.setString(3, pokemon.getNickname());
         pokemonStmt.setInt(4, pokemon.getLevel());
