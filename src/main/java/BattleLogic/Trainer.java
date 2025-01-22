@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@SuppressWarnings("FieldMayBeFinal")
+
 public class Trainer {
     private String name;
     private int rewardMoney;

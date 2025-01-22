@@ -2,6 +2,8 @@ package Overworld;
 
 import PlayerRelated.Player;
 
+@SuppressWarnings({"FieldMayBeFinal", "static-access"})
+
 public class Pallet implements Towns {
     private String name;
     private String description;

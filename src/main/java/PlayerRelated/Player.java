@@ -90,7 +90,7 @@ public class Player {
 
 
     public void switchPokemonOutsideBattle() {
-        Scanner scanner = new Scanner(System.in);
+        try (Scanner scanner = new Scanner(System.in)) {
 
         while (true) {
             for (int i = 0; i < party.size(); i++) {
@@ -122,6 +122,7 @@ public class Player {
 
             System.out.println(party.get(0).getNickname() + " is in front.");
             break;
+            }
         }
     }
 

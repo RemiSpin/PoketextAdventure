@@ -2,12 +2,16 @@ package PokemonLogic;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import PlayerRelated.Player;
+import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,15 +24,20 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+@SuppressWarnings({ "unused", "FieldMayBeFinal" })
+
 public class PokemonInfo {
     private static List<PokemonInfo> activeWindows = new ArrayList<>();
+
+    public static List<PokemonInfo> getActiveWindows() {
+        return new ArrayList<>(activeWindows);
+    }
     private Pokemon pokemon;
     private Stage stage;
 
     public PokemonInfo(Pokemon pokemon) {
         this.pokemon = pokemon;
         createAndShowWindow();
-        activeWindows.add(this);
     }
 
     private void createAndShowWindow() {
@@ -41,7 +50,8 @@ public class PokemonInfo {
 
             Image backgroundImage = new Image(getClass().getResourceAsStream("/infoBG.png"));
             BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, 100, false, false, false, true);
-            BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
+            BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, backgroundSize);
             root.setBackground(new Background(background));
 
             // Load the custom font
@@ -82,9 +92,10 @@ public class PokemonInfo {
             GridPane.setHalignment(specialDefenseLabel, HPos.CENTER);
             Label speedLabel = new Label("Speed: " + pokemon.getSpeed());
             GridPane.setHalignment(speedLabel, HPos.CENTER);
-            Label movesLabel = new Label("Moves: " + pokemon.getMoves().toString());
+            Label movesLabel = new Label("Moves: " + pokemon.getMoves());
             GridPane.setHalignment(movesLabel, HPos.CENTER);
-            Label experienceLabel = new Label("Experience: " + pokemon.getExperience() + " / " + pokemon.getLevelTreshhold());
+            Label experienceLabel = new Label(
+                    "Experience: " + pokemon.getExperience() + " / " + pokemon.getLevelTreshhold());
             GridPane.setHalignment(experienceLabel, HPos.CENTER);
 
             // Set the font for the Labels
@@ -139,22 +150,26 @@ public class PokemonInfo {
             stage.sizeToScene();
             stage.setResizable(false);
             stage.show();
+            stage.show();
+            activeWindows.add(PokemonInfo.this);
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.getLogger(PokemonInfo.class.getName()).log(Level.SEVERE,
+                    "Failed to initialize Pokemon info window", e);
+
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Failed to Display Pokemon Info");
+                alert.setContentText("An error occurred while trying to show Pokemon information: "
+                        + e.getMessage());
+                alert.showAndWait();
+
+                // Clean up and close window
+                activeWindows.remove(this);
+                if (stage != null) {
+                    stage.close();
+                }
+            });
         }
-    }
-
-    // Optional: Add methods to control the window
-    public void show() {
-        stage.show();
-    }
-
-    public void hide() {
-        stage.hide();
-    }
-
-    public void close() {
-        activeWindows.remove(this);
-        stage.close();
     }
 }

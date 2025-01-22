@@ -9,6 +9,8 @@ import java.sql.Statement;
 
 import PokemonLogic.Pokemon;
 
+@SuppressWarnings("static-access")
+
 public class SaveGame {
     private Connection conn;
     private Player player;
@@ -19,15 +21,15 @@ public class SaveGame {
             String url = "jdbc:sqlite:" + System.getProperty("user.dir") + File.separator + "savegame.db";
             conn = DriverManager.getConnection(url);
 
-            Statement stmt = conn.createStatement();
-            stmt.execute("CREATE TABLE IF NOT EXISTS Player (name TEXT NOT NULL, money INTEGER NOT NULL)");
-            stmt.execute("CREATE TABLE IF NOT EXISTS Party_Pokemon (pokemon_id INTEGER PRIMARY KEY, name TEXT NOT NULL, nickname TEXT NOT NULL, level INTEGER NOT NULL, hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL, specialAttack INTEGER NOT NULL, specialDefense INTEGER NOT NULL, speed INTEGER NOT NULL, remaining_health INTEGER NOT NULL, status_condition TEXT NOT NULL, spritePath TEXT NOT NULL)");
-            stmt.execute("CREATE TABLE IF NOT EXISTS PC_Pokemon (pokemon_id INTEGER PRIMARY KEY, name TEXT NOT NULL, nickname TEXT NOT NULL, level INTEGER NOT NULL, hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL, specialAttack INTEGER NOT NULL, specialDefense INTEGER NOT NULL, speed INTEGER NOT NULL, remaining_health INTEGER NOT NULL, status_condition TEXT NOT NULL, spritePath TEXT NOT NULL)");
-            stmt.execute("CREATE TABLE IF NOT EXISTS Badges (badge_id INTEGER PRIMARY KEY, badge_name TEXT NOT NULL)");
-            stmt.close();
+            try (Statement stmt = conn.createStatement()) {
+                stmt.execute("CREATE TABLE IF NOT EXISTS Player (name TEXT NOT NULL, money INTEGER NOT NULL)");
+                stmt.execute("CREATE TABLE IF NOT EXISTS Party_Pokemon (pokemon_id INTEGER PRIMARY KEY, name TEXT NOT NULL, nickname TEXT NOT NULL, level INTEGER NOT NULL, hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL, specialAttack INTEGER NOT NULL, specialDefense INTEGER NOT NULL, speed INTEGER NOT NULL, remaining_health INTEGER NOT NULL, status_condition TEXT NOT NULL, spritePath TEXT NOT NULL)");
+                stmt.execute("CREATE TABLE IF NOT EXISTS PC_Pokemon (pokemon_id INTEGER PRIMARY KEY, name TEXT NOT NULL, nickname TEXT NOT NULL, level INTEGER NOT NULL, hp INTEGER NOT NULL, attack INTEGER NOT NULL, defense INTEGER NOT NULL, specialAttack INTEGER NOT NULL, specialDefense INTEGER NOT NULL, speed INTEGER NOT NULL, remaining_health INTEGER NOT NULL, status_condition TEXT NOT NULL, spritePath TEXT NOT NULL)");
+                stmt.execute("CREATE TABLE IF NOT EXISTS Badges (badge_id INTEGER PRIMARY KEY, badge_name TEXT NOT NULL)");
+            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Database error: " + e.getMessage());
         }
     }
 
@@ -64,14 +66,14 @@ public class SaveGame {
             }
             System.out.println("Game saved!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Failed to save game: " + e.getMessage());
         } finally {
             try {
                 if (conn != null) {
                     conn.close();
                 }
             } catch (SQLException ex) {
-                System.out.println(ex.getMessage());
+                System.err.println("Error closing database connection: " + ex.getMessage());
             }
         }
     }

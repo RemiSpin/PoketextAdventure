@@ -18,18 +18,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+@SuppressWarnings({"FieldMayBeFinal", "unused"})
+
 public class mainWindow extends Application {
     private TextArea textArea = new TextArea();
     private TextField inputField = new TextField();
     private Button sendButton = new Button("Send");
-
-//    // Define the application states
-//    public enum AppState {
-//        BATTLE
-//    }
-//
-//    // Add a variable for the current state
-//    private AppState currentState = AppState.BATTLE; // Set the initial state to BATTLE
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -76,11 +70,14 @@ public class mainWindow extends Application {
         String input = inputField.getText().trim().toLowerCase();
         inputField.clear();
 
-        if (input.equals("save")) {
-            SaveGame saveGame = new SaveGame(PokeText_Adventure.player);
-            saveGame.saveGame();
+        switch (input) {
+            case "save" -> {
+                SaveGame saveGame = new SaveGame(PokeText_Adventure.player);
+                saveGame.saveGame();
+            }
+            default -> {
+            }
         }
-        // Add other command handling here
     }
 
     public static class TextAreaOutputStream extends OutputStream {

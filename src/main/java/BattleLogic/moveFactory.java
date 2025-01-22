@@ -15,71 +15,72 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+@SuppressWarnings("unused")
+
 public class moveFactory {
-    public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their learnsets, with their name being the key
+    public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their
+                                                                                       // learnsets, with their name
+                                                                                       // being the key
     private static JSONObject typeChart; // JSON object of the type chart
 
     public moveFactory() {
-        // Load the type chart from the JSON file in a separate thread
-        new Thread(() -> {
-            try {
-                String content = new String(Files.readAllBytes(Paths.get(getClass().getResource("/TypeChart.json").toURI())));
-                typeChart = new JSONObject(content);
-            } catch (IOException | URISyntaxException e) {
-                e.printStackTrace();
-            }
-        }).start();
+        // Load the type chart from the JSON file
+        try {
+            String content = new String(
+                    Files.readAllBytes(Paths.get(getClass().getResource("/TypeChart.json").toURI())));
+            typeChart = new JSONObject(content);
+        } catch (IOException | URISyntaxException e) {
+            throw new RuntimeException("Failed to load type chart: " + e.getMessage(), e);
+        }
     }
 
     public static List<Move> createMovesFromJson() {
         List<Move> moves = new ArrayList<>();
 
-        // Load the moves from the JSON file in a separate thread
-        new Thread(() -> {
-            try (InputStreamReader reader = new InputStreamReader(moveFactory.class.getResourceAsStream("/moves.json"))) {
-                JSONTokener tokener = new JSONTokener(reader); // reads JSON from stream
-                JSONArray moveArray = new JSONArray(tokener); // creates an array from JSON objects
+        // Load the moves from the JSON file
+        try (InputStreamReader reader = new InputStreamReader(moveFactory.class.getResourceAsStream("/moves.json"))) {
+            JSONTokener tokener = new JSONTokener(reader); // reads JSON from stream
+            JSONArray moveArray = new JSONArray(tokener); // creates an array from JSON objects
 
-                for (int i = 0; i < moveArray.length(); i++) {
-                    JSONObject moveJson = moveArray.getJSONObject(i); // JSON from i
-                    Move move = createMoveFromJson(moveJson); // creates the move
-                    moves.add(move); // adds it to the list of moves
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            for (int i = 0; i < moveArray.length(); i++) {
+                JSONObject moveJson = moveArray.getJSONObject(i); // JSON from i
+                Move move = createMoveFromJson(moveJson); // creates the move
+                moves.add(move); // adds it to the list of moves
             }
-        }).start();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load moves from JSON: " + e.getMessage(), e);
+        }
 
         return moves;
     }
 
     public void loadPokemonLearnsets() {
-        // Load the Pokemon learnsets from the JSON file in a separate thread
-        new Thread(() -> {
-            try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/movesets.json"))) {
-                JSONTokener tokener = new JSONTokener(reader);
-                JSONObject data = new JSONObject(tokener);
+        // Load the Pokemon learnsets from the JSON file
+        try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/movesets.json"))) {
+            JSONTokener tokener = new JSONTokener(reader);
+            JSONObject data = new JSONObject(tokener);
 
-                for (String pokemonName : data.keySet()) { // iterate through the keys
-                    JSONObject pokemonData = data.getJSONObject(pokemonName); // get the data from the key
-                    JSONArray movesetArray = pokemonData.getJSONArray("moveset"); // get the moveset with the help of the key
+            for (String pokemonName : data.keySet()) { // iterate through the keys
+                JSONObject pokemonData = data.getJSONObject(pokemonName); // get the data from the key
+                JSONArray movesetArray = pokemonData.getJSONArray("moveset"); // get the moveset with the help of the
+                                                                              // key
 
-                    Map<Integer, List<String>> learnset = new HashMap<>(); //create a new map for the learnset
-                    for (int i = 0; i < movesetArray.length(); i++) { //iterate through moveset
-                        JSONObject moveData = movesetArray.getJSONObject(i); // get data from learnset
-                        String moveName = moveData.getString("move"); // get move name
-                        int level = moveData.getInt("level"); // get level
+                Map<Integer, List<String>> learnset = new HashMap<>(); // create a new map for the learnset
+                for (int i = 0; i < movesetArray.length(); i++) { // iterate through moveset
+                    JSONObject moveData = movesetArray.getJSONObject(i); // get data from learnset
+                    String moveName = moveData.getString("move"); // get move name
+                    int level = moveData.getInt("level"); // get level
 
-                        learnset.computeIfAbsent(level, k -> new ArrayList<>()).add(moveName); // add move to learnset
-                    }
-
-                    pokemonLearnsets.put(pokemonName, learnset); // add learnset to pokemon
+                    learnset.computeIfAbsent(level, k -> new ArrayList<>()).add(moveName); // add move to learnset
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+
+                pokemonLearnsets.put(pokemonName, learnset); // add learnset to pokemon
             }
-        }).start();
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load Pokemon learnsets: " + e.getMessage(), e);
+        }
     }
+
     private static Move createMoveFromJson(JSONObject moveJson) {
         String name = moveJson.getString("name");
         String type = moveJson.getString("type");
@@ -96,6 +97,7 @@ public class moveFactory {
             private List<String> superEffective;
             private List<String> notVeryEffective;
             private List<String> noEffect;
+
             @Override
             public String getName() {
                 return name;
@@ -313,18 +315,24 @@ public class moveFactory {
         };
 
         // Add the type effectiveness to the Move object
-        move.setSuperEffective(typeEffectiveness.has("superEffective") ?
-                new ArrayList<>(typeEffectiveness.optJSONArray("superEffective").toList().stream()
-                        .map(Object::toString)
-                        .collect(Collectors.toList())) : new ArrayList<>());
-        move.setNotVeryEffective(typeEffectiveness.has("notVeryEffective") ?
-                new ArrayList<>(typeEffectiveness.optJSONArray("notVeryEffective").toList().stream()
-                        .map(Object::toString)
-                        .collect(Collectors.toList())) : new ArrayList<>());
-        move.setNoEffect(typeEffectiveness.has("noEffect") ?
-                new ArrayList<>(typeEffectiveness.optJSONArray("noEffect").toList().stream()
-                        .map(Object::toString)
-                        .collect(Collectors.toList())) : new ArrayList<>());
+        move.setSuperEffective(
+                typeEffectiveness.has("superEffective")
+                        ? new ArrayList<>(typeEffectiveness.optJSONArray("superEffective").toList().stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList()))
+                        : new ArrayList<>());
+        move.setNotVeryEffective(
+                typeEffectiveness.has("notVeryEffective")
+                        ? new ArrayList<>(typeEffectiveness.optJSONArray("notVeryEffective").toList().stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList()))
+                        : new ArrayList<>());
+        move.setNoEffect(
+                typeEffectiveness.has("noEffect")
+                        ? new ArrayList<>(typeEffectiveness.optJSONArray("noEffect").toList().stream()
+                                .map(Object::toString)
+                                .collect(Collectors.toList()))
+                        : new ArrayList<>());
 
         return move;
     }

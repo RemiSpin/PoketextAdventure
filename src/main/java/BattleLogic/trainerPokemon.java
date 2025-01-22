@@ -10,6 +10,12 @@ import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import PokemonLogic.Pokemon;
+
+@SuppressWarnings({ "unused", "FieldMayBeFinal", "OverridableMethodCallInConstructor", "static-access"})
 
 public class trainerPokemon {
     private byte level; // variables galore
@@ -37,6 +43,7 @@ public class trainerPokemon {
     private boolean fainted;
     private String spritePath;
     private int remainingHealth;
+    private static final Logger logger = LoggerFactory.getLogger(Pokemon.class);
 
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
@@ -136,10 +143,13 @@ public class trainerPokemon {
     public org.json.simple.JSONArray readJsonFile(String filename) {
         try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/" + filename))) {
             return (org.json.simple.JSONArray) new JSONParser().parse(reader);
-        } catch (IOException | org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Error reading JSON file {}: {}", filename, e.getMessage());
+            throw new RuntimeException("Failed to read JSON file: " + e.getMessage(), e);
+        } catch (org.json.simple.parser.ParseException e) {
+            logger.error("Error parsing JSON file {}: {}", filename, e.getMessage());
+            throw new RuntimeException("Failed to parse JSON file: " + e.getMessage(), e);
         }
-        return null;
     }
 
     // Method to load data from the JSON file based on the name
@@ -157,15 +167,45 @@ public class trainerPokemon {
 
     // Method to populate the PokemonLogic.Pokemon object from a JSON object
     private void populatePokemonFromJson(JSONObject jsonObject) {
-        setNumber(jsonObject.get("#") instanceof Integer ? (Integer) jsonObject.get("#") : Integer.parseInt(jsonObject.get("#").toString()));
+        Object numberObj = jsonObject.get("#");
+        if (numberObj != null) {
+            setNumber(numberObj instanceof Integer ? (Integer) numberObj : Integer.parseInt(numberObj.toString()));
+        } else {
+            logger.error("Number value is null for Pokemon: {}", name);
+            throw new RuntimeException("Number value is null for Pokemon: " + name);
+        }
         setType1(jsonObject.get("Type 1").toString());
         setType2(jsonObject.get("Type 2") != null ? jsonObject.get("Type 2").toString() : "");
-        setHp(jsonObject.get("HP") instanceof Integer ? (Integer) jsonObject.get("HP") : Integer.parseInt(jsonObject.get("HP").toString()));
-        setAttack(jsonObject.get("Attack") instanceof Integer ? (Integer) jsonObject.get("Attack") : Integer.parseInt(jsonObject.get("Attack").toString()));
-        setDefense(jsonObject.get("Defense") instanceof Integer ? (Integer) jsonObject.get("Defense") : Integer.parseInt(jsonObject.get("Defense").toString()));
-        setSpecialAttack(jsonObject.get("Sp. Atk") instanceof Integer ? (Integer) jsonObject.get("Sp. Atk") : Integer.parseInt(jsonObject.get("Sp. Atk").toString()));
-        setSpecialDefense(jsonObject.get("Sp. Def") instanceof Integer ? (Integer) jsonObject.get("Sp. Def") : Integer.parseInt(jsonObject.get("Sp. Def").toString()));
-        setSpeed(jsonObject.get("Speed") instanceof Integer ? (Integer) jsonObject.get("Speed") : Integer.parseInt(jsonObject.get("Speed").toString()));
+        Object hpObj = jsonObject.get("HP");
+        if (hpObj == null) {
+            throw new RuntimeException("HP value is null for Pokemon: " + name);
+        }
+        setHp(hpObj instanceof Integer ? (Integer) hpObj : Integer.parseInt(hpObj.toString()));
+        Object attackObj = jsonObject.get("Attack");
+        if (attackObj == null) {
+            throw new RuntimeException("Attack value is null for Pokemon: " + name);
+        }
+        setAttack(attackObj instanceof Integer ? (Integer) attackObj : Integer.parseInt(attackObj.toString()));
+        Object defenseObj = jsonObject.get("Defense");
+        if (defenseObj == null) {
+            throw new RuntimeException("Defense value is null for Pokemon: " + name);
+        }
+        setDefense(defenseObj instanceof Integer ? (Integer) defenseObj : Integer.parseInt(defenseObj.toString()));
+        Object spAtkObj = jsonObject.get("Sp. Atk");
+        if (spAtkObj == null) {
+            throw new RuntimeException("Special Attack value is null for Pokemon: " + name);
+        }
+        setSpecialAttack(spAtkObj instanceof Integer ? (Integer) spAtkObj : Integer.parseInt(spAtkObj.toString()));
+        Object spDefObj = jsonObject.get("Sp. Def");
+        if (spDefObj == null) {
+            throw new RuntimeException("Special Defense value is null for Pokemon: " + name);
+        }
+        setSpecialDefense(spDefObj instanceof Integer ? (Integer) spDefObj : Integer.parseInt(spDefObj.toString()));
+        Object speedObj = jsonObject.get("Speed");
+        if (speedObj == null) {
+            throw new RuntimeException("Speed value is null for Pokemon: " + name);
+        }
+        setSpeed(speedObj instanceof Integer ? (Integer) speedObj : Integer.parseInt(speedObj.toString()));
         setSpritePath(jsonObject.get("Sprite").toString());
     }
 
@@ -230,13 +270,12 @@ public class trainerPokemon {
 
     @Override
     public String toString() {
-        StringBuilder moves = new StringBuilder();
+        StringBuilder movesDescription = new StringBuilder();
         for (Move move : moveset) {
-            moves.append(move.getName()).append("\n");
+            movesDescription.append(move.getName()).append("\n");
         }
-        // Remove the trailing newline
-        if (moves.length() > 0) {
-            moves.setLength(moves.length() - 1);
+        if (movesDescription.length() > 0) {
+            movesDescription.setLength(movesDescription.length() - 1);
         }
 
         return "Name: " + nickname +

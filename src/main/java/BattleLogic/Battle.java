@@ -36,6 +36,9 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+    @SuppressWarnings({"FieldMayBeFinal", "OverridableMethodCallInConstructor"})
+
+
 public class Battle extends Application {
 
     private Player player;
@@ -50,6 +53,12 @@ public class Battle extends Application {
         this.opponent = opponent;
         player.setCurrentPokemon(player.getParty().get(0));
         opponent.setCurrentPokemon(opponent.getPokemonList().get(0));
+
+        Stage battleStage = new Stage();
+        try {
+            start(battleStage);
+        } catch (Exception e) {
+        }
     }
 
     private void aiTurn() {
@@ -217,44 +226,26 @@ public class Battle extends Application {
 
     // Type colors
     private String getTypeColor(String type) {
-        switch (type.toLowerCase()) {
-            case "normal":
-                return "#A8A878";
-            case "fire":
-                return "#F08030";
-            case "water":
-                return "#6890F0";
-            case "electric":
-                return "#F8D030";
-            case "grass":
-                return "#78C850";
-            case "ice":
-                return "#98D8D8";
-            case "fighting":
-                return "#C03028";
-            case "poison":
-                return "#A040A0";
-            case "ground":
-                return "#E0C068";
-            case "flying":
-                return "#A890F0";
-            case "psychic":
-                return "#F85888";
-            case "bug":
-                return "#A8B820";
-            case "rock":
-                return "#B8A038";
-            case "ghost":
-                return "#705898";
-            case "dragon":
-                return "#7038F8";
-            case "dark":
-                return "#705848";
-            case "steel":
-                return "#B8B8D0";
-            default:
-                return "#68A090";
-        }
+        return switch (type.toLowerCase()) {
+            case "normal" -> "#A8A878";
+            case "fire" -> "#F08030";
+            case "water" -> "#6890F0";
+            case "electric" -> "#F8D030";
+            case "grass" -> "#78C850";
+            case "ice" -> "#98D8D8";
+            case "fighting" -> "#C03028";
+            case "poison" -> "#A040A0";
+            case "ground" -> "#E0C068";
+            case "flying" -> "#A890F0";
+            case "psychic" -> "#F85888";
+            case "bug" -> "#A8B820";
+            case "rock" -> "#B8A038";
+            case "ghost" -> "#705898";
+            case "dragon" -> "#7038F8";
+            case "dark" -> "#705848";
+            case "steel" -> "#B8B8D0";
+            default -> "#68A090";
+        };
     }
 
     @Override
@@ -301,7 +292,7 @@ public class Battle extends Application {
         playerHealthBarBackground.setStrokeWidth(2);
         playerHealthBarBackground.setArcWidth(10);
         playerHealthBarBackground.setArcHeight(10);
-        Rectangle playerHealthBarForeground = new Rectangle(
+        playerHealthBarForeground = new Rectangle(
                 player.getParty().get(0).getRemainingHealth() / (double) player.getParty().get(0).getHp() * 100, 10);
         playerHealthBarForeground.setFill(Color.LIGHTGREEN);
         playerHealthBarForeground.setArcWidth(10);
@@ -313,7 +304,7 @@ public class Battle extends Application {
         opponentHealthBarBackground.setStrokeWidth(2);
         opponentHealthBarBackground.setArcWidth(10);
         opponentHealthBarBackground.setArcHeight(10);
-        Rectangle opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
+        opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
                 / (double) opponent.getPokemonList().get(0).getHp() * 100, 10);
         opponentHealthBarForeground.setFill(Color.LIGHTGREEN);
         playerHealthLabel = new Label(
@@ -322,9 +313,9 @@ public class Battle extends Application {
                 opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
 
         // Create the health labels
-        Label playerHealthLabel = new Label(
+        playerHealthLabel = new Label(
                 player.getParty().get(0).getRemainingHealth() + "/" + player.getParty().get(0).getHp());
-        Label opponentHealthLabel = new Label(
+        opponentHealthLabel = new Label(
                 opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
 
         // Set the font
@@ -476,6 +467,51 @@ public class Battle extends Application {
         switchButton.setStyle(buttonStyle);
         runButton.setStyle(buttonStyle);
 
+        // Fight button animation
+        TranslateTransition fightButtonAnim = new TranslateTransition(Duration.millis(500), fightButton);
+        fightButtonAnim.setFromY(100);
+        fightButtonAnim.setToY(0);
+        fightButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+
+        // Switch button animation
+        TranslateTransition switchButtonAnim = new TranslateTransition(Duration.millis(550), switchButton);
+        switchButtonAnim.setFromY(100);
+        switchButtonAnim.setToY(0);
+        switchButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+
+        // Run button animation
+        TranslateTransition runButtonAnim = new TranslateTransition(Duration.millis(600), runButton);
+        runButtonAnim.setFromY(100);
+        runButtonAnim.setToY(0);
+        runButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+
+        // Play animations
+        fightButtonAnim.play();
+        switchButtonAnim.play();
+        runButtonAnim.play();
+
+        Timeline removeButtonsTimeline = new Timeline(new KeyFrame(Duration.millis(600), ae -> {
+            controlsBox.getChildren().clear();
+        }));
+
+        // Fight button disappearing animation
+        TranslateTransition fightButtonHide = new TranslateTransition(Duration.millis(500), fightButton);
+        fightButtonHide.setFromY(0);
+        fightButtonHide.setToY(100);
+        fightButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+        // Switch button disappearing animation
+        TranslateTransition switchButtonHide = new TranslateTransition(Duration.millis(550), switchButton);
+        switchButtonHide.setFromY(0);
+        switchButtonHide.setToY(100);
+        switchButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+        // Run button disappearing animation
+        TranslateTransition runButtonHide = new TranslateTransition(Duration.millis(600), runButton);
+        runButtonHide.setFromY(100);
+        runButtonHide.setToY(scene.getHeight());
+        runButtonHide.setInterpolator(Interpolator.EASE_IN);
+
         VBox.setVgrow(controlsBox, Priority.NEVER);
         root.getChildren().add(controlsBox);
 
@@ -497,8 +533,14 @@ public class Battle extends Application {
         HBox.setHgrow(switchButton, Priority.ALWAYS);
         HBox.setHgrow(runButton, Priority.ALWAYS);
 
+
+
         // Fight
         fightButton.setOnAction(e -> {
+            fightButtonHide.play();
+            switchButtonHide.play();
+            runButtonHide.play(); // REMEMBER TO ALSO ADD REMOVE BUTTONS ANIM
+
             if (player.getCurrentPokemon() != null) {
                 List<Move> moves = player.getCurrentPokemon().getMovesList();
                 if (moves != null && !moves.isEmpty()) {
@@ -580,14 +622,14 @@ public class Battle extends Application {
                             applyPlayerAction(move.getName());
 
                             // Check if opponent fainted
-                            if (opponent.getCurrentPokemon().getRemainingHealth() <= 0) {
-                                System.out.println(opponent.getCurrentPokemon().getName() + " fainted!");
-                                // if (!opponent.hasUsablePokemon()) {
-                                // System.out.println("You won the battle!");
-                                // Stage stage = (Stage) controlsBox.getScene().getWindow();
-                                // stage.close();
-                                // return;
-                                // }
+                            if (!opponent.hasUsablePokemon()) {
+                                System.out.println("You won the battle!");
+                                int prizeMoney = opponent.getRewardMoney();
+                                player.addMoney(prizeMoney);
+                                System.out.println("You got $" + prizeMoney + " for winning!");
+                                Stage stage = (Stage) controlsBox.getScene().getWindow();
+                                stage.close();
+                                return;
                             }
 
                             aiTurn();
@@ -684,9 +726,14 @@ public class Battle extends Application {
                         backButtonReverseAnim.play();
 
                         // Delay clearing controlsBox until animations finish
-                        new Timeline(new KeyFrame(Duration.millis(700), ae -> {
+                        new Timeline(new KeyFrame(Duration.millis(500), ae -> {
                             controlsBox.getChildren().clear();
+
+                            fightButtonAnim.play();
+                            switchButtonAnim.play();
+                            runButtonAnim.play();
                             controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
+
                         })).play();
                     });
 
@@ -816,6 +863,10 @@ public class Battle extends Application {
                     closeAnim.setInterpolator(Interpolator.EASE_IN);
                     closeAnim.setOnFinished(evt -> {
                         controlsBox.getChildren().clear();
+
+                        fightButtonAnim.play();
+                        switchButtonAnim.play();
+                        runButtonAnim.play();
                         controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
                     });
                     closeAnim.play();

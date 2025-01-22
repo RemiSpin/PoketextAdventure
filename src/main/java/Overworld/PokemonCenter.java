@@ -1,6 +1,8 @@
 package Overworld;
 import PlayerRelated.Player;
 
+@SuppressWarnings({"FieldMayBeFinal", "static-access"})
+
 public class PokemonCenter {
     private String name;
     private String description;

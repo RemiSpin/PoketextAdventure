@@ -11,11 +11,15 @@ import org.json.JSONException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import BattleLogic.Move;
 import BattleLogic.moveFactory;
 import BattleLogic.trainerPokemon;
 import javafx.scene.control.TextInputDialog;
+
+@SuppressWarnings({ "unused", "FieldMayBeFinal", "OverridableMethodCallInConstructor", "static-access"})
 
 public class Pokemon {
     private byte level; // variables galore
@@ -51,6 +55,7 @@ public class Pokemon {
     private int remainingHealth;
     private static int idCounter = 1;
     private final int id;
+    private static final Logger logger = LoggerFactory.getLogger(Pokemon.class);
 
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
@@ -140,8 +145,7 @@ public class Pokemon {
         setMoveFactory(moveFactory);
         moves = moveFactory.createMovesFromJson();
 
-        // Load data from the JSON file based on the name in a separate thread
-        new Thread(() -> {
+        // Load data from the JSON file based on the name
             try {
                 loadPokemonDataFromJson();
                 initializeMoves();
@@ -157,39 +161,38 @@ public class Pokemon {
 
                 // Set levelThreshold based on experienceGrowth
                 switch(experienceGrowth){
-                    case "Fast": {
+                    case "Fast" ->  {
                         levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
-                        break;
                     }
-                    case "MFast": {
+                    case "MFast" ->  {
                         levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
-                        break;
                     }
-                    case "MSlow": {
+                    case "MSlow" ->  {
                         levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
-                        break;
                     }
-                    case "Slow": {
+                    case "Slow" ->  {
                         levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
-                        break;
                     }
                 }
                 nickname = name;
                 experience = 0;
                 remainingHealth = Hp;
             } catch (IOException | JSONException e) {
-                e.printStackTrace();
+                logger.error("Error initializing Pokemon {}: {}", name, e.getMessage());
+                throw new RuntimeException("Failed to initialize Pokemon: " + e.getMessage(), e);
             }
-        }).start();
     }
 
     public org.json.simple.JSONArray readJsonFile(String filename) {
         try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/" + filename))) {
             return (org.json.simple.JSONArray) new JSONParser().parse(reader);
-        } catch (IOException | org.json.simple.parser.ParseException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            logger.error("Error reading JSON file {}: {}", filename, e.getMessage());
+            throw new RuntimeException("Failed to read JSON file: " + e.getMessage(), e);
+        } catch (org.json.simple.parser.ParseException e) {
+            logger.error("Error parsing JSON file {}: {}", filename, e.getMessage());
+            throw new RuntimeException("Failed to parse JSON file: " + e.getMessage(), e);
         }
-        return null;
     }
 
     private void loadPokemonDataFromJson() throws IOException {
@@ -206,20 +209,31 @@ public class Pokemon {
 
     // Method to populate the PokemonLogic.Pokemon object from a JSON object
     private void populatePokemonFromJson(JSONObject jsonObject) {
-        setNumber(jsonObject.get("#") instanceof Integer ? (Integer) jsonObject.get("#") : Integer.parseInt(jsonObject.get("#").toString()));
+        Object numObj = jsonObject.get("#");
+        setNumber(numObj != null ? (numObj instanceof Integer ? (Integer) numObj : Integer.parseInt(numObj.toString())) : 0);
         setType1(jsonObject.get("Type 1").toString());
         setType2(jsonObject.get("Type 2") != null ? jsonObject.get("Type 2").toString() : "");
-        setHp(jsonObject.get("HP") instanceof Integer ? (Integer) jsonObject.get("HP") : Integer.parseInt(jsonObject.get("HP").toString()));
-        setAttack(jsonObject.get("Attack") instanceof Integer ? (Integer) jsonObject.get("Attack") : Integer.parseInt(jsonObject.get("Attack").toString()));
-        setDefense(jsonObject.get("Defense") instanceof Integer ? (Integer) jsonObject.get("Defense") : Integer.parseInt(jsonObject.get("Defense").toString()));
-        setSpecialAttack(jsonObject.get("Sp. Atk") instanceof Integer ? (Integer) jsonObject.get("Sp. Atk") : Integer.parseInt(jsonObject.get("Sp. Atk").toString()));
-        setSpecialDefense(jsonObject.get("Sp. Def") instanceof Integer ? (Integer) jsonObject.get("Sp. Def") : Integer.parseInt(jsonObject.get("Sp. Def").toString()));
-        setSpeed(jsonObject.get("Speed") instanceof Integer ? (Integer) jsonObject.get("Speed") : Integer.parseInt(jsonObject.get("Speed").toString()));
+        Object hpObj = jsonObject.get("HP");
+        setHp(hpObj != null ? (hpObj instanceof Integer ? (Integer) hpObj : Integer.parseInt(hpObj.toString())) : 0);
+        Object attackObj = jsonObject.get("Attack");
+        setAttack(attackObj != null ? (attackObj instanceof Integer ? (Integer) attackObj : Integer.parseInt(attackObj.toString())) : 0);
+        Object defenseObj = jsonObject.get("Defense");
+        setDefense(defenseObj != null ? (defenseObj instanceof Integer ? (Integer) defenseObj : Integer.parseInt(defenseObj.toString())) : 0);
+        Object spAtkObj = jsonObject.get("Sp. Atk");
+        setSpecialAttack(spAtkObj != null ? (spAtkObj instanceof Integer ? (Integer) spAtkObj : Integer.parseInt(spAtkObj.toString())) : 0);
+        Object spDefObj = jsonObject.get("Sp. Def");
+        setSpecialDefense(spDefObj != null ? (spDefObj instanceof Integer ? (Integer) spDefObj : Integer.parseInt(spDefObj.toString())) : 0);
+        Object speedObj = jsonObject.get("Speed");
+        setSpeed(speedObj != null ? (speedObj instanceof Integer ? (Integer) speedObj : Integer.parseInt(speedObj.toString())) : 0);
         setEvolution(jsonObject.get("Evolution") != null ? jsonObject.get("Evolution").toString() : "");
-        if (jsonObject.containsKey("EvolutionLevel") && jsonObject.get("EvolutionLevel") != null) {
-            setEvolutionLevel(jsonObject.get("EvolutionLevel") instanceof Integer ? (Integer) jsonObject.get("EvolutionLevel") : Integer.parseInt(jsonObject.get("EvolutionLevel").toString()));
+        Object evolutionLevelObj = jsonObject.get("EvolutionLevel");
+        if (evolutionLevelObj != null) {
+            setEvolutionLevel(evolutionLevelObj instanceof Integer ? (Integer) evolutionLevelObj : Integer.parseInt(evolutionLevelObj.toString()));
+        } else {
+            setEvolutionLevel(0);
         }
-        setBaseExperience(jsonObject.get("BaseExperience") instanceof Integer ? (Integer) jsonObject.get("BaseExperience") : Integer.parseInt(jsonObject.get("BaseExperience").toString()));
+        Object baseExpObj = jsonObject.get("BaseExperience");
+        setBaseExperience(baseExpObj != null ? (baseExpObj instanceof Integer ? (Integer) baseExpObj : Integer.parseInt(baseExpObj.toString())) : 0);
         setExperienceGrowth(jsonObject.get("ExperienceGrowth").toString());
         setSpritePath(jsonObject.get("Sprite").toString());
     }
@@ -269,21 +283,17 @@ public class Pokemon {
                 }
 
                 switch (experienceGrowth) {
-                    case "Fast": {
+                    case "Fast" ->  {
                         levelTreshhold = (int) ((Math.pow(level + 1, 3) * 0.8) - (Math.pow(level, 3) * 0.8));
-                        break;
                     }
-                    case "MFast": {
+                    case "MFast" ->  {
                         levelTreshhold = (int) ((Math.pow(level + 1, 3) - Math.pow(level, 3)));
-                        break;
                     }
-                    case "MSlow": {
+                    case "MSlow" ->  {
                         levelTreshhold = (int) ((1.2 * Math.pow(level + 1, 3) - 15 * Math.pow(level + 1, 2) + 100 * (level + 1) - 140) - (1.2 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140));
-                        break;
                     }
-                    case "Slow": {
+                    case "Slow" ->  {
                         levelTreshhold = (int) ((1.25 * Math.pow(level + 1, 3)) - (1.25 * Math.pow(level, 3)));
-                        break;
                     }
                 }
                 System.out.println("Name: " + nickname);
@@ -490,15 +500,15 @@ public class Pokemon {
     }
 
     public String getMoves() {
-        StringBuilder moves = new StringBuilder("\n");
+        StringBuilder movesString = new StringBuilder("\n");
         for (Move move : moveset) {
-            moves.append(move.getName()).append("\n");
+            movesString.append(move.getName()).append("\n");
         }
         // Remove the trailing newline
-        if (moves.length() > 0) {
-            moves.setLength(moves.length() - 1);
+        if (movesString.length() > 0) {
+            movesString.setLength(movesString.length() - 1);
         }
-        return moves.toString();
+        return movesString.toString();
     }
 
     public void useMove(Move move, trainerPokemon target) {

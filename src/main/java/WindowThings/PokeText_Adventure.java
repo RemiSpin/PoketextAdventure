@@ -1,12 +1,6 @@
 package WindowThings;
 
-import java.io.File;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 import BattleLogic.Battle;
 import BattleLogic.Trainer;
@@ -54,40 +48,6 @@ public class PokeText_Adventure extends Application {
         PokemonInfo cDetailsWindow = new PokemonInfo(caterpie);
 
         // Create a new Stage for the Battle window
-        Stage battleStage = new Stage();
         Battle battleWindow = new Battle(player, new Trainer("Gary", 500, new trainerPokemon("Charmander", 5, "Scratch", "Growl")));
-        battleWindow.start(battleStage);
-        
-        try {
-            // Establish a connection
-            String url = "jdbc:sqlite:" + System.getProperty("user.dir") + File.separator + "savegame.db";
-            Connection conn = DriverManager.getConnection(url);
-
-            // Create a Statement
-            Statement stmt = conn.createStatement();
-
-            // Execute a query
-            ResultSet rs = stmt.executeQuery("SELECT * FROM party_pokemon");
-
-            // Iterate over the ResultSet
-            while (rs.next()) {
-                // Retrieve the data
-                String pokemon_id = rs.getString("pokemon_id");
-                String name = rs.getString("name");
-                String nickname = rs.getString("nickname");
-                int level = rs.getInt("level");
-
-                // Display the data
-                System.out.println("Pokemon ID: " + pokemon_id);
-                System.out.println("Name: " + name);
-                System.out.println("Nickname: " + nickname);
-                System.out.println("Level: " + level);
-            }
-
-            // Close the connection
-            conn.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }
