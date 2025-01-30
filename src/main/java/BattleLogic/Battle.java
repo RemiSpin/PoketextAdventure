@@ -36,8 +36,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-    @SuppressWarnings({"FieldMayBeFinal", "OverridableMethodCallInConstructor"})
-
+@SuppressWarnings({ "FieldMayBeFinal", "OverridableMethodCallInConstructor" })
 
 public class Battle extends Application {
 
@@ -490,10 +489,6 @@ public class Battle extends Application {
         switchButtonAnim.play();
         runButtonAnim.play();
 
-        Timeline removeButtonsTimeline = new Timeline(new KeyFrame(Duration.millis(600), ae -> {
-            controlsBox.getChildren().clear();
-        }));
-
         // Fight button disappearing animation
         TranslateTransition fightButtonHide = new TranslateTransition(Duration.millis(500), fightButton);
         fightButtonHide.setFromY(0);
@@ -501,15 +496,15 @@ public class Battle extends Application {
         fightButtonHide.setInterpolator(Interpolator.EASE_IN);
 
         // Switch button disappearing animation
-        TranslateTransition switchButtonHide = new TranslateTransition(Duration.millis(550), switchButton);
+        TranslateTransition switchButtonHide = new TranslateTransition(Duration.millis(600), switchButton);
         switchButtonHide.setFromY(0);
         switchButtonHide.setToY(100);
         switchButtonHide.setInterpolator(Interpolator.EASE_IN);
 
         // Run button disappearing animation
-        TranslateTransition runButtonHide = new TranslateTransition(Duration.millis(600), runButton);
-        runButtonHide.setFromY(100);
-        runButtonHide.setToY(scene.getHeight());
+        TranslateTransition runButtonHide = new TranslateTransition(Duration.millis(700), runButton);
+        runButtonHide.setFromY(0);
+        runButtonHide.setToY(100);
         runButtonHide.setInterpolator(Interpolator.EASE_IN);
 
         VBox.setVgrow(controlsBox, Priority.NEVER);
@@ -533,120 +528,330 @@ public class Battle extends Application {
         HBox.setHgrow(switchButton, Priority.ALWAYS);
         HBox.setHgrow(runButton, Priority.ALWAYS);
 
-
-
         // Fight
         fightButton.setOnAction(e -> {
             fightButtonHide.play();
             switchButtonHide.play();
-            runButtonHide.play(); // REMEMBER TO ALSO ADD REMOVE BUTTONS ANIM
+            runButtonHide.play();
 
-            if (player.getCurrentPokemon() != null) {
-                List<Move> moves = player.getCurrentPokemon().getMovesList();
-                if (moves != null && !moves.isEmpty()) {
-                    controlsBox.getChildren().clear();
+            runButtonHide.setOnFinished(finishedEvent -> {
+                controlsBox.getChildren().clear();
 
-                    // Create container for rows of buttons
-                    VBox moveContainer = new VBox(20); // Add spacing between rows
-                    moveContainer.setAlignment(Pos.CENTER);
-                    moveContainer.setPadding(new Insets(0, 10, 0, 10));
+                if (player.getCurrentPokemon() != null) {
+                    List<Move> moves = player.getCurrentPokemon().getMovesList();
+                    if (moves != null && !moves.isEmpty()) {
+                        controlsBox.getChildren().clear();
 
-                    HBox topRow = new HBox(10); // Top row of moves
-                    HBox bottomRow = new HBox(10); // Bottom row of moves
-                    topRow.setAlignment(Pos.CENTER);
-                    bottomRow.setAlignment(Pos.CENTER);
+                        // Create container for rows of buttons
+                        VBox moveContainer = new VBox(20); // Add spacing between rows
+                        moveContainer.setAlignment(Pos.CENTER);
+                        moveContainer.setPadding(new Insets(0, 10, 0, 10));
 
-                    // Create VBox to hold both rows with 10px spacing
-                    VBox moveRows = new VBox(10);
-                    moveRows.setAlignment(Pos.CENTER);
+                        HBox topRow = new HBox(10); // Top row of moves
+                        HBox bottomRow = new HBox(10); // Bottom row of moves
+                        topRow.setAlignment(Pos.CENTER);
+                        bottomRow.setAlignment(Pos.CENTER);
 
-                    // Create lists to store move buttons by row for reverse animation
-                    List<Button> topRowButtons = new ArrayList<>();
-                    List<Button> bottomRowButtons = new ArrayList<>();
+                        // Create VBox to hold both rows with 10px spacing
+                        VBox moveRows = new VBox(10);
+                        moveRows.setAlignment(Pos.CENTER);
 
-                    // Add move buttons with animation
-                    for (int i = 0; i < moves.size(); i++) {
-                        Move move = moves.get(i);
-                        Button moveButton = new Button(move.getName());
-                        moveButton.setFont(font);
+                        // Create lists to store move buttons by row for reverse animation
+                        List<Button> topRowButtons = new ArrayList<>();
+                        List<Button> bottomRowButtons = new ArrayList<>();
 
-                        String baseColor = getTypeColor(move.getType());
-                        // Create darker and lighter variants for gradient
-                        Color typeColor = Color.web(baseColor);
-                        Color darker = typeColor.darker();
-                        Color lighter = typeColor.brighter();
+                        // Add move buttons with animation
+                        for (int i = 0; i < moves.size(); i++) {
+                            Move move = moves.get(i);
+                            Button moveButton = new Button(move.getName());
+                            moveButton.setFont(font);
 
-                        String moveButtonStyle = String.format(
-                                "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
-                                        "-fx-text-fill: black; " +
-                                        "-fx-border-color: derive(%s, -20%%); " +
-                                        "-fx-border-radius: 5; " +
-                                        "-fx-background-radius: 5; " +
-                                        "-fx-min-width: 150px; " +
-                                        "-fx-min-height: 40px; " +
-                                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2); " +
-                                        "-fx-cursor: hand;",
-                                lighter.toString().replace("0x", "#"),
-                                darker.toString().replace("0x", "#"),
-                                baseColor);
+                            String baseColor = getTypeColor(move.getType());
+                            // Create darker and lighter variants for gradient
+                            Color typeColor = Color.web(baseColor);
+                            Color darker = typeColor.darker();
+                            Color lighter = typeColor.brighter();
 
-                        String hoverStyle = String.format(
-                                "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
-                                        "-fx-scale-x: 1.05; " +
-                                        "-fx-scale-y: 1.05; " +
-                                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 8, 0, 0, 3);",
-                                lighter.brighter().toString().replace("0x", "#"),
-                                darker.toString().replace("0x", "#"));
+                            String moveButtonStyle = String.format(
+                                    "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
+                                            "-fx-text-fill: black; " +
+                                            "-fx-border-color: derive(%s, -20%%); " +
+                                            "-fx-border-radius: 5; " +
+                                            "-fx-background-radius: 5; " +
+                                            "-fx-min-width: 150px; " +
+                                            "-fx-min-height: 40px; " +
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2); " +
+                                            "-fx-cursor: hand;",
+                                    lighter.toString().replace("0x", "#"),
+                                    darker.toString().replace("0x", "#"),
+                                    baseColor);
 
-                        String pressedStyle = String.format(
-                                "-fx-background-color: linear-gradient(to top, %s, %s); " +
-                                        "-fx-scale-x: 0.98; " +
-                                        "-fx-scale-y: 0.98; " +
-                                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);",
-                                lighter.toString().replace("0x", "#"),
-                                darker.darker().toString().replace("0x", "#"));
+                            String hoverStyle = String.format(
+                                    "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
+                                            "-fx-scale-x: 1.05; " +
+                                            "-fx-scale-y: 1.05; " +
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 8, 0, 0, 3);",
+                                    lighter.brighter().toString().replace("0x", "#"),
+                                    darker.toString().replace("0x", "#"));
 
-                        moveButton.setStyle(moveButtonStyle);
-                        moveButton.setOnMouseEntered(ev -> moveButton.setStyle(moveButtonStyle + hoverStyle));
-                        moveButton.setOnMouseExited(ev -> moveButton.setStyle(moveButtonStyle));
-                        moveButton.setOnMousePressed(ev -> moveButton.setStyle(moveButtonStyle + pressedStyle));
-                        moveButton.setOnMouseReleased(ev -> moveButton.setStyle(moveButtonStyle));
+                            String pressedStyle = String.format(
+                                    "-fx-background-color: linear-gradient(to top, %s, %s); " +
+                                            "-fx-scale-x: 0.98; " +
+                                            "-fx-scale-y: 0.98; " +
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);",
+                                    lighter.toString().replace("0x", "#"),
+                                    darker.darker().toString().replace("0x", "#"));
 
-                        // Initial position: below the visible window
-                        moveButton.setTranslateY(scene.getHeight() - 300);
+                            moveButton.setStyle(moveButtonStyle);
+                            moveButton.setOnMouseEntered(ev -> moveButton.setStyle(moveButtonStyle + hoverStyle));
+                            moveButton.setOnMouseExited(ev -> moveButton.setStyle(moveButtonStyle));
+                            moveButton.setOnMousePressed(ev -> moveButton.setStyle(moveButtonStyle + pressedStyle));
+                            moveButton.setOnMouseReleased(ev -> moveButton.setStyle(moveButtonStyle));
 
-                        // Set the action for each move button
-                        moveButton.setOnAction(ev -> {
-                            System.out.println(
-                                    player.getCurrentPokemon().getNickname() + " used " + move.getName() + "!");
-                            applyPlayerAction(move.getName());
+                            // Initial position: below the visible window
+                            moveButton.setTranslateY(scene.getHeight() - 300);
 
-                            // Check if opponent fainted
-                            if (!opponent.hasUsablePokemon()) {
-                                System.out.println("You won the battle!");
-                                int prizeMoney = opponent.getRewardMoney();
-                                player.addMoney(prizeMoney);
-                                System.out.println("You got $" + prizeMoney + " for winning!");
-                                Stage stage = (Stage) controlsBox.getScene().getWindow();
-                                stage.close();
-                                return;
+                            // Set the action for each move button
+                            moveButton.setOnAction(ev -> {
+                                System.out.println(
+                                        player.getCurrentPokemon().getNickname() + " used " + move.getName() + "!");
+                                applyPlayerAction(move.getName());
+
+                                // Check if opponent fainted
+                                if (!opponent.hasUsablePokemon()) {
+                                    System.out.println("You won the battle!");
+                                    int prizeMoney = opponent.getRewardMoney();
+                                    player.addMoney(prizeMoney);
+                                    System.out.println("You got $" + prizeMoney + " for winning!");
+                                    Stage stage = (Stage) controlsBox.getScene().getWindow();
+                                    stage.close();
+                                    return;
+                                }
+
+                                aiTurn();
+                                // Update player Pokemon health based on first party Pokemon
+                                Pokemon playerPokemon = player.getCurrentPokemon();
+                                double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
+                                        / playerPokemon.getHp() * 100;
+                                playerHealthBarForeground.setWidth(playerHealthPercent);
+                                playerHealthLabel
+                                        .setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
+
+                                // Update player Pokemon XP bar and level
+                                double playerXPPercent = (double) playerPokemon.getExperience()
+                                        / playerPokemon.getLevelTreshhold() * 100;
+                                playerXPBarForeground.setWidth(playerXPPercent);
+                                playerPokemonLevel.setText("Lv. " + playerPokemon.getLevel());
+
+                                // Update opponent Pokemon health based on first Pokemon in their list
+                                trainerPokemon opponentPokemon = opponent.getCurrentPokemon();
+                                double oppHealthPercent = (double) opponentPokemon.getRemainingHealth()
+                                        / opponentPokemon.getHp() * 100;
+                                opponentHealthBarForeground.setWidth(oppHealthPercent);
+                                opponentHealthLabel
+                                        .setText(opponentPokemon.getRemainingHealth() + "/" + opponentPokemon.getHp());
+
+                                // Update opponent Pokemon level
+                                opponentPokemonLevel.setText("Lv. " + opponentPokemon.getLevel());
+                            });
+
+                            // Assign buttons to rows and store them in the corresponding lists
+                            if (i < 2) {
+                                topRow.getChildren().add(moveButton);
+                                topRowButtons.add(moveButton);
+
+                                // Animation for top row
+                                TranslateTransition moveButtonAnim = new TranslateTransition(Duration.millis(600),
+                                        moveButton);
+                                moveButtonAnim.setFromY(scene.getHeight() - 400);
+                                moveButtonAnim.setToY(-120);
+                                moveButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+                                moveButtonAnim.play();
+                            } else {
+                                bottomRow.getChildren().add(moveButton);
+                                bottomRowButtons.add(moveButton);
+
+                                // Animation for bottom row
+                                TranslateTransition moveButtonAnim = new TranslateTransition(Duration.millis(700),
+                                        moveButton);
+                                moveButtonAnim.setFromY(scene.getHeight() - 400);
+                                moveButtonAnim.setToY(-120);
+                                moveButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+                                moveButtonAnim.play();
+                            }
+                        }
+
+                        // Add both rows to the VBox
+                        moveRows.getChildren().addAll(topRow, bottomRow);
+
+                        // Create the "Back" button
+                        Button backButton = new Button("◄");
+                        backButton.setFont(Font.font("Arial", 14));
+                        backButton.setStyle("-fx-background-color: #cc0000; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-padding: 2 4 2 4;");
+                        backButton.setPrefWidth(25);
+                        backButton.setPrefHeight(25);
+                        backButton.setTranslateY(scene.getHeight() + 100);
+
+                        // Handle back button click
+                        backButton.setOnAction(backEvent -> {
+                            // Reverse animation for top row buttons
+                            for (Button moveButton : topRowButtons) {
+                                TranslateTransition reverseAnim = new TranslateTransition(Duration.millis(600),
+                                        moveButton);
+                                reverseAnim.setFromY(-120); // Current position
+                                reverseAnim.setToY(scene.getHeight() - 400); // Move out of view
+                                reverseAnim.setInterpolator(Interpolator.EASE_IN);
+                                reverseAnim.play();
                             }
 
-                            aiTurn();
-                            // Update player Pokemon health based on first party Pokemon
+                            // Reverse animation for bottom row buttons
+                            for (Button moveButton : bottomRowButtons) {
+                                TranslateTransition reverseAnim = new TranslateTransition(Duration.millis(700),
+                                        moveButton);
+                                reverseAnim.setFromY(-120); // Current position
+                                reverseAnim.setToY(scene.getHeight() - 400); // Move out of view
+                                reverseAnim.setInterpolator(Interpolator.EASE_IN);
+                                reverseAnim.play();
+                            }
+
+                            // Reverse animation for the back button
+                            TranslateTransition backButtonReverseAnim = new TranslateTransition(Duration.millis(500),
+                                    backButton);
+                            backButtonReverseAnim.setFromY(-120); // Current position
+                            backButtonReverseAnim.setToY(scene.getHeight() - 400); // Move out of view
+                            backButtonReverseAnim.setInterpolator(Interpolator.EASE_IN);
+                            backButtonReverseAnim.play();
+
+                            // Delay clearing controlsBox until animations finish
+                            new Timeline(new KeyFrame(Duration.millis(500), ae -> {
+                                controlsBox.getChildren().clear();
+
+                                fightButtonAnim.play();
+                                switchButtonAnim.play();
+                                runButtonAnim.play();
+                                controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
+
+                            })).play();
+                        });
+
+                        // Animate back button
+                        TranslateTransition backButtonAnim = new TranslateTransition(Duration.millis(500), backButton);
+                        backButtonAnim.setFromY(scene.getHeight() - 400);
+                        backButtonAnim.setToY(-120);
+                        backButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+                        backButtonAnim.play();
+
+                        // Add "Back" button to the top of moveContainer
+                        moveContainer.getChildren().addAll(backButton, moveRows);
+                        controlsBox.getChildren().add(moveContainer);
+                    }
+                }
+            });
+        });
+
+        // Switch
+        switchButton.setOnAction(e -> {
+            fightButtonHide.play();
+            switchButtonHide.play();
+            runButtonHide.play();
+
+            runButtonHide.setOnFinished(finishedEvent -> {
+                controlsBox.getChildren().clear();
+                HBox switchBox = new HBox(5);
+                switchBox.setAlignment(Pos.CENTER);
+                switchBox.setPadding(new Insets(5));
+                switchBox.setTranslateY(scene.getHeight());
+
+                String pokemonButtonStyle = "-fx-border-color: black; " +
+                        "-fx-border-width: 1px; " +
+                        "-fx-border-radius: 2; " +
+                        "-fx-background-radius: 2; " +
+                        "-fx-cursor: hand; " +
+                        "-fx-background-color: linear-gradient(to bottom, #B30000 50%, #EBEBEB 50%); " +
+                        "-fx-min-width: 65px; " +
+                        "-fx-min-height: 65px; " +
+                        "-fx-focus-color: transparent; " +
+                        "-fx-faint-focus-color: transparent;";
+
+                for (int i = 0; i < player.getParty().size(); i++) {
+                    Pokemon pokemon = player.getParty().get(i);
+                    Button pokemonButton = new Button();
+                    Image pokemonSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
+                    ImageView spriteView = new ImageView(pokemonSprite);
+                    spriteView.setFitWidth(55);
+
+                    spriteView.setFitHeight(55);
+                    spriteView.setPreserveRatio(true);
+                    pokemonButton.setGraphic(spriteView);
+                    pokemonButton.setTooltip(new Tooltip(pokemon.getNickname()));
+                    pokemonButton.setStyle(pokemonButtonStyle);
+
+                    pokemonButton.setOnAction(event -> {
+                        // Apply color adjustment for switch-out animation
+                        ColorAdjust colorAdjust = new ColorAdjust();
+                        playerPokemonView.setEffect(colorAdjust);
+
+                        // Reverse color fade (turn to white while moving out)
+                        Timeline switchOutFade = new Timeline(
+                                new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 0.0)),
+                                new KeyFrame(Duration.millis(800),
+                                        new KeyValue(colorAdjust.brightnessProperty(), 2.0)));
+
+                        // Switch-out animation for current Pokémon
+                        TranslateTransition switchOutAnim = new TranslateTransition(Duration.millis(800),
+                                playerPokemonView);
+                        switchOutAnim.setToX(-scene.getWidth() / 2);
+                        switchOutAnim.setInterpolator(Interpolator.EASE_IN);
+
+                        switchOutAnim.setOnFinished(evt -> {
+                            // Store the final X position of the outgoing Pokémon
+                            double switchOutEndX = playerPokemonView.getTranslateX();
+
+                            // Update to the new Pokémon sprite
+                            player.setCurrentPokemon(pokemon);
+                            playerPokemonNickname.setText(pokemon.getNickname());
+                            Image newSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
+                            playerPokemonView.setImage(newSprite);
+
+                            // Set the new Pokémon's initial position to the final position of the outgoing
+                            // Pokémon
+                            playerPokemonView.setTranslateX(switchOutEndX);
+                            colorAdjust.setBrightness(2.0); // Ensure the new Pokémon starts fully white
+
+                            // Switch-in color fade animation (from bright white to normal)
+                            Timeline switchInFade = new Timeline(
+                                    new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 2.0)),
+                                    new KeyFrame(Duration.millis(800),
+                                            new KeyValue(colorAdjust.brightnessProperty(), 0.0)));
+
+                            // Switch-in animation for new Pokémon
+                            TranslateTransition switchInAnim = new TranslateTransition(Duration.millis(800),
+                                    playerPokemonView);
+                            switchInAnim.setToX(0); // Move to the correct position
+                            switchInAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                            switchInAnim.setOnFinished(ev -> playerPokemonView.setEffect(null));
+
+                            // Play switch-in animations
+                            switchInAnim.play();
+                            switchInFade.play();
+
+                            // Update health bar and labels
                             Pokemon playerPokemon = player.getCurrentPokemon();
                             double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
-                                    / playerPokemon.getHp() * 100;
+                                    / playerPokemon.getHp()
+                                    * 100;
                             playerHealthBarForeground.setWidth(playerHealthPercent);
                             playerHealthLabel.setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
 
-                            // Update player Pokemon XP bar and level
                             double playerXPPercent = (double) playerPokemon.getExperience()
                                     / playerPokemon.getLevelTreshhold() * 100;
                             playerXPBarForeground.setWidth(playerXPPercent);
                             playerPokemonLevel.setText("Lv. " + playerPokemon.getLevel());
 
-                            // Update opponent Pokemon health based on first Pokemon in their list
                             trainerPokemon opponentPokemon = opponent.getCurrentPokemon();
                             double oppHealthPercent = (double) opponentPokemon.getRemainingHealth()
                                     / opponentPokemon.getHp() * 100;
@@ -654,235 +859,47 @@ public class Battle extends Application {
                             opponentHealthLabel
                                     .setText(opponentPokemon.getRemainingHealth() + "/" + opponentPokemon.getHp());
 
-                            // Update opponent Pokemon level
                             opponentPokemonLevel.setText("Lv. " + opponentPokemon.getLevel());
                         });
 
-                        // Assign buttons to rows and store them in the corresponding lists
-                        if (i < 2) {
-                            topRow.getChildren().add(moveButton);
-                            topRowButtons.add(moveButton);
+                        // Play switch-out animations
+                        switchOutAnim.play();
+                        switchOutFade.play();
 
-                            // Animation for top row
-                            TranslateTransition moveButtonAnim = new TranslateTransition(Duration.millis(600),
-                                    moveButton);
-                            moveButtonAnim.setFromY(scene.getHeight() - 400);
-                            moveButtonAnim.setToY(-120);
-                            moveButtonAnim.setInterpolator(Interpolator.EASE_OUT);
-                            moveButtonAnim.play();
-                        } else {
-                            bottomRow.getChildren().add(moveButton);
-                            bottomRowButtons.add(moveButton);
-
-                            // Animation for bottom row
-                            TranslateTransition moveButtonAnim = new TranslateTransition(Duration.millis(700),
-                                    moveButton);
-                            moveButtonAnim.setFromY(scene.getHeight() - 400);
-                            moveButtonAnim.setToY(-120);
-                            moveButtonAnim.setInterpolator(Interpolator.EASE_OUT);
-                            moveButtonAnim.play();
-                        }
-                    }
-
-                    // Add both rows to the VBox
-                    moveRows.getChildren().addAll(topRow, bottomRow);
-
-                    // Create the "Back" button
-                    Button backButton = new Button("◄");
-                    backButton.setFont(Font.font("Arial", 14));
-                    backButton.setStyle("-fx-background-color: #cc0000; " +
-                            "-fx-text-fill: white; " +
-                            "-fx-cursor: hand; " +
-                            "-fx-padding: 2 4 2 4;");
-                    backButton.setPrefWidth(25);
-                    backButton.setPrefHeight(25);
-
-                    // Handle back button click
-                    backButton.setOnAction(backEvent -> {
-                        // Reverse animation for top row buttons
-                        for (Button moveButton : topRowButtons) {
-                            TranslateTransition reverseAnim = new TranslateTransition(Duration.millis(600), moveButton);
-                            reverseAnim.setFromY(-120); // Current position
-                            reverseAnim.setToY(scene.getHeight() - 400); // Move out of view
-                            reverseAnim.setInterpolator(Interpolator.EASE_IN);
-                            reverseAnim.play();
-                        }
-
-                        // Reverse animation for bottom row buttons
-                        for (Button moveButton : bottomRowButtons) {
-                            TranslateTransition reverseAnim = new TranslateTransition(Duration.millis(700), moveButton);
-                            reverseAnim.setFromY(-120); // Current position
-                            reverseAnim.setToY(scene.getHeight() - 400); // Move out of view
-                            reverseAnim.setInterpolator(Interpolator.EASE_IN);
-                            reverseAnim.play();
-                        }
-
-                        // Reverse animation for the back button
-                        TranslateTransition backButtonReverseAnim = new TranslateTransition(Duration.millis(500),
-                                backButton);
-                        backButtonReverseAnim.setFromY(-120); // Current position
-                        backButtonReverseAnim.setToY(scene.getHeight() - 400); // Move out of view
-                        backButtonReverseAnim.setInterpolator(Interpolator.EASE_IN);
-                        backButtonReverseAnim.play();
-
-                        // Delay clearing controlsBox until animations finish
-                        new Timeline(new KeyFrame(Duration.millis(500), ae -> {
+                        TranslateTransition closeAnim = new TranslateTransition(Duration.millis(1800), switchBox);
+                        closeAnim.setToY(scene.getHeight());
+                        closeAnim.setInterpolator(Interpolator.EASE_IN);
+                        closeAnim.setOnFinished(evt -> {
                             controlsBox.getChildren().clear();
 
+                            // Set initial state for buttons (likely off-screen position)
+                            fightButton.setTranslateY(scene.getHeight());
+                            switchButton.setTranslateY(scene.getHeight());
+                            runButton.setTranslateY(scene.getHeight());
+
+                            // Add buttons first
+                            controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
+
+                            // Then play animations
                             fightButtonAnim.play();
                             switchButtonAnim.play();
                             runButtonAnim.play();
-                            controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
-
-                        })).play();
+                        });
+                        closeAnim.play();
                     });
 
-                    // Animate back button
-                    TranslateTransition backButtonAnim = new TranslateTransition(Duration.millis(500), backButton);
-                    backButtonAnim.setFromY(scene.getHeight() - 400);
-                    backButtonAnim.setToY(-120);
-                    backButtonAnim.setInterpolator(Interpolator.EASE_OUT);
-                    backButtonAnim.play();
-
-                    // Add "Back" button to the top of moveContainer
-                    moveContainer.getChildren().addAll(backButton, moveRows);
-                    controlsBox.getChildren().add(moveContainer);
+                    switchBox.getChildren().add(pokemonButton);
                 }
-            }
-        });
 
-        // Switch
-        switchButton.setOnAction(e -> {
-            HBox switchBox = new HBox(5);
-            switchBox.setAlignment(Pos.CENTER);
-            switchBox.setPadding(new Insets(5));
-            switchBox.setTranslateY(scene.getHeight());
+                controlsBox.getChildren().clear();
+                controlsBox.getChildren().add(switchBox);
 
-            String pokemonButtonStyle = "-fx-border-color: black; " +
-                    "-fx-border-width: 1px; " +
-                    "-fx-border-radius: 2; " +
-                    "-fx-background-radius: 2; " +
-                    "-fx-cursor: hand; " +
-                    "-fx-background-color: linear-gradient(to bottom, #B30000 50%, #EBEBEB 50%); " +
-                    "-fx-min-width: 65px; " +
-                    "-fx-min-height: 65px; " +
-                    "-fx-focus-color: transparent; " +
-                    "-fx-faint-focus-color: transparent;";
-
-            for (int i = 0; i < player.getParty().size(); i++) {
-                Pokemon pokemon = player.getParty().get(i);
-                Button pokemonButton = new Button();
-                Image pokemonSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
-                ImageView spriteView = new ImageView(pokemonSprite);
-                spriteView.setFitWidth(55);
-
-                spriteView.setFitHeight(55);
-                spriteView.setPreserveRatio(true);
-                pokemonButton.setGraphic(spriteView);
-                pokemonButton.setTooltip(new Tooltip(pokemon.getNickname()));
-                pokemonButton.setStyle(pokemonButtonStyle);
-
-                pokemonButton.setOnAction(event -> {
-                    // Apply color adjustment for switch-out animation
-                    ColorAdjust colorAdjust = new ColorAdjust();
-                    playerPokemonView.setEffect(colorAdjust);
-
-                    // Reverse color fade (turn to white while moving out)
-                    Timeline switchOutFade = new Timeline(
-                            new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 0.0)),
-                            new KeyFrame(Duration.millis(800), new KeyValue(colorAdjust.brightnessProperty(), 2.0)));
-
-                    // Switch-out animation for current Pokémon
-                    TranslateTransition switchOutAnim = new TranslateTransition(Duration.millis(800),
-                            playerPokemonView);
-                    switchOutAnim.setToX(-scene.getWidth() / 2);
-                    switchOutAnim.setInterpolator(Interpolator.EASE_IN);
-
-                    switchOutAnim.setOnFinished(evt -> {
-                        // Store the final X position of the outgoing Pokémon
-                        double switchOutEndX = playerPokemonView.getTranslateX();
-
-                        // Update to the new Pokémon sprite
-                        player.setCurrentPokemon(pokemon);
-                        playerPokemonNickname.setText(pokemon.getNickname());
-                        Image newSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
-                        playerPokemonView.setImage(newSprite);
-
-                        // Set the new Pokémon's initial position to the final position of the outgoing
-                        // Pokémon
-                        playerPokemonView.setTranslateX(switchOutEndX);
-                        colorAdjust.setBrightness(2.0); // Ensure the new Pokémon starts fully white
-
-                        // Switch-in color fade animation (from bright white to normal)
-                        Timeline switchInFade = new Timeline(
-                                new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 2.0)),
-                                new KeyFrame(Duration.millis(800),
-                                        new KeyValue(colorAdjust.brightnessProperty(), 0.0)));
-
-                        // Switch-in animation for new Pokémon
-                        TranslateTransition switchInAnim = new TranslateTransition(Duration.millis(800),
-                                playerPokemonView);
-                        switchInAnim.setToX(0); // Move to the correct position
-                        switchInAnim.setInterpolator(Interpolator.EASE_OUT);
-
-                        switchInAnim.setOnFinished(ev -> playerPokemonView.setEffect(null)); // Remove effect after
-                                                                                             // animation
-
-                        // Play switch-in animations
-                        switchInAnim.play();
-                        switchInFade.play();
-
-                        // Update health bar and labels
-                        Pokemon playerPokemon = player.getCurrentPokemon();
-                        double playerHealthPercent = (double) playerPokemon.getRemainingHealth() / playerPokemon.getHp()
-                                * 100;
-                        playerHealthBarForeground.setWidth(playerHealthPercent);
-                        playerHealthLabel.setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
-
-                        double playerXPPercent = (double) playerPokemon.getExperience()
-                                / playerPokemon.getLevelTreshhold() * 100;
-                        playerXPBarForeground.setWidth(playerXPPercent);
-                        playerPokemonLevel.setText("Lv. " + playerPokemon.getLevel());
-
-                        trainerPokemon opponentPokemon = opponent.getCurrentPokemon();
-                        double oppHealthPercent = (double) opponentPokemon.getRemainingHealth()
-                                / opponentPokemon.getHp() * 100;
-                        opponentHealthBarForeground.setWidth(oppHealthPercent);
-                        opponentHealthLabel
-                                .setText(opponentPokemon.getRemainingHealth() + "/" + opponentPokemon.getHp());
-
-                        opponentPokemonLevel.setText("Lv. " + opponentPokemon.getLevel());
-                    });
-
-                    // Play switch-out animations
-                    switchOutAnim.play();
-                    switchOutFade.play();
-
-                    TranslateTransition closeAnim = new TranslateTransition(Duration.millis(1800), switchBox);
-                    closeAnim.setToY(scene.getHeight());
-                    closeAnim.setInterpolator(Interpolator.EASE_IN);
-                    closeAnim.setOnFinished(evt -> {
-                        controlsBox.getChildren().clear();
-
-                        fightButtonAnim.play();
-                        switchButtonAnim.play();
-                        runButtonAnim.play();
-                        controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
-                    });
-                    closeAnim.play();
-                });
-
-                switchBox.getChildren().add(pokemonButton);
-            }
-
-            controlsBox.getChildren().clear();
-            controlsBox.getChildren().add(switchBox);
-
-            TranslateTransition tt = new TranslateTransition(Duration.millis(1800), switchBox);
-            tt.setToY(-20);
-            tt.setInterpolator(Interpolator.EASE_OUT);
-            tt.jumpTo(Duration.millis(1400));
-            tt.play();
+                TranslateTransition tt = new TranslateTransition(Duration.millis(1800), switchBox);
+                tt.setToY(-20);
+                tt.setInterpolator(Interpolator.EASE_OUT);
+                tt.jumpTo(Duration.millis(1400));
+                tt.play();
+            });
         });
     }
 }
