@@ -46,4 +46,11 @@ public class Trainer {
     public void setCurrentPokemon(trainerPokemon pokemon) {
         this.currentPokemon = pokemon;
     }
+
+    public trainerPokemon getNextUsablePokemon() {
+        return pokemonList.stream()
+                .filter(p -> p.getRemainingHealth() > 0)
+                .findFirst()
+                .orElse(null);
+    }
 }

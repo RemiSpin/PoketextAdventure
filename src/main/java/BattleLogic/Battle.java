@@ -12,6 +12,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,7 +35,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-import javafx.util.Duration;
+import javafx.util.Duration;  // TO DO: BE UNABLE TO SWITCH IN FAINTED POKEMON, WHEN A POKEMON FAINTS FIX THE DELAY
 
 @SuppressWarnings({ "FieldMayBeFinal", "OverridableMethodCallInConstructor" })
 
@@ -46,18 +47,26 @@ public class Battle extends Application {
     private Rectangle opponentHealthBarForeground;
     private Label playerHealthLabel;
     private Label opponentHealthLabel;
+    private HBox controlsBox = new HBox(20);
+    private Button switchButton = new Button("Switch");
+    private ImageView opponentPokemonView;
+    private Label opponentPokemonNickname;
+    private Label opponentPokemonLevel;
 
     public Battle(Player player, Trainer opponent) {
         this.player = player;
         this.opponent = opponent;
-        player.setCurrentPokemon(player.getParty().get(0));
-        opponent.setCurrentPokemon(opponent.getPokemonList().get(0));
+
+        // Add null checks
+        if (!player.getParty().isEmpty()) {
+            player.setCurrentPokemon(player.getParty().get(0));
+        }
+        if (opponent != null && !opponent.getPokemonList().isEmpty()) {
+            opponent.setCurrentPokemon(opponent.getPokemonList().get(0));
+        }
 
         Stage battleStage = new Stage();
-        try {
-            start(battleStage);
-        } catch (Exception e) {
-        }
+        start(battleStage);
     }
 
     private void aiTurn() {
@@ -89,35 +98,62 @@ public class Battle extends Application {
             int damage = calculateDamage(bestMove, aiPokemon, playerPokemon);
             playerPokemon.setRemainingHealth(playerPokemon.getRemainingHealth() - damage);
 
-            // Check if player Pokemon fainted
+            // Check if player's Pokémon fainted
             if (playerPokemon.getRemainingHealth() <= 0) {
+                playerPokemon.setRemainingHealth(0);
                 System.out.println(playerPokemon.getNickname() + " fainted!");
+
                 if (!player.hasUsablePokemon()) {
-                    System.out.println("You have no more usable Pokemon!");
-                    System.out.println("You blacked out!");
-                    // Handle battle end here
+                    System.out.println("You have no more usable Pokemon! You blacked out!");
+                    Stage stage = (Stage) controlsBox.getScene().getWindow();
+                    stage.close();
                 } else {
-                    // switchButton.setOnAction
+                    // Force the player to switch
+                    Platform.runLater(() -> {
+                        switchButton.fire(); // Trigger the switch menu
+                    });
                 }
             }
         }
     }
 
     private void applyPlayerAction(String action) {
-        // Find the move with the given name in the player's Pokemon's moves
-        Move move = player.getParty().get(0).getMovesList().stream()
+        Move move = player.getCurrentPokemon().getMovesList().stream()
                 .filter(m -> m.getName().equals(action))
                 .findFirst()
                 .orElse(null);
 
-        // If the move was found, apply it
         if (move != null) {
-            // Calculate the damage this move would deal to the AI's Pokemon
-            int damage = calculateDamage(move, player.getParty().get(0), opponent.getPokemonList().get(0));
-
-            // Reduce the AI's Pokemon's health by this amount
-            trainerPokemon aiPokemon = opponent.getPokemonList().get(0);
+            trainerPokemon aiPokemon = opponent.getCurrentPokemon();
+            int damage = calculateDamage(move, player.getCurrentPokemon(), aiPokemon);
             aiPokemon.setRemainingHealth(aiPokemon.getRemainingHealth() - damage);
+
+            // Check if opponent's current Pokémon fainted
+            if (aiPokemon.getRemainingHealth() <= 0) {
+                aiPokemon.setRemainingHealth(0);
+                System.out.println(aiPokemon.getName() + " fainted!");
+
+                trainerPokemon nextPokemon = opponent.getPokemonList().stream()
+                        .filter(p -> p.getRemainingHealth() > 0)
+                        .findFirst()
+                        .orElse(null);
+
+                if (nextPokemon != null) {
+                    opponent.setCurrentPokemon(nextPokemon);
+                    System.out.println(opponent.getName() + " sent out " + nextPokemon.getName() + "!");
+                    updateOpponentPokemonUI(nextPokemon);
+                } else {
+                    System.out.println("You won the battle!");
+                    int prizeMoney = opponent.getRewardMoney();
+                    player.addMoney(prizeMoney);
+                    System.out.println("You got $" + prizeMoney + " for winning!");
+                    Stage stage = (Stage) controlsBox.getScene().getWindow();
+                    stage.close();
+                    return;
+                }
+            }
+
+            aiTurn(); // Opponent takes their turn after being hit
         }
     }
 
@@ -223,6 +259,15 @@ public class Battle extends Application {
         return multiplier;
     }
 
+    private void updateOpponentPokemonUI(trainerPokemon newPokemon) {
+        opponentPokemonView.setImage(new Image(getClass().getResourceAsStream("/" + newPokemon.getSpritePath())));
+        opponentPokemonNickname.setText(newPokemon.getName());
+        opponentPokemonLevel.setText("Lv. " + newPokemon.getLevel());
+        double healthPercent = (double) newPokemon.getRemainingHealth() / newPokemon.getHp() * 100;
+        opponentHealthBarForeground.setWidth(healthPercent);
+        opponentHealthLabel.setText(newPokemon.getRemainingHealth() + "/" + newPokemon.getHp());
+    }
+
     // Type colors
     private String getTypeColor(String type) {
         return switch (type.toLowerCase()) {
@@ -267,55 +312,60 @@ public class Battle extends Application {
 
         // Load the images
         Image playerPokemonImage = new Image(
-                getClass().getResourceAsStream("/" + player.getParty().get(0).getSpritePath()));
-        Image opponentPokemonImage = new Image(
-                getClass().getResourceAsStream("/" + opponent.getPokemonList().get(0).getSpritePath()));
+                getClass().getResourceAsStream("/" + player.getCurrentPokemon().getSpritePath()));
 
         // Create the nickname labels
-        Label playerPokemonNickname = new Label(player.getParty().get(0).getNickname());
-        Label opponentPokemonNickname = new Label(opponent.getPokemonList().get(0).getName());
+        Label playerPokemonNickname = new Label(player.getCurrentPokemon().getNickname());
 
         // Create the level labels
-        Label playerPokemonLevel = new Label("Lv. " + player.getParty().get(0).getLevel());
-        Label opponentPokemonLevel = new Label("Lv. " + opponent.getPokemonList().get(0).getLevel());
+        Label playerPokemonLevel = new Label("Lv. " + player.getCurrentPokemon().getLevel());
 
         // Create the ImageViews
         ImageView playerPokemonView = new ImageView(playerPokemonImage);
-        ImageView opponentPokemonView = new ImageView(opponentPokemonImage);
 
         // Create the health bars using rectangles
         Rectangle playerHealthBarBackground = new Rectangle(100, 10);
         playerHealthBarBackground.setFill(Color.DARKGREY);
         playerHealthBarForeground = new Rectangle(
-                player.getParty().get(0).getRemainingHealth() / (double) player.getParty().get(0).getHp() * 100, 10);
+                player.getParty().get(0).getRemainingHealth() / (double) player.getCurrentPokemon().getHp() * 100, 10);
         playerHealthBarBackground.setStrokeWidth(2);
         playerHealthBarBackground.setArcWidth(10);
         playerHealthBarBackground.setArcHeight(10);
         playerHealthBarForeground = new Rectangle(
-                player.getParty().get(0).getRemainingHealth() / (double) player.getParty().get(0).getHp() * 100, 10);
+                player.getParty().get(0).getRemainingHealth() / (double) player.getCurrentPokemon().getHp() * 100, 10);
         playerHealthBarForeground.setFill(Color.LIGHTGREEN);
         playerHealthBarForeground.setArcWidth(10);
         playerHealthBarForeground.setArcHeight(10);
         Rectangle opponentHealthBarBackground = new Rectangle(100, 10);
         opponentHealthBarBackground.setFill(Color.DARKGREY);
-        opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
+        opponentHealthBarForeground = new Rectangle(opponent.getCurrentPokemon().getRemainingHealth()
                 / (double) opponent.getPokemonList().get(0).getHp() * 100, 10);
         opponentHealthBarBackground.setStrokeWidth(2);
         opponentHealthBarBackground.setArcWidth(10);
         opponentHealthBarBackground.setArcHeight(10);
-        opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
+        opponentHealthBarForeground = new Rectangle(opponent.getCurrentPokemon().getRemainingHealth()
                 / (double) opponent.getPokemonList().get(0).getHp() * 100, 10);
         opponentHealthBarForeground.setFill(Color.LIGHTGREEN);
         playerHealthLabel = new Label(
-                player.getParty().get(0).getRemainingHealth() + "/" + player.getParty().get(0).getHp());
+                player.getParty().get(0).getRemainingHealth() + "/" + player.getCurrentPokemon().getHp());
         opponentHealthLabel = new Label(
-                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
+                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getCurrentPokemon().getHp());
 
         // Create the health labels
         playerHealthLabel = new Label(
-                player.getParty().get(0).getRemainingHealth() + "/" + player.getParty().get(0).getHp());
+                player.getParty().get(0).getRemainingHealth() + "/" + player.getCurrentPokemon().getHp());
         opponentHealthLabel = new Label(
-                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
+                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getCurrentPokemon().getHp());
+
+                Image opponentPokemonImage = new Image(getClass().getResourceAsStream(
+                "/" + opponent.getCurrentPokemon().getSpritePath()));
+        ImageView opponentPokemonView = new ImageView(opponentPokemonImage);
+        Label opponentPokemonNickname = new Label(opponent.getCurrentPokemon().getName());
+        Label opponentPokemonLevel = new Label("Lv. " + opponent.getCurrentPokemon().getLevel());
+
+        this.opponentPokemonView = opponentPokemonView;
+        this.opponentPokemonNickname = opponentPokemonNickname;
+        this.opponentPokemonLevel = opponentPokemonLevel;
 
         // Set the font
         playerHealthLabel.setFont(font);
@@ -341,7 +391,8 @@ public class Battle extends Application {
         playerXPBarBackground.setArcWidth(5);
         playerXPBarBackground.setArcHeight(5);
         Rectangle playerXPBarForeground = new Rectangle(
-                player.getParty().get(0).getExperience() / (double) player.getParty().get(0).getLevelTreshhold() * 100,
+                player.getCurrentPokemon().getExperience() / (double) player.getCurrentPokemon().getLevelTreshhold()
+                        * 100,
                 5);
         playerXPBarForeground.setFill(Color.LIGHTBLUE);
         playerXPBarForeground.setArcWidth(5);
@@ -431,7 +482,6 @@ public class Battle extends Application {
         primaryStage.show();
 
         // Create battle controls
-        HBox controlsBox = new HBox(20);
         controlsBox.setLayoutY(scene.getHeight() - 120);
         controlsBox.setPrefWidth(scene.getWidth());
         controlsBox.setAlignment(Pos.CENTER);
@@ -439,7 +489,6 @@ public class Battle extends Application {
 
         // Create and style buttons
         Button fightButton = new Button("Fight");
-        Button switchButton = new Button("Switch");
         Button runButton = new Button("Run");
 
         // Increase font size
@@ -617,18 +666,6 @@ public class Battle extends Application {
                                         player.getCurrentPokemon().getNickname() + " used " + move.getName() + "!");
                                 applyPlayerAction(move.getName());
 
-                                // Check if opponent fainted
-                                if (!opponent.hasUsablePokemon()) {
-                                    System.out.println("You won the battle!");
-                                    int prizeMoney = opponent.getRewardMoney();
-                                    player.addMoney(prizeMoney);
-                                    System.out.println("You got $" + prizeMoney + " for winning!");
-                                    Stage stage = (Stage) controlsBox.getScene().getWindow();
-                                    stage.close();
-                                    return;
-                                }
-
-                                aiTurn();
                                 // Update player Pokemon health based on first party Pokemon
                                 Pokemon playerPokemon = player.getCurrentPokemon();
                                 double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
@@ -812,9 +849,14 @@ public class Battle extends Application {
 
                             // Update to the new Pokémon sprite
                             player.setCurrentPokemon(pokemon);
-                            playerPokemonNickname.setText(pokemon.getNickname());
+                            // Update player's Pokémon UI
                             Image newSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
                             playerPokemonView.setImage(newSprite);
+                            playerPokemonNickname.setText(pokemon.getNickname());
+                            double playerHealthPercent = (double) pokemon.getRemainingHealth() / pokemon.getHp() * 100;
+                            playerHealthBarForeground.setWidth(playerHealthPercent);
+                            playerHealthLabel.setText(pokemon.getRemainingHealth() + "/" + pokemon.getHp());
+                            playerPokemonLevel.setText("Lv. " + pokemon.getLevel());
 
                             // Set the new Pokémon's initial position to the final position of the outgoing
                             // Pokémon
@@ -841,9 +883,6 @@ public class Battle extends Application {
 
                             // Update health bar and labels
                             Pokemon playerPokemon = player.getCurrentPokemon();
-                            double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
-                                    / playerPokemon.getHp()
-                                    * 100;
                             playerHealthBarForeground.setWidth(playerHealthPercent);
                             playerHealthLabel.setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
 

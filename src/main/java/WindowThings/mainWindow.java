@@ -29,7 +29,7 @@ public class mainWindow extends Application {
     public void start(Stage primaryStage) throws IOException {
         Player player = PokeText_Adventure.player;
         BorderPane root = new BorderPane();
-        Scene scene = new Scene(root, 700, 700);
+        Scene scene = new Scene(root, 900, 900);
 
         textArea.setEditable(false);
         Font customFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 16);
