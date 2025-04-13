@@ -35,4 +35,8 @@ public interface IPokemon {
     String getSpritePath();
 
     List<Move> getMovesList();
+
+    int getSpecialAttack();
+
+    int getSpecialDefense();
 }

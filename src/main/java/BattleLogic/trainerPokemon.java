@@ -342,4 +342,14 @@ public class trainerPokemon implements IPokemon {
     public int getSpeed() {
         return Speed;
     }
+
+    @Override
+    public int getSpecialAttack() {
+        return this.specialAttack;
+    }
+
+    @Override
+    public int getSpecialDefense() {
+        return this.specialDefense;
+    }
 }

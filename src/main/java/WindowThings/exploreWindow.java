@@ -209,7 +209,7 @@ public class exploreWindow {
             });
 
             // Create button to force a wild Pokémon encounter with grass icon
-            Button encounterButton = createButtonWithIcon("/Icons/grass.png");
+            Button encounterButton = createButtonWithIcon("/Icons/Grass.png");
             // Update tooltip text for the grass icon
             encounterButton.getTooltip().setText("Look for Pokémon");
             encounterButton.setOnAction(e -> {
@@ -362,6 +362,9 @@ public class exploreWindow {
     private Button createButtonWithIcon(String iconPath) {
         Button button = new Button();
 
+        // Always create tooltip first, regardless of icon loading success
+        button.setTooltip(new Tooltip(""));
+
         try {
             // Load the icon
             Image icon = new Image(getClass().getResourceAsStream(iconPath));
@@ -377,7 +380,7 @@ public class exploreWindow {
 
             // Use tooltip instead of text
             String tooltipText = "Pokemon Center";
-            button.setTooltip(new Tooltip(tooltipText));
+            button.getTooltip().setText(tooltipText);
 
             // White background with black text styling
             button.setStyle(
@@ -434,7 +437,7 @@ public class exploreWindow {
             System.out.println("Could not load icon: " + e.getMessage());
 
             // Fallback to text if icon can't be loaded
-            button.setText("PC");
+            button.setText("Action"); // Generic action text instead of hardcoded "PC"
             applyButtonStyle(button);
         }
 

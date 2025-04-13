@@ -70,7 +70,7 @@ public class PokeText_Adventure extends Application {
         }
 
         // If no save was loaded or user chose not to load, create a new game
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", 15);
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", 20);
         Pokemon squirtle = new Pokemon("Squirtle", 5);
 
         Player.setName();
@@ -96,5 +96,4 @@ public class PokeText_Adventure extends Application {
     }
 }
 
-// make the turn battle system
 // add status effects

@@ -89,6 +89,9 @@ public class moveFactory {
         double accuracy = moveJson.getDouble("accuracy");
         int pp = moveJson.getInt("pp");
 
+        // Get the effect string if it exists
+        String effectStr = moveJson.has("effect") ? moveJson.getString("effect") : "";
+
         // Get the type effectiveness from the type chart
         JSONObject typeEffectiveness = typeChart.has(type) ? typeChart.getJSONObject(type) : new JSONObject();
 
@@ -121,6 +124,11 @@ public class moveFactory {
             @Override
             public int getPp() {
                 return pp;
+            }
+
+            @Override
+            public String getCategory() {
+                return category;
             }
 
             @Override
@@ -311,6 +319,11 @@ public class moveFactory {
             @Override
             public void multipleAttack() {
 
+            }
+
+            @Override
+            public String getEffect() {
+                return effectStr;
             }
         };
 

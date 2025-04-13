@@ -562,12 +562,14 @@ public class Pokemon implements Cloneable, IPokemon {
         return Defense;
     }
 
+    @Override
     public int getSpecialAttack() {
-        return SpecialAttack;
+        return this.SpecialAttack;
     }
 
+    @Override
     public int getSpecialDefense() {
-        return SpecialDefense;
+        return this.SpecialDefense;
     }
 
     public int getSpeed() {

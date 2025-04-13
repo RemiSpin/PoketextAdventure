@@ -388,7 +388,7 @@ public class PCWindow {
             System.out.println("Could not load pokemon image: " + e.getMessage());
             try {
                 // Fallback to default image
-                Image defaultImage = new Image(getClass().getResourceAsStream("/pokeball.png"));
+                Image defaultImage = new Image(getClass().getResourceAsStream("/Pokeball.png"));
                 pokemonPreviewImage.setImage(defaultImage);
             } catch (Exception ex) {
                 // Just in case
@@ -418,7 +418,7 @@ public class PCWindow {
             detailsLabel.setText("Select a Pokémon to view details");
             // Reset preview image
             try {
-                Image defaultImage = new Image(getClass().getResourceAsStream("/pokeball.png"));
+                Image defaultImage = new Image(getClass().getResourceAsStream("/Pokeball.png"));
                 pokemonPreviewImage.setImage(defaultImage);
             } catch (Exception e) {
                 System.out.println("Could not load default image: " + e.getMessage());
@@ -449,7 +449,7 @@ public class PCWindow {
             detailsLabel.setText("Select a Pokémon to view details");
             // Reset preview image
             try {
-                Image defaultImage = new Image(getClass().getResourceAsStream("/pokeball.png"));
+                Image defaultImage = new Image(getClass().getResourceAsStream("/Pokeball.png"));
                 pokemonPreviewImage.setImage(defaultImage);
             } catch (Exception e) {
                 System.out.println("Could not load default image: " + e.getMessage());
@@ -487,7 +487,7 @@ public class PCWindow {
             HBox contentBox = new HBox(10);
             contentBox.setAlignment(Pos.CENTER_LEFT);
 
-            ImageView pokeballIcon = new ImageView(new Image(getClass().getResourceAsStream("/pokeball.png")));
+            ImageView pokeballIcon = new ImageView(new Image(getClass().getResourceAsStream("/Pokeball.png")));
             pokeballIcon.setFitWidth(30);
             pokeballIcon.setFitHeight(30);
             pokeballIcon.setPreserveRatio(true);
