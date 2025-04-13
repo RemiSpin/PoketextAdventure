@@ -24,6 +24,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
+@SuppressWarnings({"FieldMayBeFinal", "unused"})
+
 public class PCWindow {
     private Stage stage;
     private ListView<String> partyListView;
@@ -360,13 +362,13 @@ public class PCWindow {
         }
 
         // Simple monochrome details without color formatting
-        String formattedDetails = String.format(
-                "Name: %s\n" +
-                        "Species: %s\n" +
-                        "Level: %d\n" +
-                        "HP: %d/%d (%s)\n" +
-                        "Type: %s%s\n" +
-                        "Exp: %d/%d",
+        String formattedDetails = String.format("""
+                                                Name: %s
+                                                Species: %s
+                                                Level: %d
+                                                HP: %d/%d (%s)
+                                                Type: %s%s
+                                                Exp: %d/%d""",
                 pokemon.getNickname(),
                 pokemon.getName(),
                 pokemon.getLevel(),
@@ -525,9 +527,6 @@ public class PCWindow {
         dialogStage.showAndWait();
     }
 
-    private String getTypeColor(String type) {
-        return "#000000";
-    }
 
     public void show() {
         // Refresh the list views when showing the window

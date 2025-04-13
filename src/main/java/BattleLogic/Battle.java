@@ -36,12 +36,10 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
 import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -55,7 +53,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-@SuppressWarnings({ "FieldMayBeFinal", "OverridableMethodCallInConstructor" })
+@SuppressWarnings({ "FieldMayBeFinal", "OverridableMethodCallInConstructor", "incomplete-switch", "unused" })
 public class Battle extends Application {
 
     private Player player;
@@ -71,9 +69,9 @@ public class Battle extends Application {
     private static final Logger logger = LoggerFactory.getLogger(Battle.class);
     private ImageView opponentPokemonView;
     private ImageView playerPokemonView;
-    private Pane root; // Added field to access the root pane
-    private HBox controlsBox; // Added field to access control buttons
-    private Scene scene; // Added field to access the scene
+    private Pane root;
+    private HBox controlsBox;
+    private Scene scene;
     private Label playerPokemonNickname;
     private Label opponentPokemonNickname;
     private Label playerPokemonLevel;
@@ -101,7 +99,6 @@ public class Battle extends Application {
         } catch (Exception e) {
             // Add proper error logging instead of silently catching
             System.err.println("Error starting trainer battle: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -117,7 +114,6 @@ public class Battle extends Application {
         } catch (Exception e) {
             // Improve error reporting
             System.err.println("Error starting wild battle: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -1474,7 +1470,6 @@ public class Battle extends Application {
                                                         Stage stage = (Stage) playerHealthBarForeground.getScene()
                                                                 .getWindow();
                                                         Platform.runLater(stage::close);
-                                                        return;
                                                     } else {
                                                         // Force player to switch Pokemon
                                                         System.out.println("Choose your next Pokemon!");
@@ -1645,7 +1640,6 @@ public class Battle extends Application {
             }
         } catch (Exception e) {
             System.err.println("Critical error in Battle.start(): " + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -2493,7 +2487,7 @@ public class Battle extends Application {
                 String chanceStr = effect.substring(startIndex, endIndex);
                 return Integer.parseInt(chanceStr);
             }
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             logger.error("Error parsing chance from effect string: {}", effect, e);
         }
         return 0;
@@ -2546,19 +2540,21 @@ public class Battle extends Application {
             return;
         }
 
-        // Apply status effects - never crit with status damage
+        // Apply status effects
         switch (status) {
-            case PSN: // Poison damage (1/8 of max HP)
+            case PSN -> {
+                // Poison damage (1/8 of max HP)
                 int poisonDamage = Math.max(1, pokemon.getHp() / 8);
                 pokemon.setRemainingHealth(pokemon.getRemainingHealth() - poisonDamage);
                 WindowThings.mainWindow.appendToOutput(pokemon.getNickname() + " was hurt by poison!");
-                break;
+            }
 
-            case BRN: // Burn damage (1/16 of max HP)
+            case BRN -> {
+                // Burn damage (1/16 of max HP)
                 int burnDamage = Math.max(1, pokemon.getHp() / 16);
                 pokemon.setRemainingHealth(pokemon.getRemainingHealth() - burnDamage);
                 WindowThings.mainWindow.appendToOutput(pokemon.getNickname() + " was hurt by its burn!");
-                break;
+            }
         }
 
         // Update UI after damage
@@ -2674,20 +2670,26 @@ public class Battle extends Application {
      * Get appropriate health bar color based on status condition and health
      * percentage
      */
+    @SuppressWarnings("incomplete-switch")
     private Color getHealthBarColor(PokemonLogic.Pokemon.StatusCondition status, double healthPercent) {
         // First check for status conditions
         if (status != null && status != PokemonLogic.Pokemon.StatusCondition.none) {
             switch (status) {
-                case BRN:
+                case BRN -> {
                     return Color.ORANGERED;
-                case PAR:
+                }
+                case PAR -> {
                     return Color.GOLD;
-                case PSN:
+                }
+                case PSN -> {
                     return Color.PURPLE;
-                case SLP:
+                }
+                case SLP -> {
                     return Color.DARKGRAY;
-                case FRZ:
+                }
+                case FRZ -> {
                     return Color.DEEPSKYBLUE;
+                }
             }
         }
 

@@ -18,6 +18,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+@SuppressWarnings("unused")
+
 public class exploreWindow {
     private Stage stage;
     private ImageView townImageView;
@@ -151,7 +153,7 @@ public class exploreWindow {
             mainLayout.setBottom(buttonContainer);
         }
         // The rest of your existing code for Pallet Town...
-        else if (currentTown instanceof Pallet) {
+        else if (currentTown instanceof Pallet pallet) {
             // Existing code for the "Go Home" button remains unchanged
             Button goHomeButton = new Button("Go Home");
             goHomeButton.setOnAction(e -> {
@@ -170,7 +172,7 @@ public class exploreWindow {
             // Add "To Route 1" button
             Button routeButton = new Button("To Route 1");
             routeButton.setOnAction(e -> {
-                Pallet palletTown = (Pallet) currentTown;
+                Pallet palletTown = pallet;
                 Route route1 = palletTown.getRoute1();
                 updateTown(route1);
             });
@@ -242,7 +244,6 @@ public class exploreWindow {
                                     true);
                         } catch (Exception ex) {
                             System.out.println("Error starting battle: " + ex.getMessage());
-                            ex.printStackTrace();
                         }
                     });
                 } else {
@@ -281,10 +282,6 @@ public class exploreWindow {
 
                     // Display an appropriate message
                     WindowThings.mainWindow.appendToOutput("You enter the " + pokemonCenter.getName() + ".");
-                } else {
-                    // Fallback if PokemonCenter is not a Town
-                    WindowThings.mainWindow.appendToOutput("You visit the " + pokemonCenter.getName() + ".");
-                    pokemonCenter.healPokemon(PokeText_Adventure.player);
                 }
             });
 

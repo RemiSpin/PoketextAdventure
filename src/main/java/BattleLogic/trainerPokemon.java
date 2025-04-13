@@ -233,14 +233,17 @@ public class trainerPokemon implements IPokemon {
         return null;
     }
 
+    @Override
     public String getName() {
         return name;
     }
 
+    @Override
     public String getType1() {
         return type1;
     }
 
+    @Override
     public String getType2() {
         return type2;
     }
@@ -253,18 +256,22 @@ public class trainerPokemon implements IPokemon {
         statusCondition = condition;
     }
 
+    @Override
     public String getSpritePath() {
         return spritePath;
     }
 
+    @Override
     public int getHp() {
         return Hp;
     }
 
+    @Override
     public int getRemainingHealth() {
         return remainingHealth;
     }
 
+    @Override
     public int getLevel() {
         return level;
     }
@@ -302,10 +309,12 @@ public class trainerPokemon implements IPokemon {
         return moveset;
     }
 
+    @Override
     public int getAttack() {
         return Attack;
     }
 
+    @Override
     public void setRemainingHealth(int remainingHealth) {
         this.remainingHealth = remainingHealth;
         if (this.remainingHealth <= 0) {
@@ -313,6 +322,7 @@ public class trainerPokemon implements IPokemon {
         }
     }
 
+    @Override
     public int getDefense() {
         return Defense;
     }
@@ -321,6 +331,7 @@ public class trainerPokemon implements IPokemon {
      * Get the nickname of this Pokemon.
      * Required for IPokemon interface implementation.
      */
+    @Override
     public String getNickname() {
         return nickname != null ? nickname : name;
     }

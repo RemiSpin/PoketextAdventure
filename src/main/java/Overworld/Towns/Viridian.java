@@ -5,6 +5,8 @@ import Overworld.Buildings.PokemonCenterBuilding;
 import Overworld.Town;
 import PlayerRelated.Player;
 
+@SuppressWarnings({"FieldMayBeFinal", "unused", "static-access"})
+
 public class Viridian implements Town {
     private String name;
     private String description;

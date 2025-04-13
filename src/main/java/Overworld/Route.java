@@ -8,6 +8,8 @@ import PlayerRelated.Player;
 import PokemonLogic.Pokemon;
 import javafx.application.Platform;
 
+@SuppressWarnings({ "FieldMayBeFinal", "unused", "static-access" })
+
 public class Route implements Town {
     private String name;
     private String description;
@@ -91,7 +93,6 @@ public class Route implements Town {
                 Battle battle = new Battle(player.getCurrentPokemon(), wildPokemon, player, true);
             } catch (Exception e) {
                 System.out.println("Error starting battle: " + e.getMessage());
-                e.printStackTrace();
             }
         });
     }
