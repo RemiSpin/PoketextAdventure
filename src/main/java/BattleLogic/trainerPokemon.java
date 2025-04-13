@@ -13,12 +13,13 @@ import org.json.simple.parser.JSONParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import PokemonLogic.IPokemon;
 import PokemonLogic.Pokemon;
 
-@SuppressWarnings({ "unused", "FieldMayBeFinal", "OverridableMethodCallInConstructor", "static-access"})
+@SuppressWarnings({ "unused", "FieldMayBeFinal", "OverridableMethodCallInConstructor", "static-access" })
 
-public class trainerPokemon {
-    private byte level; // variables galore
+public class trainerPokemon implements IPokemon {
+    private byte level;
     private int number;
     private String name;
     private String nickname;
@@ -44,6 +45,7 @@ public class trainerPokemon {
     private String spritePath;
     private int remainingHealth;
     private static final Logger logger = LoggerFactory.getLogger(Pokemon.class);
+    private int baseExperience;
 
     private void setSpritePath(String spritePath) {
         this.spritePath = spritePath;
@@ -138,7 +140,6 @@ public class trainerPokemon {
 
         remainingHealth = Hp;
     }
-
 
     public org.json.simple.JSONArray readJsonFile(String filename) {
         try (InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("/" + filename))) {
@@ -268,6 +269,10 @@ public class trainerPokemon {
         return level;
     }
 
+    public int getBaseExperience() {
+        return baseExperience;
+    }
+
     @Override
     public String toString() {
         StringBuilder movesDescription = new StringBuilder();
@@ -310,5 +315,31 @@ public class trainerPokemon {
 
     public int getDefense() {
         return Defense;
+    }
+
+    /**
+     * Get the nickname of this Pokemon.
+     * Required for IPokemon interface implementation.
+     */
+    public String getNickname() {
+        return nickname != null ? nickname : name;
+    }
+
+    /**
+     * Get the list of moves this Pokemon knows.
+     * This method name is standardized for the IPokemon interface.
+     */
+    @Override
+    public List<Move> getMovesList() {
+        return getMoves();
+    }
+
+    /**
+     * Get the speed stat of this Pokemon.
+     * Required for IPokemon interface implementation.
+     */
+    @Override
+    public int getSpeed() {
+        return Speed;
     }
 }

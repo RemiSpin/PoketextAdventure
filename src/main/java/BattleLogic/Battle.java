@@ -1,19 +1,33 @@
 package BattleLogic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import PlayerRelated.Player;
+import PokemonLogic.IPokemon;
 import PokemonLogic.Pokemon;
+import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
+import javafx.animation.PathTransition;
+import javafx.animation.PauseTransition;
+import javafx.animation.RotateTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -31,13 +45,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurveTo;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 @SuppressWarnings({ "FieldMayBeFinal", "OverridableMethodCallInConstructor" })
-
 public class Battle extends Application {
 
     private Player player;
@@ -46,6 +62,24 @@ public class Battle extends Application {
     private Rectangle opponentHealthBarForeground;
     private Label playerHealthLabel;
     private Label opponentHealthLabel;
+    private Pokemon wildPokemon;
+    private boolean isWildBattle;
+    private static final Logger logger = LoggerFactory.getLogger(Battle.class);
+    private ImageView opponentPokemonView;
+    private ImageView playerPokemonView;
+    private Pane root; // Added field to access the root pane
+    private HBox controlsBox; // Added field to access control buttons
+    private Scene scene; // Added field to access the scene
+    private Label playerPokemonNickname;
+    private Label opponentPokemonNickname;
+    private Label playerPokemonLevel;
+    private Label opponentPokemonLevel;
+
+    // Add these fields to store original button event handlers
+    private javafx.event.EventHandler<javafx.event.ActionEvent> fightButtonHandler;
+    private javafx.event.EventHandler<javafx.event.ActionEvent> catchButtonHandler;
+    private javafx.event.EventHandler<javafx.event.ActionEvent> switchButtonHandler;
+    private javafx.event.EventHandler<javafx.event.ActionEvent> runButtonHandler;
 
     public Battle(Player player, Trainer opponent) {
         this.player = player;
@@ -57,6 +91,20 @@ public class Battle extends Application {
         try {
             start(battleStage);
         } catch (Exception e) {
+        }
+    }
+
+    public Battle(Pokemon playerPokemon, Pokemon wildPokemon, Player player, boolean isWildBattle) {
+        this.player = player;
+        this.wildPokemon = wildPokemon;
+        this.isWildBattle = isWildBattle;
+        player.setCurrentPokemon(playerPokemon);
+
+        Stage battleStage = new Stage();
+        try {
+            start(battleStage);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -89,39 +137,187 @@ public class Battle extends Application {
             int damage = calculateDamage(bestMove, aiPokemon, playerPokemon);
             playerPokemon.setRemainingHealth(playerPokemon.getRemainingHealth() - damage);
 
+            // Update player Pokemon health display
+            updatePokemonUI(playerPokemon, playerHealthBarForeground, playerHealthLabel);
+
             // Check if player Pokemon fainted
             if (playerPokemon.getRemainingHealth() <= 0) {
-                System.out.println(playerPokemon.getNickname() + " fainted!");
-                if (!player.hasUsablePokemon()) {
-                    System.out.println("You have no more usable Pokemon!");
-                    System.out.println("You blacked out!");
-                    // Handle battle end here
-                } else {
-                    // switchButton.setOnAction
-                }
+                // Play fainting animation
+                animatePokemonFainting(playerPokemonView, playerPokemon.getNickname(), () -> {
+                    // Check if player has more usable Pokemon
+                    if (!player.hasUsablePokemon()) {
+                        System.out.println("You have no more usable Pokemon!");
+                        System.out.println("You blacked out!");
+
+                        // Close battle window
+                        Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
+                            Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
+                            Platform.runLater(() -> stage.close());
+                        }));
+                        exitDelay.play();
+                    } else {
+                        // Force player to switch Pokemon
+                        System.out.println("Choose your next Pokemon!");
+                        // Automatically trigger the switch menu
+                        Platform.runLater(() -> {
+                            animateBattleButtonsSlideOut();
+                            prepareForPokemonSwitch();
+                        });
+                    }
+                });
             }
         }
     }
 
     private void applyPlayerAction(String action) {
         // Find the move with the given name in the player's Pokemon's moves
-        Move move = player.getParty().get(0).getMovesList().stream()
+        Move move = player.getCurrentPokemon().getMovesList().stream()
                 .filter(m -> m.getName().equals(action))
                 .findFirst()
                 .orElse(null);
 
         // If the move was found, apply it
         if (move != null) {
-            // Calculate the damage this move would deal to the AI's Pokemon
-            int damage = calculateDamage(move, player.getParty().get(0), opponent.getPokemonList().get(0));
+            if (isWildBattle) {
+                // Wild battle - apply damage to wild Pokemon
+                int damage = calculateDamage(move, player.getCurrentPokemon(), wildPokemon);
 
-            // Reduce the AI's Pokemon's health by this amount
-            trainerPokemon aiPokemon = opponent.getPokemonList().get(0);
-            aiPokemon.setRemainingHealth(aiPokemon.getRemainingHealth() - damage);
+                wildPokemon.setRemainingHealth(wildPokemon.getRemainingHealth() - damage);
+
+                // Update wild Pokemon health bar
+                updatePokemonUI(wildPokemon, opponentHealthBarForeground, opponentHealthLabel);
+
+                // Check if wild Pokemon fainted
+                if (wildPokemon.getRemainingHealth() <= 0) {
+                    // Play fainting animation
+                    animatePokemonFainting(opponentPokemonView, "Wild " + wildPokemon.getName(), () -> {
+                        // Award experience to player's Pokemon
+                        try {
+                            player.getCurrentPokemon().gainExperience(wildPokemon);
+                        } catch (IOException e) {
+                            logger.error("Error awarding experience: {}", e.getMessage());
+                        }
+
+                        // Close battle window with a small delay
+                        Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
+                            Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
+                            Platform.runLater(() -> stage.close());
+                        }));
+                        exitDelay.play();
+                    });
+                    return;
+                }
+
+                // Wild Pokemon's turn
+                wildPokemonTurn();
+            } else {
+                // Trainer battle - apply damage to trainer's Pokemon
+                int damage = calculateDamage(move, player.getCurrentPokemon(), opponent.getPokemonList().get(0));
+
+                trainerPokemon aiPokemon = opponent.getCurrentPokemon();
+                aiPokemon.setRemainingHealth(aiPokemon.getRemainingHealth() - damage);
+
+                // Check if the current opponent Pokemon fainted
+                if (aiPokemon.getRemainingHealth() <= 0) {
+                    // Play fainting animation
+                    animatePokemonFainting(opponentPokemonView, aiPokemon.getName(), () -> {
+                        // Award experience to player's Pokemon immediately when a trainer's Pokemon
+                        // faints
+                        try {
+                            player.getCurrentPokemon().gainExperience(aiPokemon);
+                        } catch (IOException e) {
+                            logger.error("Error awarding experience: {}", e.getMessage());
+                        }
+
+                        // Check if this was the trainer's last Pokemon
+                        if (!opponent.hasUsablePokemon()) {
+                            System.out.println("You won the battle!");
+                            int prizeMoney = opponent.getRewardMoney();
+                            player.addMoney(prizeMoney);
+                            System.out.println("You got $" + prizeMoney + " for winning!");
+
+                            // Close battle window with a small delay
+                            Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
+                                Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
+                                Platform.runLater(() -> stage.close());
+                            }));
+                            exitDelay.play();
+                        } else {
+                            // Trainer sends out next Pokemon
+                            opponent.switchToNextPokemon();
+                            System.out.println(
+                                    opponent.getName() + " sends out " + opponent.getCurrentPokemon().getName() + "!");
+
+                            // Update nickname and level labels for the opponent
+                            if (opponentPokemonNickname != null) {
+                                opponentPokemonNickname.setText(opponent.getCurrentPokemon().getName());
+                            }
+                            if (opponentPokemonLevel != null) {
+                                opponentPokemonLevel.setText("Lv. " + opponent.getCurrentPokemon().getLevel());
+                            }
+
+                            // Update the opponent's health display first (before the animation)
+                            updatePokemonUI(opponent.getCurrentPokemon(), opponentHealthBarForeground,
+                                    opponentHealthLabel);
+
+                            // Load the new Pokemon sprite
+                            Image newOpponentSprite = new Image(
+                                    getClass().getResourceAsStream("/" + opponent.getCurrentPokemon().getSpritePath()));
+
+                            // Create color adjust for the white flash effect (similar to player animation)
+                            ColorAdjust colorAdjust = new ColorAdjust();
+                            colorAdjust.setBrightness(2.0); // Start with white brightness
+                            opponentPokemonView.setEffect(colorAdjust);
+
+                            // Position the new Pokemon off-screen (to the right side)
+                            opponentPokemonView.setOpacity(1.0); // Make fully visible
+                            opponentPokemonView.setTranslateX(scene.getWidth()); // Start off-screen right
+                            opponentPokemonView.setTranslateY(0); // Reset Y position
+                            opponentPokemonView.setImage(newOpponentSprite); // Set new sprite
+
+                            // Create slide-in animation
+                            TranslateTransition slideInAnim = new TranslateTransition(Duration.millis(800),
+                                    opponentPokemonView);
+                            slideInAnim.setFromX(scene.getWidth() / 2); // Start from right side
+                            slideInAnim.setToX(0); // Move to original position
+                            slideInAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                            // Create brightness fade animation
+                            Timeline brightnessAnim = new Timeline(
+                                    new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 2.0)),
+                                    new KeyFrame(Duration.millis(800),
+                                            new KeyValue(colorAdjust.brightnessProperty(), 0.0)));
+
+                            // Combine both animations
+                            ParallelTransition newPokemonEntrance = new ParallelTransition(slideInAnim, brightnessAnim);
+
+                            // When animation completes, remove the effect
+                            newPokemonEntrance.setOnFinished(evt -> {
+                                opponentPokemonView.setEffect(null);
+                            });
+
+                            // Play the entrance animation
+                            newPokemonEntrance.play();
+                        }
+                    });
+                    return;
+                }
+
+                // AI's turn (only happens if opponent Pokemon didn't faint)
+                aiTurn();
+            }
         }
     }
 
-    private int calculateDamage(Move move, Pokemon attacker, trainerPokemon defender) {
+    /**
+     * Universal damage calculation method that works with both Pokemon types.
+     * 
+     * @param move     The move being used
+     * @param attacker The attacking Pokemon
+     * @param defender The defending Pokemon
+     * @return The calculated damage
+     */
+    private int calculateDamage(Move move, IPokemon attacker, IPokemon defender) {
         // Step 1: Calculate base damage
         int levelFactor = (2 * attacker.getLevel()) / 5 + 2;
         double attackDefenseRatio = (double) attacker.getAttack() / defender.getDefense();
@@ -146,32 +342,13 @@ public class Battle extends Application {
         }
 
         // Step 6: Floor the final damage to at least 1
-        finalDamage = Math.max(Math.floor(finalDamage), 1);
-
-        return (int) finalDamage;
+        return Math.max(1, (int) Math.floor(finalDamage));
     }
 
-    private int calculateDamage(Move move, trainerPokemon attacker, Pokemon defender) {
-        int levelFactor = (2 * attacker.getLevel()) / 5 + 2;
-        double attackDefenseRatio = (double) attacker.getAttack() / defender.getDefense();
-        double baseDamage = (levelFactor * move.getPower() * attackDefenseRatio) / 50;
-
-        baseDamage += 2;
-
-        double typeMultiplier = calculateTypeEffectivenessMultiplier(move, defender);
-
-        int finalDamage = (int) (baseDamage * typeMultiplier);
-
-        Random crit = new Random();
-        if (crit.nextInt(16) == 0) {
-            System.out.println("Critical hit!");
-            finalDamage *= 2;
-        }
-
-        return finalDamage;
-    }
-
-    private double calculateTypeEffectivenessMultiplier(Move move, Pokemon pokemon) {
+    /**
+     * Calculate type effectiveness for any IPokemon implementation.
+     */
+    private double calculateTypeEffectivenessMultiplier(Move move, IPokemon pokemon) {
         double multiplier = 1.0;
 
         // Check if the move is super effective against the Pokemon's type1
@@ -180,7 +357,8 @@ public class Battle extends Application {
         }
 
         // Check if the move is super effective against the Pokemon's type2
-        if (pokemon.getType2() != null && move.getSuperEffective().contains(pokemon.getType2())) {
+        if (pokemon.getType2() != null && !pokemon.getType2().isEmpty() &&
+                move.getSuperEffective().contains(pokemon.getType2())) {
             multiplier *= 2;
         }
 
@@ -190,33 +368,8 @@ public class Battle extends Application {
         }
 
         // Check if the move is not very effective against the Pokemon's type2
-        if (pokemon.getType2() != null && move.getNotVeryEffective().contains(pokemon.getType2())) {
-            multiplier /= 2;
-        }
-
-        return multiplier;
-    }
-
-    private double calculateTypeEffectivenessMultiplier(Move move, trainerPokemon pokemon) {
-        double multiplier = 1.0;
-
-        // Check if the move is super effective against the Pokemon's type1
-        if (move.getSuperEffective().contains(pokemon.getType1())) {
-            multiplier *= 2;
-        }
-
-        // Check if the move is super effective against the Pokemon's type2
-        if (pokemon.getType2() != null && move.getSuperEffective().contains(pokemon.getType2())) {
-            multiplier *= 2;
-        }
-
-        // Check if the move is not very effective against the Pokemon's type1
-        if (move.getNotVeryEffective().contains(pokemon.getType1())) {
-            multiplier /= 2;
-        }
-
-        // Check if the move is not very effective against the Pokemon's type2
-        if (pokemon.getType2() != null && move.getNotVeryEffective().contains(pokemon.getType2())) {
+        if (pokemon.getType2() != null && !pokemon.getType2().isEmpty() &&
+                move.getNotVeryEffective().contains(pokemon.getType2())) {
             multiplier /= 2;
         }
 
@@ -249,8 +402,8 @@ public class Battle extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        Pane root = new Pane();
-        Scene scene = new Scene(root, 500, 500);
+        root = new Pane(); // Initialize root as class member
+        scene = new Scene(root, 500, 500);
 
         // Load the custom font
         Font font = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 11);
@@ -265,59 +418,85 @@ public class Battle extends Application {
         // Set the background of the BorderPane
         root.setBackground(new Background(background));
 
-        // Load the images
+        // Load the images - different for wild battles vs trainer battles
         Image playerPokemonImage = new Image(
-                getClass().getResourceAsStream("/" + player.getParty().get(0).getSpritePath()));
-        Image opponentPokemonImage = new Image(
-                getClass().getResourceAsStream("/" + opponent.getPokemonList().get(0).getSpritePath()));
+                getClass().getResourceAsStream("/" + player.getCurrentPokemon().getSpritePath()));
+        Image opponentPokemonImage;
 
-        // Create the nickname labels
-        Label playerPokemonNickname = new Label(player.getParty().get(0).getNickname());
-        Label opponentPokemonNickname = new Label(opponent.getPokemonList().get(0).getName());
+        // Set up Pokemon images and labels based on battle type
+        if (isWildBattle) {
+            opponentPokemonImage = new Image(getClass().getResourceAsStream("/" + wildPokemon.getSpritePath()));
+        } else {
+            opponentPokemonImage = new Image(
+                    getClass().getResourceAsStream("/" + opponent.getCurrentPokemon().getSpritePath()));
+        }
+
+        // Change these from local variables to instance variables
+        playerPokemonNickname = new Label(player.getCurrentPokemon().getNickname());
+
+        if (isWildBattle) {
+            opponentPokemonNickname = new Label(wildPokemon.getName());
+        } else {
+            opponentPokemonNickname = new Label(opponent.getCurrentPokemon().getName());
+        }
 
         // Create the level labels
-        Label playerPokemonLevel = new Label("Lv. " + player.getParty().get(0).getLevel());
-        Label opponentPokemonLevel = new Label("Lv. " + opponent.getPokemonList().get(0).getLevel());
+        playerPokemonLevel = new Label("Lv. " + player.getCurrentPokemon().getLevel());
+
+        if (isWildBattle) {
+            opponentPokemonLevel = new Label("Lv. " + wildPokemon.getLevel());
+        } else {
+            opponentPokemonLevel = new Label("Lv. " + opponent.getCurrentPokemon().getLevel());
+        }
 
         // Create the ImageViews
-        ImageView playerPokemonView = new ImageView(playerPokemonImage);
-        ImageView opponentPokemonView = new ImageView(opponentPokemonImage);
+        playerPokemonView = new ImageView(playerPokemonImage);
+        opponentPokemonView = new ImageView(opponentPokemonImage);
 
         // Create the health bars using rectangles
         Rectangle playerHealthBarBackground = new Rectangle(100, 10);
         playerHealthBarBackground.setFill(Color.DARKGREY);
         playerHealthBarForeground = new Rectangle(
-                player.getParty().get(0).getRemainingHealth() / (double) player.getParty().get(0).getHp() * 100, 10);
+                player.getCurrentPokemon().getRemainingHealth() / (double) player.getCurrentPokemon().getHp() * 100,
+                10);
         playerHealthBarBackground.setStrokeWidth(2);
         playerHealthBarBackground.setArcWidth(10);
         playerHealthBarBackground.setArcHeight(10);
-        playerHealthBarForeground = new Rectangle(
-                player.getParty().get(0).getRemainingHealth() / (double) player.getParty().get(0).getHp() * 100, 10);
         playerHealthBarForeground.setFill(Color.LIGHTGREEN);
         playerHealthBarForeground.setArcWidth(10);
         playerHealthBarForeground.setArcHeight(10);
+
         Rectangle opponentHealthBarBackground = new Rectangle(100, 10);
         opponentHealthBarBackground.setFill(Color.DARKGREY);
-        opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
-                / (double) opponent.getPokemonList().get(0).getHp() * 100, 10);
+
+        if (isWildBattle) {
+            opponentHealthBarForeground = new Rectangle(
+                    wildPokemon.getRemainingHealth() / (double) wildPokemon.getHp() * 100, 10);
+        } else {
+            opponentHealthBarForeground = new Rectangle(
+                    opponent.getCurrentPokemon().getRemainingHealth() / (double) opponent.getCurrentPokemon().getHp()
+                            * 100,
+                    10);
+        }
+
         opponentHealthBarBackground.setStrokeWidth(2);
         opponentHealthBarBackground.setArcWidth(10);
         opponentHealthBarBackground.setArcHeight(10);
-        opponentHealthBarForeground = new Rectangle(opponent.getPokemonList().get(0).getRemainingHealth()
-                / (double) opponent.getPokemonList().get(0).getHp() * 100, 10);
         opponentHealthBarForeground.setFill(Color.LIGHTGREEN);
-        playerHealthLabel = new Label(
-                player.getParty().get(0).getRemainingHealth() + "/" + player.getParty().get(0).getHp());
-        opponentHealthLabel = new Label(
-                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
 
         // Create the health labels
         playerHealthLabel = new Label(
-                player.getParty().get(0).getRemainingHealth() + "/" + player.getParty().get(0).getHp());
-        opponentHealthLabel = new Label(
-                opponent.getPokemonList().get(0).getRemainingHealth() + "/" + opponent.getPokemonList().get(0).getHp());
+                player.getCurrentPokemon().getRemainingHealth() + "/" + player.getCurrentPokemon().getHp());
 
-        // Set the font
+        if (isWildBattle) {
+            opponentHealthLabel = new Label(
+                    wildPokemon.getRemainingHealth() + "/" + wildPokemon.getHp());
+        } else {
+            opponentHealthLabel = new Label(
+                    opponent.getCurrentPokemon().getRemainingHealth() + "/" + opponent.getCurrentPokemon().getHp());
+        }
+
+        // Set the font for labels
         playerHealthLabel.setFont(font);
         opponentHealthLabel.setFont(font);
         playerPokemonNickname.setFont(font);
@@ -341,7 +520,8 @@ public class Battle extends Application {
         playerXPBarBackground.setArcWidth(5);
         playerXPBarBackground.setArcHeight(5);
         Rectangle playerXPBarForeground = new Rectangle(
-                player.getParty().get(0).getExperience() / (double) player.getParty().get(0).getLevelTreshhold() * 100,
+                player.getCurrentPokemon().getExperience() / (double) player.getCurrentPokemon().getLevelTreshhold()
+                        * 100,
                 5);
         playerXPBarForeground.setFill(Color.LIGHTBLUE);
         playerXPBarForeground.setArcWidth(5);
@@ -429,48 +609,79 @@ public class Battle extends Application {
         primaryStage.setScene(scene);
         primaryStage.setResizable(false);
         primaryStage.show();
-
         // Create battle controls
-        HBox controlsBox = new HBox(20);
+        controlsBox = new HBox(20);
         controlsBox.setLayoutY(scene.getHeight() - 120);
+        controlsBox.setPrefWidth(scene.getWidth());
         controlsBox.setPrefWidth(scene.getWidth());
         controlsBox.setAlignment(Pos.CENTER);
         controlsBox.setSpacing(20);
 
         // Create and style buttons
         Button fightButton = new Button("Fight");
+        Button catchButton = new Button("Catch");
         Button switchButton = new Button("Switch");
         Button runButton = new Button("Run");
 
         // Increase font size
         Font largeFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 18);
         fightButton.setFont(largeFont);
+        catchButton.setFont(largeFont);
         switchButton.setFont(largeFont);
         runButton.setFont(largeFont);
 
-        // Style buttons to span width and have consistent height
-        String buttonStyle = "-fx-text-fill: black; " +
-                "-fx-border-color: black; " +
-                "-fx-border-width: 1px; " +
-                "-fx-border-radius: 2; " +
-                "-fx-background-radius: 2; " +
-                "-fx-min-width: 50px; " +
-                "-fx-min-height: 20px; " +
-                "-fx-cursor: hand; " +
-                "-fx-alignment: center; " +
-                "-fx-focus-color: transparent; " +
-                "-fx-faint-focus-color: transparent; " +
-                "-fx-background-insets: 0;";
+        // Apply improved styling to match exploreWindow buttons
+        String baseButtonStyle = "-fx-background-color: white; " +
+                "-fx-background-radius: 5; " +
+                "-fx-padding: 10 15 10 15; " +
+                "-fx-text-fill: black; " +
+                "-fx-border-color: #000000; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 2px; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);";
 
-        fightButton.setStyle(buttonStyle);
-        switchButton.setStyle(buttonStyle);
-        runButton.setStyle(buttonStyle);
+        String hoverButtonStyle = "-fx-background-color: #f0f0f0; " +
+                "-fx-background-radius: 5; " +
+                "-fx-padding: 10 15 10 15; " +
+                "-fx-text-fill: black; " +
+                "-fx-border-color: #000000; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 2px; " +
+                "-fx-scale-x: 1.03; " +
+                "-fx-scale-y: 1.03; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);";
+
+        String pressedButtonStyle = "-fx-background-color: #e0e0e0; " +
+                "-fx-background-radius: 5; " +
+                "-fx-padding: 10 15 10 15; " +
+                "-fx-text-fill: black; " +
+                "-fx-border-color: #000000; " +
+                "-fx-border-radius: 5; " +
+                "-fx-border-width: 2px; " +
+                "-fx-scale-x: 0.98; " +
+                "-fx-scale-y: 0.98; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
+
+        // Apply the same styling to all main battle buttons
+        for (Button button : new Button[] { fightButton, catchButton, switchButton, runButton }) {
+            button.setStyle(baseButtonStyle);
+            button.setOnMouseEntered(e -> button.setStyle(hoverButtonStyle));
+            button.setOnMouseExited(e -> button.setStyle(baseButtonStyle));
+            button.setOnMousePressed(e -> button.setStyle(pressedButtonStyle));
+            button.setOnMouseReleased(e -> button.setStyle(hoverButtonStyle));
+        }
 
         // Fight button animation
         TranslateTransition fightButtonAnim = new TranslateTransition(Duration.millis(500), fightButton);
         fightButtonAnim.setFromY(100);
         fightButtonAnim.setToY(0);
         fightButtonAnim.setInterpolator(Interpolator.EASE_OUT);
+
+        // Catch button animation
+        TranslateTransition catchButtonAnim = new TranslateTransition(Duration.millis(525), catchButton);
+        catchButtonAnim.setFromY(100);
+        catchButtonAnim.setToY(0);
+        catchButtonAnim.setInterpolator(Interpolator.EASE_OUT);
 
         // Switch button animation
         TranslateTransition switchButtonAnim = new TranslateTransition(Duration.millis(550), switchButton);
@@ -486,6 +697,7 @@ public class Battle extends Application {
 
         // Play animations
         fightButtonAnim.play();
+        catchButtonAnim.play();
         switchButtonAnim.play();
         runButtonAnim.play();
 
@@ -494,6 +706,12 @@ public class Battle extends Application {
         fightButtonHide.setFromY(0);
         fightButtonHide.setToY(100);
         fightButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+        // Catch button disappearing animation
+        TranslateTransition catchButtonHide = new TranslateTransition(Duration.millis(550), catchButton);
+        catchButtonHide.setFromY(0);
+        catchButtonHide.setToY(100);
+        catchButtonHide.setInterpolator(Interpolator.EASE_IN);
 
         // Switch button disappearing animation
         TranslateTransition switchButtonHide = new TranslateTransition(Duration.millis(600), switchButton);
@@ -510,7 +728,7 @@ public class Battle extends Application {
         VBox.setVgrow(controlsBox, Priority.NEVER);
         root.getChildren().add(controlsBox);
 
-        // Configure HBox for buttons
+        // Configure HBox for buttons - removed background styling
         controlsBox.setSpacing(10);
         controlsBox.setAlignment(Pos.CENTER);
         controlsBox.setPadding(new Insets(70, 10, 10, 10));
@@ -521,16 +739,18 @@ public class Battle extends Application {
         controlsBox.setMinHeight(40);
 
         // Initialize controlsBox with default buttons
-        controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
+        controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
 
         // Make buttons grow to fill space
         HBox.setHgrow(fightButton, Priority.ALWAYS);
+        HBox.setHgrow(catchButton, Priority.ALWAYS);
         HBox.setHgrow(switchButton, Priority.ALWAYS);
         HBox.setHgrow(runButton, Priority.ALWAYS);
 
-        // Fight
-        fightButton.setOnAction(e -> {
+        // Store the original event handlers before setting them
+        fightButtonHandler = e -> {
             fightButtonHide.play();
+            catchButtonHide.play();
             switchButtonHide.play();
             runButtonHide.play();
 
@@ -572,6 +792,7 @@ public class Battle extends Application {
                             Color darker = typeColor.darker();
                             Color lighter = typeColor.brighter();
 
+                            // Keep the existing color-based styling but improve the button appearance
                             String moveButtonStyle = String.format(
                                     "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
                                             "-fx-text-fill: black; " +
@@ -580,33 +801,49 @@ public class Battle extends Application {
                                             "-fx-background-radius: 5; " +
                                             "-fx-min-width: 150px; " +
                                             "-fx-min-height: 40px; " +
-                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 2); " +
-                                            "-fx-cursor: hand;",
+                                            "-fx-border-width: 2px; " +
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 4, 0, 0, 1);",
                                     lighter.toString().replace("0x", "#"),
                                     darker.toString().replace("0x", "#"),
                                     baseColor);
 
                             String hoverStyle = String.format(
                                     "-fx-background-color: linear-gradient(to bottom, %s, %s); " +
-                                            "-fx-scale-x: 1.05; " +
-                                            "-fx-scale-y: 1.05; " +
-                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 8, 0, 0, 3);",
-                                    lighter.brighter().toString().replace("0x", "#"),
-                                    darker.toString().replace("0x", "#"));
+                                            "-fx-text-fill: black; " +
+                                            "-fx-border-color: derive(%s, -20%%); " +
+                                            "-fx-border-radius: 5; " +
+                                            "-fx-background-radius: 5; " +
+                                            "-fx-min-width: 150px; " +
+                                            "-fx-min-height: 40px; " +
+                                            "-fx-border-width: 2px; " +
+                                            "-fx-scale-x: 1.03; " +
+                                            "-fx-scale-y: 1.03; " +
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 6, 0, 0, 2);",
+                                    lighter.toString().replace("0x", "#"),
+                                    darker.toString().replace("0x", "#"),
+                                    baseColor);
 
                             String pressedStyle = String.format(
                                     "-fx-background-color: linear-gradient(to top, %s, %s); " +
+                                            "-fx-text-fill: black; " +
+                                            "-fx-border-color: derive(%s, -20%%); " +
+                                            "-fx-border-radius: 5; " +
+                                            "-fx-background-radius: 5; " +
+                                            "-fx-min-width: 150px; " +
+                                            "-fx-min-height: 40px; " +
+                                            "-fx-border-width: 2px; " +
                                             "-fx-scale-x: 0.98; " +
                                             "-fx-scale-y: 0.98; " +
-                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 3, 0, 0, 1);",
+                                            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);",
                                     lighter.toString().replace("0x", "#"),
-                                    darker.darker().toString().replace("0x", "#"));
+                                    darker.toString().replace("0x", "#"),
+                                    baseColor);
 
                             moveButton.setStyle(moveButtonStyle);
-                            moveButton.setOnMouseEntered(ev -> moveButton.setStyle(moveButtonStyle + hoverStyle));
+                            moveButton.setOnMouseEntered(ev -> moveButton.setStyle(hoverStyle));
                             moveButton.setOnMouseExited(ev -> moveButton.setStyle(moveButtonStyle));
-                            moveButton.setOnMousePressed(ev -> moveButton.setStyle(moveButtonStyle + pressedStyle));
-                            moveButton.setOnMouseReleased(ev -> moveButton.setStyle(moveButtonStyle));
+                            moveButton.setOnMousePressed(ev -> moveButton.setStyle(pressedStyle));
+                            moveButton.setOnMouseReleased(ev -> moveButton.setStyle(hoverStyle));
 
                             // Initial position: below the visible window
                             moveButton.setTranslateY(scene.getHeight() - 300);
@@ -617,42 +854,8 @@ public class Battle extends Application {
                                         player.getCurrentPokemon().getNickname() + " used " + move.getName() + "!");
                                 applyPlayerAction(move.getName());
 
-                                // Check if opponent fainted
-                                if (!opponent.hasUsablePokemon()) {
-                                    System.out.println("You won the battle!");
-                                    int prizeMoney = opponent.getRewardMoney();
-                                    player.addMoney(prizeMoney);
-                                    System.out.println("You got $" + prizeMoney + " for winning!");
-                                    Stage stage = (Stage) controlsBox.getScene().getWindow();
-                                    stage.close();
-                                    return;
-                                }
-
-                                aiTurn();
-                                // Update player Pokemon health based on first party Pokemon
-                                Pokemon playerPokemon = player.getCurrentPokemon();
-                                double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
-                                        / playerPokemon.getHp() * 100;
-                                playerHealthBarForeground.setWidth(playerHealthPercent);
-                                playerHealthLabel
-                                        .setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
-
-                                // Update player Pokemon XP bar and level
-                                double playerXPPercent = (double) playerPokemon.getExperience()
-                                        / playerPokemon.getLevelTreshhold() * 100;
-                                playerXPBarForeground.setWidth(playerXPPercent);
-                                playerPokemonLevel.setText("Lv. " + playerPokemon.getLevel());
-
-                                // Update opponent Pokemon health based on first Pokemon in their list
-                                trainerPokemon opponentPokemon = opponent.getCurrentPokemon();
-                                double oppHealthPercent = (double) opponentPokemon.getRemainingHealth()
-                                        / opponentPokemon.getHp() * 100;
-                                opponentHealthBarForeground.setWidth(oppHealthPercent);
-                                opponentHealthLabel
-                                        .setText(opponentPokemon.getRemainingHealth() + "/" + opponentPokemon.getHp());
-
-                                // Update opponent Pokemon level
-                                opponentPokemonLevel.setText("Lv. " + opponentPokemon.getLevel());
+                                // Only update UI if battle is still ongoing
+                                updateBattleUI();
                             });
 
                             // Assign buttons to rows and store them in the corresponding lists
@@ -684,15 +887,56 @@ public class Battle extends Application {
                         // Add both rows to the VBox
                         moveRows.getChildren().addAll(topRow, bottomRow);
 
-                        // Create the "Back" button
+                        // Create the "Back" button with improved styling to match exploreWindow
+                        // Made font smaller to fit within the tiny button size
                         Button backButton = new Button("◄");
-                        backButton.setFont(Font.font("Arial", 14));
+                        backButton.setFont(Font.font("Arial", 12)); // Decreased font size from 16 to 12
                         backButton.setStyle("-fx-background-color: #cc0000; " +
                                 "-fx-text-fill: white; " +
                                 "-fx-cursor: hand; " +
-                                "-fx-padding: 2 4 2 4;");
-                        backButton.setPrefWidth(25);
-                        backButton.setPrefHeight(25);
+                                "-fx-padding: 2 4 2 4; " + // Reverted to original smaller padding
+                                "-fx-background-radius: 5; " +
+                                "-fx-border-color: #800000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);");
+
+                        backButton.setOnMouseEntered(ev -> backButton.setStyle("-fx-background-color: #ff0000; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-padding: 2 4 2 4; " + // Reverted to original smaller padding
+                                "-fx-background-radius: 5; " +
+                                "-fx-border-color: #800000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-scale-x: 1.03; " +
+                                "-fx-scale-y: 1.03; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);"));
+
+                        backButton.setOnMouseExited(ev -> backButton.setStyle("-fx-background-color: #cc0000; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-padding: 2 4 2 4; " + // Reverted to original smaller padding
+                                "-fx-background-radius: 5; " +
+                                "-fx-border-color: #800000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);"));
+
+                        backButton.setOnMousePressed(ev -> backButton.setStyle("-fx-background-color: #990000; " +
+                                "-fx-text-fill: white; " +
+                                "-fx-cursor: hand; " +
+                                "-fx-padding: 2 4 2 4; " + // Reverted to original smaller padding
+                                "-fx-background-radius: 5; " +
+                                "-fx-border-color: #800000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-scale-x: 0.98; " +
+                                "-fx-scale-y: 0.98; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);"));
+
+                        backButton.setPrefWidth(25); // Reverted to original smaller width
+                        backButton.setPrefHeight(25); // Reverted to original smaller height
                         backButton.setTranslateY(scene.getHeight() + 100);
 
                         // Handle back button click
@@ -729,11 +973,20 @@ public class Battle extends Application {
                             new Timeline(new KeyFrame(Duration.millis(500), ae -> {
                                 controlsBox.getChildren().clear();
 
+                                // Reset button positions
+                                fightButton.setTranslateY(scene.getHeight());
+                                catchButton.setTranslateY(scene.getHeight());
+                                switchButton.setTranslateY(scene.getHeight());
+                                runButton.setTranslateY(scene.getHeight());
+
+                                // Add all buttons back
+                                controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
+
+                                // Play animations
                                 fightButtonAnim.play();
+                                catchButtonAnim.play();
                                 switchButtonAnim.play();
                                 runButtonAnim.play();
-                                controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
-
                             })).play();
                         });
 
@@ -750,11 +1003,15 @@ public class Battle extends Application {
                     }
                 }
             });
-        });
+        };
 
-        // Switch
-        switchButton.setOnAction(e -> {
+        // Apply the stored handler
+        fightButton.setOnAction(fightButtonHandler);
+
+        // Store and apply switch button handler
+        switchButtonHandler = e -> {
             fightButtonHide.play();
+            catchButtonHide.play();
             switchButtonHide.play();
             runButtonHide.play();
 
@@ -776,6 +1033,17 @@ public class Battle extends Application {
                         "-fx-focus-color: transparent; " +
                         "-fx-faint-focus-color: transparent;";
 
+                // Style for already active Pokémon
+                String activeButtonStyle = pokemonButtonStyle +
+                        "-fx-border-color: gold; " +
+                        "-fx-border-width: 2px; " +
+                        "-fx-effect: dropshadow(three-pass-box, gold, 5, 0.7, 0, 0);";
+
+                // Style for fainted Pokémon
+                String faintedButtonStyle = pokemonButtonStyle +
+                        "-fx-opacity: 0.6; " +
+                        "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 1);";
+
                 for (int i = 0; i < player.getParty().size(); i++) {
                     Pokemon pokemon = player.getParty().get(i);
                     Button pokemonButton = new Button();
@@ -786,10 +1054,106 @@ public class Battle extends Application {
                     spriteView.setFitHeight(55);
                     spriteView.setPreserveRatio(true);
                     pokemonButton.setGraphic(spriteView);
-                    pokemonButton.setTooltip(new Tooltip(pokemon.getNickname()));
-                    pokemonButton.setStyle(pokemonButtonStyle);
+
+                    // Add more details to tooltip
+                    String tooltipText = pokemon.getNickname() + " (Lv." + pokemon.getLevel() + ")";
+                    if (pokemon.getRemainingHealth() <= 0) {
+                        tooltipText += " - Fainted";
+                    } else {
+                        tooltipText += " - HP: " + pokemon.getRemainingHealth() + "/" + pokemon.getHp();
+                    }
+                    pokemonButton.setTooltip(new Tooltip(tooltipText));
+
+                    // Apply appropriate style based on Pokémon state
+                    if (player.getCurrentPokemon() == pokemon) {
+                        pokemonButton.setStyle(activeButtonStyle);
+                    } else if (pokemon.getRemainingHealth() <= 0) {
+                        pokemonButton.setStyle(faintedButtonStyle);
+                        // Add a visual indicator for fainted Pokémon (gray overlay)
+                        ColorAdjust grayscale = new ColorAdjust();
+                        grayscale.setSaturation(-1.0); // Full desaturation
+                        spriteView.setEffect(grayscale);
+                    } else {
+                        pokemonButton.setStyle(pokemonButtonStyle);
+                    }
 
                     pokemonButton.setOnAction(event -> {
+                        // If clicked on current Pokémon, close the switch menu and return to main
+                        // battle controls
+                        if (player.getCurrentPokemon() == pokemon) {
+                            System.out.println(pokemon.getNickname() + " is already out!");
+
+                            // Add a brief highlight effect before closing
+                            ColorAdjust highlight = new ColorAdjust();
+                            highlight.setBrightness(0.3);
+                            pokemonButton.setEffect(highlight);
+
+                            // Animate the highlight fading
+                            Timeline highlightFade = new Timeline(
+                                    new KeyFrame(Duration.ZERO, new KeyValue(highlight.brightnessProperty(), 0.3)),
+                                    new KeyFrame(Duration.millis(300),
+                                            new KeyValue(highlight.brightnessProperty(), 0.0)));
+                            highlightFade.play();
+
+                            // Close the switch menu
+                            TranslateTransition closeAnim = new TranslateTransition(Duration.millis(800), switchBox);
+                            closeAnim.setToY(scene.getHeight());
+                            closeAnim.setInterpolator(Interpolator.EASE_IN);
+                            closeAnim.setOnFinished(evt -> {
+                                controlsBox.getChildren().clear();
+
+                                // Reset button positions
+                                fightButton.setTranslateY(scene.getHeight());
+                                catchButton.setTranslateY(scene.getHeight());
+                                switchButton.setTranslateY(scene.getHeight());
+                                runButton.setTranslateY(scene.getHeight());
+
+                                // Add all buttons back
+                                controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
+
+                                // Play animations
+                                fightButtonAnim.play();
+                                catchButtonAnim.play();
+                                switchButtonAnim.play();
+                                runButtonAnim.play();
+                            });
+                            closeAnim.play();
+                            return;
+                        }
+
+                        // Skip if the Pokemon is fainted
+                        if (pokemon.getRemainingHealth() <= 0) {
+                            System.out.println(pokemon.getNickname() + " has fainted and cannot battle!");
+
+                            // Add visual feedback for trying to select a fainted Pokémon
+                            ColorAdjust errorEffect = new ColorAdjust();
+                            errorEffect.setSaturation(-0.5);
+                            errorEffect.setBrightness(-0.2);
+                            pokemonButton.setEffect(errorEffect);
+
+                            // Shake animation to indicate error
+                            TranslateTransition shakeLeft = new TranslateTransition(Duration.millis(80), pokemonButton);
+                            shakeLeft.setByX(-5);
+                            TranslateTransition shakeRight = new TranslateTransition(Duration.millis(80),
+                                    pokemonButton);
+                            shakeRight.setByX(5);
+                            TranslateTransition shakeCenter = new TranslateTransition(Duration.millis(80),
+                                    pokemonButton);
+                            shakeCenter.setByX(0);
+
+                            Timeline resetEffect = new Timeline(
+                                    new KeyFrame(Duration.millis(400), evt -> pokemonButton.setEffect(null)));
+
+                            shakeLeft.setOnFinished(evt -> shakeRight.play());
+                            shakeRight.setOnFinished(evt -> shakeCenter.play());
+                            shakeCenter.setOnFinished(evt -> resetEffect.play());
+                            shakeLeft.play();
+                            return;
+                        }
+
+                        // Store current Pokemon for reference
+                        Pokemon previousPokemon = player.getCurrentPokemon();
+
                         // Apply color adjustment for switch-out animation
                         ColorAdjust colorAdjust = new ColorAdjust();
                         playerPokemonView.setEffect(colorAdjust);
@@ -810,9 +1174,21 @@ public class Battle extends Application {
                             // Store the final X position of the outgoing Pokémon
                             double switchOutEndX = playerPokemonView.getTranslateX();
 
-                            // Update to the new Pokémon sprite
+                            // Update player's current Pokemon before UI updates
                             player.setCurrentPokemon(pokemon);
+
+                            // Update all UI elements together - before showing the new sprite
+                            // This ensures the health bar and name change together
                             playerPokemonNickname.setText(pokemon.getNickname());
+                            playerPokemonLevel.setText("Lv. " + pokemon.getLevel());
+                            updatePokemonUI(pokemon, playerHealthBarForeground, playerHealthLabel);
+
+                            // Update XP bar
+                            double playerXPPercent = (double) pokemon.getExperience() / pokemon.getLevelTreshhold()
+                                    * 100;
+                            playerXPBarForeground.setWidth(playerXPPercent);
+
+                            // Now update the sprite after all other UI elements have been updated
                             Image newSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
                             playerPokemonView.setImage(newSprite);
 
@@ -833,33 +1209,49 @@ public class Battle extends Application {
                             switchInAnim.setToX(0); // Move to the correct position
                             switchInAnim.setInterpolator(Interpolator.EASE_OUT);
 
-                            switchInAnim.setOnFinished(ev -> playerPokemonView.setEffect(null));
+                            // When the switch-in animation completes
+                            switchInAnim.setOnFinished(ev -> {
+                                playerPokemonView.setEffect(null);
+                                System.out.println(previousPokemon.getNickname() + " was withdrawn!");
+                                System.out.println("Go! " + pokemon.getNickname() + "!");
+
+                                // Now the opponent gets to attack after the switch
+                                // Delay the opponent's attack slightly for better visual flow
+                                Timeline attackDelay = new Timeline(new KeyFrame(Duration.millis(500), attackEvent -> {
+                                    if (isWildBattle) {
+                                        wildPokemonTurn();
+                                    } else {
+                                        aiTurn();
+                                    }
+
+                                    // Update the UI after opponent's attack
+                                    updateBattleUI();
+
+                                    // Check if player's Pokemon fainted from the opponent's attack
+                                    if (player.getCurrentPokemon().getRemainingHealth() <= 0) {
+                                        System.out.println(player.getCurrentPokemon().getNickname() + " fainted!");
+
+                                        // Check if player has more usable Pokemon
+                                        if (!player.hasUsablePokemon()) {
+                                            System.out.println("You have no more usable Pokemon!");
+                                            System.out.println("You blacked out!");
+
+                                            // Close battle window
+                                            Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
+                                            Platform.runLater(stage::close);
+                                            return;
+                                        } else {
+                                            // Force player to switch Pokemon
+                                            System.out.println("Choose your next Pokemon!");
+                                        }
+                                    }
+                                }));
+                                attackDelay.play();
+                            });
 
                             // Play switch-in animations
                             switchInAnim.play();
                             switchInFade.play();
-
-                            // Update health bar and labels
-                            Pokemon playerPokemon = player.getCurrentPokemon();
-                            double playerHealthPercent = (double) playerPokemon.getRemainingHealth()
-                                    / playerPokemon.getHp()
-                                    * 100;
-                            playerHealthBarForeground.setWidth(playerHealthPercent);
-                            playerHealthLabel.setText(playerPokemon.getRemainingHealth() + "/" + playerPokemon.getHp());
-
-                            double playerXPPercent = (double) playerPokemon.getExperience()
-                                    / playerPokemon.getLevelTreshhold() * 100;
-                            playerXPBarForeground.setWidth(playerXPPercent);
-                            playerPokemonLevel.setText("Lv. " + playerPokemon.getLevel());
-
-                            trainerPokemon opponentPokemon = opponent.getCurrentPokemon();
-                            double oppHealthPercent = (double) opponentPokemon.getRemainingHealth()
-                                    / opponentPokemon.getHp() * 100;
-                            opponentHealthBarForeground.setWidth(oppHealthPercent);
-                            opponentHealthLabel
-                                    .setText(opponentPokemon.getRemainingHealth() + "/" + opponentPokemon.getHp());
-
-                            opponentPokemonLevel.setText("Lv. " + opponentPokemon.getLevel());
                         });
 
                         // Play switch-out animations
@@ -874,14 +1266,16 @@ public class Battle extends Application {
 
                             // Set initial state for buttons (likely off-screen position)
                             fightButton.setTranslateY(scene.getHeight());
+                            catchButton.setTranslateY(scene.getHeight());
                             switchButton.setTranslateY(scene.getHeight());
                             runButton.setTranslateY(scene.getHeight());
 
                             // Add buttons first
-                            controlsBox.getChildren().addAll(fightButton, switchButton, runButton);
+                            controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
 
                             // Then play animations
                             fightButtonAnim.play();
+                            catchButtonAnim.play();
                             switchButtonAnim.play();
                             runButtonAnim.play();
                         });
@@ -891,15 +1285,854 @@ public class Battle extends Application {
                     switchBox.getChildren().add(pokemonButton);
                 }
 
+                // Place switchBox directly in controlsBox (no VBox container)
                 controlsBox.getChildren().clear();
                 controlsBox.getChildren().add(switchBox);
 
+                // Restore original animation behavior
                 TranslateTransition tt = new TranslateTransition(Duration.millis(1800), switchBox);
                 tt.setToY(-20);
                 tt.setInterpolator(Interpolator.EASE_OUT);
-                tt.jumpTo(Duration.millis(1400));
+                tt.jumpTo(Duration.millis(1400)); // Jump to near the end of the animation for that snappy effect
                 tt.play();
             });
+        };
+        switchButton.setOnAction(switchButtonHandler);
+
+        // Different button behaviors for wild vs trainer battles
+        if (isWildBattle) {
+            // Wild battle-specific Catch button behavior
+            catchButtonHandler = e -> {
+                fightButtonHide.play();
+                catchButtonHide.play();
+                switchButtonHide.play();
+                runButtonHide.play();
+
+                runButtonHide.setOnFinished(finishedEvent -> {
+                    // Determine catch probability (75% chance)
+                    boolean catchSuccess = Math.random() < 0.75;
+
+                    // Start the catch animation sequence
+                    animateCatchAttempt(catchSuccess, wildPokemon, opponentPokemonView, () -> {
+                        if (catchSuccess) {
+                            System.out.println("You caught " + wildPokemon.getName() + "!");
+                            player.addPokemonToParty(wildPokemon);
+
+                            // Close the battle window on the FX thread after a short delay
+                            Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1500), exitEvent -> {
+                                Stage stage = (Stage) controlsBox.getScene().getWindow();
+                                Platform.runLater(stage::close);
+                            }));
+                            exitDelay.play();
+                        } else {
+                            System.out.println(wildPokemon.getName() + " broke free!");
+
+                            // Wild Pokémon's turn after a delay
+                            Timeline turnDelay = new Timeline(new KeyFrame(Duration.millis(500), turnEvent -> {
+                                wildPokemonTurn();
+
+                                // Reset controls after wild Pokémon's turn
+                                controlsBox.getChildren().clear();
+                                fightButton.setTranslateY(scene.getHeight());
+                                catchButton.setTranslateY(scene.getHeight());
+                                switchButton.setTranslateY(scene.getHeight());
+                                runButton.setTranslateY(scene.getHeight());
+
+                                controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
+
+                                fightButtonAnim.play();
+                                catchButtonAnim.play();
+                                switchButtonAnim.play();
+                                runButtonAnim.play();
+                            }));
+                            turnDelay.play();
+                        }
+                    });
+                });
+            };
+            catchButton.setOnAction(catchButtonHandler);
+
+            // Wild battle-specific Run button behavior
+            runButtonHandler = e -> {
+                fightButtonHide.play();
+                catchButtonHide.play();
+                switchButtonHide.play();
+                runButtonHide.play();
+
+                runButtonHide.setOnFinished(finishedEvent -> {
+                    // Check if player's Pokémon is faster
+                    boolean playerFaster = player.getCurrentPokemon().getSpeed() > wildPokemon.getSpeed();
+
+                    // 75% chance to run if player's Pokémon is faster, 0% otherwise
+                    boolean canRun = playerFaster && Math.random() < 0.75;
+
+                    if (canRun) {
+                        System.out.println("Got away safely!");
+
+                        // Close the battle window
+                        Stage stage = (Stage) controlsBox.getScene().getWindow();
+                        Platform.runLater(() -> stage.close());
+                    } else {
+                        System.out.println("Can't escape!");
+
+                        // Wild Pokémon's turn
+                        wildPokemonTurn();
+
+                        // Reset controls after wild Pokémon's turn
+                        controlsBox.getChildren().clear();
+                        fightButton.setTranslateY(scene.getHeight());
+                        catchButton.setTranslateY(scene.getHeight());
+                        switchButton.setTranslateY(scene.getHeight());
+                        runButton.setTranslateY(scene.getHeight());
+
+                        controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
+
+                        fightButtonAnim.play();
+                        catchButtonAnim.play();
+                        switchButtonAnim.play();
+                        runButtonAnim.play();
+                    }
+                });
+            };
+            runButton.setOnAction(runButtonHandler);
+        } else {
+            // Trainer battle catch button
+            catchButtonHandler = e -> {
+                System.out.println("You can't catch a trainer's Pokemon! You thief!");
+            };
+            catchButton.setOnAction(catchButtonHandler);
+
+            // Trainer battle run button
+            runButtonHandler = e -> {
+                System.out.println("Can't run from a trainer battle!");
+            };
+            runButton.setOnAction(runButtonHandler);
+        }
+    }
+
+    /**
+     * Animates the entire catching sequence.
+     * 
+     * @param catchSuccess  Whether the catch will ultimately be successful
+     * @param targetPokemon The Pokemon being caught
+     * @param targetView    The ImageView of the target Pokemon
+     * @param onComplete    Callback to execute when animation completes
+     */
+    private void animateCatchAttempt(boolean catchSuccess, IPokemon targetPokemon, ImageView targetView,
+            Runnable onComplete) {
+        // Number of shakes based on success (3 for success, 0-2 for failure)
+        int numShakes = catchSuccess ? 3 : new Random().nextInt(3);
+
+        // Create pokeball image view
+        Image pokeballImage = new Image(getClass().getResourceAsStream("/pokeball.png"));
+        ImageView pokeball = new ImageView(pokeballImage);
+        pokeball.setFitWidth(30);
+        pokeball.setFitHeight(30);
+        pokeball.setPreserveRatio(true);
+
+        // Starting position (off-screen left, at player level)
+        pokeball.setTranslateX(-50);
+        pokeball.setTranslateY(targetView.getLayoutY() + 60);
+
+        // Add pokeball to scene
+        root.getChildren().add(pokeball);
+
+        // Calculate target position
+        double targetX = targetView.getLayoutX() + targetView.getFitWidth() / 2;
+        double targetY = targetView.getLayoutY() + targetView.getFitHeight() / 2;
+
+        // 1. Throw animation (arc path)
+        animatePokeballThrow(pokeball, targetX, targetY, () -> {
+            // 2. Capture animation (Pokemon glows white and disappears)
+            animatePokemonCapture(targetView, () -> {
+                // 3. Drop animation (Pokeball falls to ground)
+                animatePokeballDrop(pokeball, targetY + 40, () -> {
+                    // 4. Shake animation
+                    animatePokeballShake(pokeball, numShakes, () -> {
+                        // 5. Finish animation (either release Pokemon or complete catch)
+                        if (catchSuccess) {
+                            // Success! Just leave the pokeball there
+                            onComplete.run();
+                        } else {
+                            // Failure - Pokemon breaks out
+                            animateBreakout(pokeball, targetView, onComplete);
+                        }
+                    });
+                });
+            });
         });
+    }
+
+    /**
+     * Animates throwing the Pokeball in an arc toward the target
+     */
+    private void animatePokeballThrow(ImageView pokeball, double targetX, double targetY, Runnable onComplete) {
+        // Duration of throw animation
+        Duration throwDuration = Duration.millis(800);
+
+        // Create path for arc trajectory
+        Path path = new Path();
+        path.getElements().add(new MoveTo(pokeball.getTranslateX(), pokeball.getTranslateY()));
+
+        // Control point for arc (above the target)
+        double controlX = (pokeball.getTranslateX() + targetX) / 2;
+        double controlY = targetY - 100; // Control point above the path
+
+        path.getElements().add(new QuadCurveTo(controlX, controlY, targetX, targetY));
+
+        // Create path transition
+        PathTransition pathTransition = new PathTransition(throwDuration, path, pokeball);
+        pathTransition.setInterpolator(Interpolator.EASE_OUT);
+
+        // Add rotation to the pokeball while it's flying
+        RotateTransition rotateTransition = new RotateTransition(throwDuration, pokeball);
+        rotateTransition.setByAngle(720); // Two full spins
+        rotateTransition.setInterpolator(Interpolator.LINEAR);
+
+        // Play animations in parallel
+        ParallelTransition throwAnimation = new ParallelTransition(pathTransition, rotateTransition);
+        throwAnimation.setOnFinished(event -> onComplete.run());
+        throwAnimation.play();
+    }
+
+    /**
+     * Animates the Pokemon being captured (glow and disappear)
+     */
+    private void animatePokemonCapture(ImageView pokemonView, Runnable onComplete) {
+        // Store the original opacity
+        double originalOpacity = pokemonView.getOpacity();
+
+        // Create a white glow effect
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0);
+        pokemonView.setEffect(colorAdjust);
+
+        // Animate brightness to create glow effect
+        Timeline glowAnimation = new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 0)),
+                new KeyFrame(Duration.millis(500), new KeyValue(colorAdjust.brightnessProperty(), 1)));
+
+        // Fade out the Pokemon
+        FadeTransition fadeOut = new FadeTransition(Duration.millis(300), pokemonView);
+        fadeOut.setFromValue(originalOpacity);
+        fadeOut.setToValue(0);
+        fadeOut.setDelay(Duration.millis(400));
+
+        // Play animations sequentially
+        SequentialTransition captureAnimation = new SequentialTransition(glowAnimation, fadeOut);
+        captureAnimation.setOnFinished(event -> onComplete.run());
+        captureAnimation.play();
+    }
+
+    /**
+     * Animates the Pokeball dropping to the ground
+     */
+    private void animatePokeballDrop(ImageView pokeball, double groundY, Runnable onComplete) {
+        TranslateTransition dropAnimation = new TranslateTransition(Duration.millis(300), pokeball);
+        dropAnimation.setToY(groundY);
+        dropAnimation.setInterpolator(Interpolator.EASE_IN);
+        dropAnimation.setOnFinished(event -> onComplete.run());
+        dropAnimation.play();
+    }
+
+    /**
+     * Animates the Pokeball shaking
+     */
+    private void animatePokeballShake(ImageView pokeball, int numShakes, Runnable onComplete) {
+        SequentialTransition shakeSequence = new SequentialTransition();
+
+        // Add a small delay before first shake
+        PauseTransition initialPause = new PauseTransition(Duration.millis(300));
+        shakeSequence.getChildren().add(initialPause);
+
+        for (int i = 0; i < numShakes; i++) {
+            // Tilt left
+            RotateTransition tiltLeft = new RotateTransition(Duration.millis(150), pokeball);
+            tiltLeft.setFromAngle(0);
+            tiltLeft.setToAngle(-20);
+            tiltLeft.setInterpolator(Interpolator.EASE_OUT);
+
+            // Tilt right
+            RotateTransition tiltRight = new RotateTransition(Duration.millis(300), pokeball);
+            tiltRight.setFromAngle(-20);
+            tiltRight.setToAngle(20);
+            tiltRight.setInterpolator(Interpolator.EASE_BOTH);
+
+            // Return to center
+            RotateTransition tiltCenter = new RotateTransition(Duration.millis(150), pokeball);
+            tiltCenter.setFromAngle(20);
+            tiltCenter.setToAngle(0);
+            tiltCenter.setInterpolator(Interpolator.EASE_IN);
+
+            // Add pause between shakes
+            PauseTransition pauseBetweenShakes = new PauseTransition(Duration.millis(300));
+
+            // Add sound effect for each shake (if available)
+            shakeSequence.getChildren().addAll(tiltLeft, tiltRight, tiltCenter, pauseBetweenShakes);
+        }
+
+        // Set completion callback
+        shakeSequence.setOnFinished(event -> onComplete.run());
+        shakeSequence.play();
+    }
+
+    /**
+     * Animates the Pokemon breaking out of the Pokeball
+     */
+    private void animateBreakout(ImageView pokeball, ImageView pokemonView, Runnable onComplete) {
+        // Remove the pokeball with a small "explosion" effect
+        FadeTransition pokeballFade = new FadeTransition(Duration.millis(200), pokeball);
+        pokeballFade.setFromValue(1.0);
+        pokeballFade.setToValue(0.0);
+
+        ScaleTransition pokeballBurst = new ScaleTransition(Duration.millis(200), pokeball);
+        pokeballBurst.setFromX(1.0);
+        pokeballBurst.setFromY(1.0);
+        pokeballBurst.setToX(1.5);
+        pokeballBurst.setToY(1.5);
+
+        // Bring the Pokemon back
+        FadeTransition pokemonReturn = new FadeTransition(Duration.millis(300), pokemonView);
+        pokemonReturn.setFromValue(0.0);
+        pokemonReturn.setToValue(1.0);
+        pokemonReturn.setDelay(Duration.millis(100));
+
+        // Reset the Pokemon's effect
+        pokemonReturn.setOnFinished(event -> {
+            pokemonView.setEffect(null);
+
+            // Remove the pokeball from the scene
+            Timeline cleanupTimeline = new Timeline(new KeyFrame(
+                    Duration.ZERO,
+                    removeEvent -> root.getChildren().remove(pokeball)));
+            cleanupTimeline.play();
+
+            onComplete.run();
+        });
+
+        // Play animations in sequence
+        ParallelTransition burstAnimation = new ParallelTransition(pokeballFade, pokeballBurst);
+        SequentialTransition breakoutSequence = new SequentialTransition(burstAnimation, pokemonReturn);
+        breakoutSequence.play();
+    }
+
+    // Add a new method for wild Pokemon attacks
+    private void wildPokemonTurn() {
+        // Choose a random move from the wild Pokemon's moveset
+        List<Move> availableMoves = wildPokemon.getMovesList();
+        if (availableMoves.isEmpty())
+            return;
+
+        Move randomMove = availableMoves.get(new Random().nextInt(availableMoves.size()));
+        System.out.println("Wild " + wildPokemon.getName() + " used " + randomMove.getName() + "!");
+
+        // Calculate and apply damage to player's Pokemon
+        int damage = calculateDamage(randomMove, wildPokemon, player.getCurrentPokemon());
+        player.getCurrentPokemon().setRemainingHealth(player.getCurrentPokemon().getRemainingHealth() - damage);
+
+        // Update player Pokemon health display
+        updatePokemonUI(player.getCurrentPokemon(), playerHealthBarForeground, playerHealthLabel);
+
+        // Check if player's Pokemon fainted
+        if (player.getCurrentPokemon().getRemainingHealth() <= 0) {
+            // Play fainting animation
+            animatePokemonFainting(playerPokemonView, player.getCurrentPokemon().getNickname(), () -> {
+                // Check if player has more usable Pokemon
+                if (!player.hasUsablePokemon()) {
+                    System.out.println("You have no more usable Pokemon!");
+                    System.out.println("You blacked out!");
+
+                    // Close battle window
+                    Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
+                        Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
+                        Platform.runLater(() -> stage.close());
+                    }));
+                    exitDelay.play();
+                } else {
+                    // Force player to switch Pokemon
+                    System.out.println("Choose your next Pokemon!");
+                    // Automatically trigger the switch menu
+                    Platform.runLater(() -> {
+                        animateBattleButtonsSlideOut();
+                        prepareForPokemonSwitch();
+                    });
+                }
+            });
+        }
+    }
+
+    /**
+     * Updates all battle UI elements to reflect current game state.
+     * This consolidates all UI updates in one place for better maintainability.
+     */
+    private void updateBattleUI() {
+        // Update player Pokemon UI
+        updatePokemonUI(
+                player.getCurrentPokemon(),
+                playerHealthBarForeground,
+                playerHealthLabel);
+
+        // Update opponent Pokemon UI
+        if (isWildBattle) {
+            updatePokemonUI(
+                    wildPokemon,
+                    opponentHealthBarForeground,
+                    opponentHealthLabel);
+        } else if (opponent != null && opponent.getCurrentPokemon() != null) {
+            updatePokemonUI(
+                    opponent.getCurrentPokemon(),
+                    opponentHealthBarForeground,
+                    opponentHealthLabel);
+        }
+    }
+
+    /**
+     * Helper method to update UI elements for a specific Pokemon.
+     * This reduces code duplication when updating player/opponent UI.
+     * 
+     * @param pokemon     The Pokemon whose UI needs updating
+     * @param healthBar   The health bar rectangle to update
+     * @param healthLabel The health label to update
+     */
+    private void updatePokemonUI(IPokemon pokemon, Rectangle healthBar, Label healthLabel) {
+        double healthPercent = (double) pokemon.getRemainingHealth() / pokemon.getHp() * 100;
+        healthBar.setWidth(healthPercent);
+        healthLabel.setText(pokemon.getRemainingHealth() + "/" + pokemon.getHp());
+    }
+
+    /**
+     * Animates a Pokemon fainting with a fading effect
+     * 
+     * @param pokemonView The ImageView of the fainting Pokemon
+     * @param pokemonName The name of the Pokemon for display purpose
+     * @param onComplete  Callback to execute when animation completes
+     */
+    private void animatePokemonFainting(ImageView pokemonView, String pokemonName, Runnable onComplete) {
+        System.out.println(pokemonName + " fainted!");
+
+        // Apply a subtle shake effect first
+        TranslateTransition shakeLeft = new TranslateTransition(Duration.millis(100), pokemonView);
+        shakeLeft.setByX(-5);
+        TranslateTransition shakeRight = new TranslateTransition(Duration.millis(100), pokemonView);
+        shakeRight.setByX(10);
+        TranslateTransition shakeCenter = new TranslateTransition(Duration.millis(100), pokemonView);
+        shakeCenter.setByX(-5);
+
+        // Create sink animation - Pokemon falls downward slightly
+        TranslateTransition fallAnimation = new TranslateTransition(Duration.millis(800), pokemonView);
+        fallAnimation.setByY(30); // Fall down by 30 pixels
+        fallAnimation.setInterpolator(Interpolator.EASE_IN);
+
+        // Create fade animation - Pokemon fades out
+        FadeTransition fadeAnimation = new FadeTransition(Duration.millis(800), pokemonView);
+        fadeAnimation.setFromValue(1.0);
+        fadeAnimation.setToValue(0.0);
+        fadeAnimation.setInterpolator(Interpolator.EASE_IN);
+
+        // Create the complete animation sequence
+        SequentialTransition shakeSequence = new SequentialTransition(
+                shakeLeft, shakeRight, shakeCenter);
+
+        // After shaking, start falling and fading
+        ParallelTransition fallAndFade = new ParallelTransition(
+                fallAnimation, fadeAnimation);
+
+        // Combine all animations
+        SequentialTransition faintingAnimation = new SequentialTransition(
+                shakeSequence, fallAndFade);
+
+        // After animation completes
+        faintingAnimation.setOnFinished(event -> {
+            // Don't reset yet if we're waiting for user to send out a new Pokemon
+            if (onComplete != null) {
+                onComplete.run();
+            }
+        });
+
+        faintingAnimation.play();
+    }
+
+    /**
+     * Animates battle buttons sliding out of the screen.
+     */
+    private void animateBattleButtonsSlideOut() {
+        // Create a list to store all animations
+        List<TranslateTransition> animations = new ArrayList<>();
+
+        // Animate each battle button to slide out of the screen - similar to the back
+        // button animation
+        for (Node button : controlsBox.getChildren()) {
+            TranslateTransition slideOut = new TranslateTransition(Duration.millis(500), button);
+            slideOut.setFromY(0); // Current position
+            slideOut.setToY(scene.getHeight()); // Move down and out of view
+            slideOut.setInterpolator(Interpolator.EASE_IN);
+            animations.add(slideOut);
+            slideOut.play();
+        }
+
+        // Set up callback to prepare for Pokemon switch after all animations complete
+        if (!animations.isEmpty()) {
+            animations.get(animations.size() - 1).setOnFinished(e -> {
+                // Clear the controlsBox after animations are done
+                controlsBox.getChildren().clear();
+                // Prepare the Pokemon switch interface
+                prepareForPokemonSwitch();
+            });
+        }
+    }
+
+    /**
+     * Prepares the interface for switching Pokemon.
+     */
+    private void prepareForPokemonSwitch() {
+        // Create a container for the Pokemon switch buttons
+        HBox switchBox = new HBox(5);
+        switchBox.setAlignment(Pos.CENTER);
+        switchBox.setPadding(new Insets(5));
+        switchBox.setTranslateY(scene.getHeight()); // Start below the visible area
+
+        // Define button styles
+        String pokemonButtonStyle = "-fx-border-color: black; " +
+                "-fx-border-width: 1px; " +
+                "-fx-border-radius: 2; " +
+                "-fx-background-radius: 2; " +
+                "-fx-cursor: hand; " +
+                "-fx-background-color: linear-gradient(to bottom, #B30000 50%, #EBEBEB 50%); " +
+                "-fx-min-width: 65px; " +
+                "-fx-min-height: 65px; " +
+                "-fx-focus-color: transparent; " +
+                "-fx-faint-focus-color: transparent;";
+
+        // Style for fainted Pokémon
+        String faintedButtonStyle = pokemonButtonStyle +
+                "-fx-opacity: 0.6; " +
+                "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 1);";
+
+        // Create buttons for each Pokemon in the player's party
+        for (int i = 0; i < player.getParty().size(); i++) {
+            Pokemon pokemon = player.getParty().get(i);
+
+            // Skip the already fainted Pokemon (the one that triggered this menu)
+            if (pokemon == player.getCurrentPokemon()) {
+                continue;
+            }
+
+            Button pokemonButton = new Button();
+
+            // Load and set the Pokemon sprite
+            Image pokemonSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
+            ImageView spriteView = new ImageView(pokemonSprite);
+            spriteView.setFitWidth(55);
+            spriteView.setFitHeight(55);
+            spriteView.setPreserveRatio(true);
+            pokemonButton.setGraphic(spriteView);
+
+            // Add tooltip with Pokemon details
+            String tooltipText = pokemon.getNickname() + " (Lv." + pokemon.getLevel() + ")";
+            if (pokemon.getRemainingHealth() <= 0) {
+                tooltipText += " - Fainted";
+            } else {
+                tooltipText += " - HP: " + pokemon.getRemainingHealth() + "/" + pokemon.getHp();
+            }
+            pokemonButton.setTooltip(new Tooltip(tooltipText));
+
+            // Apply appropriate style based on Pokemon's state
+            if (pokemon.getRemainingHealth() <= 0) {
+                pokemonButton.setStyle(faintedButtonStyle);
+                // Add grayscale effect for fainted Pokemon
+                ColorAdjust grayscale = new ColorAdjust();
+                grayscale.setSaturation(-1.0); // Full desaturation
+                spriteView.setEffect(grayscale);
+            } else {
+                pokemonButton.setStyle(pokemonButtonStyle);
+            }
+
+            // Set the action for each button
+            pokemonButton.setOnAction(event -> {
+                // Skip if the Pokemon is fainted
+                if (pokemon.getRemainingHealth() <= 0) {
+                    System.out.println(pokemon.getNickname() + " has fainted and cannot battle!");
+
+                    // Add visual feedback for trying to select a fainted Pokemon
+                    ColorAdjust errorEffect = new ColorAdjust();
+                    errorEffect.setSaturation(-0.5);
+                    errorEffect.setBrightness(-0.2);
+                    pokemonButton.setEffect(errorEffect);
+
+                    // Shake animation to indicate error
+                    TranslateTransition shakeLeft = new TranslateTransition(Duration.millis(80), pokemonButton);
+                    shakeLeft.setByX(-5);
+                    TranslateTransition shakeRight = new TranslateTransition(Duration.millis(80), pokemonButton);
+                    shakeRight.setByX(5);
+                    TranslateTransition shakeCenter = new TranslateTransition(Duration.millis(80), pokemonButton);
+                    shakeCenter.setByX(0);
+
+                    Timeline resetEffect = new Timeline(
+                            new KeyFrame(Duration.millis(400), evt -> {
+                                if (pokemon.getRemainingHealth() <= 0) {
+                                    // Reset to grayscale for fainted Pokemon
+                                    ColorAdjust grayscale = new ColorAdjust();
+                                    grayscale.setSaturation(-1.0);
+                                    spriteView.setEffect(grayscale);
+                                } else {
+                                    pokemonButton.setEffect(null);
+                                }
+                            }));
+
+                    shakeLeft.setOnFinished(evt -> shakeRight.play());
+                    shakeRight.setOnFinished(evt -> shakeCenter.play());
+                    shakeCenter.setOnFinished(evt -> resetEffect.play());
+                    shakeLeft.play();
+                    return;
+                }
+
+                // Switch to the selected Pokemon
+                Pokemon previousPokemon = player.getCurrentPokemon();
+                player.setCurrentPokemon(pokemon);
+
+                // Remove the switch menu with animation
+                TranslateTransition switchBoxOut = new TranslateTransition(Duration.millis(500), switchBox);
+                switchBoxOut.setToY(scene.getHeight());
+                switchBoxOut.setInterpolator(Interpolator.EASE_IN);
+
+                // Create color adjust for white flash effect
+                ColorAdjust colorAdjust = new ColorAdjust();
+                colorAdjust.setBrightness(2.0); // Start with white brightness
+
+                // Create animations for the new Pokemon
+                ParallelTransition menuOut = new ParallelTransition(switchBoxOut);
+                menuOut.setOnFinished(evt -> {
+                    // Remove menu elements
+                    controlsBox.getChildren().clear();
+
+                    // Load new Pokemon sprite
+                    Image newSprite = new Image(getClass().getResourceAsStream("/" + pokemon.getSpritePath()));
+                    playerPokemonView.setImage(newSprite);
+                    playerPokemonView.setEffect(colorAdjust);
+                    playerPokemonView.setOpacity(1.0);
+                    playerPokemonView.setTranslateX(-scene.getWidth() / 2); // Start off-screen left
+                    playerPokemonView.setTranslateY(0); // Reset Y position
+
+                    // Update UI information for the new Pokemon
+                    playerPokemonNickname.setText(pokemon.getNickname());
+                    playerPokemonLevel.setText("Lv. " + pokemon.getLevel());
+                    updatePokemonUI(pokemon, playerHealthBarForeground, playerHealthLabel);
+
+                    // Create slide-in animation
+                    TranslateTransition slideInAnim = new TranslateTransition(Duration.millis(800), playerPokemonView);
+                    slideInAnim.setFromX(-scene.getWidth() / 2); // Start from left side
+                    slideInAnim.setToX(0); // Move to original position
+                    slideInAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                    // Create brightness fade animation
+                    Timeline brightnessAnim = new Timeline(
+                            new KeyFrame(Duration.ZERO, new KeyValue(colorAdjust.brightnessProperty(), 2.0)),
+                            new KeyFrame(Duration.millis(800), new KeyValue(colorAdjust.brightnessProperty(), 0.0)));
+
+                    // Combine both animations
+                    ParallelTransition newPokemonEntrance = new ParallelTransition(slideInAnim, brightnessAnim);
+
+                    // When animation completes
+                    newPokemonEntrance.setOnFinished(entranceEvt -> {
+                        playerPokemonView.setEffect(null);
+                        System.out.println("Go! " + pokemon.getNickname() + "!");
+
+                        // Reset and show the battle buttons
+                        Button fightButton = new Button("Fight");
+                        Button catchButton = new Button("Catch");
+                        Button switchButton = new Button("Switch");
+                        Button runButton = new Button("Run");
+
+                        // Apply the same styling as in the start method
+                        Font largeFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 18);
+                        String baseButtonStyle = "-fx-background-color: white; " +
+                                "-fx-background-radius: 5; " +
+                                "-fx-padding: 10 15 10 15; " +
+                                "-fx-text-fill: black; " +
+                                "-fx-border-color: #000000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);";
+
+                        String hoverButtonStyle = "-fx-background-color: #f0f0f0; " +
+                                "-fx-background-radius: 5; " +
+                                "-fx-padding: 10 15 10 15; " +
+                                "-fx-text-fill: black; " +
+                                "-fx-border-color: #000000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-scale-x: 1.03; " +
+                                "-fx-scale-y: 1.03; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);";
+
+                        String pressedButtonStyle = "-fx-background-color: #e0e0e0; " +
+                                "-fx-background-radius: 5; " +
+                                "-fx-padding: 10 15 10 15; " +
+                                "-fx-text-fill: black; " +
+                                "-fx-border-color: #000000; " +
+                                "-fx-border-radius: 5; " +
+                                "-fx-border-width: 2px; " +
+                                "-fx-scale-x: 0.98; " +
+                                "-fx-scale-y: 0.98; " +
+                                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
+
+                        Button[] battleButtons = { fightButton, catchButton, switchButton, runButton };
+                        for (Button button : battleButtons) {
+                            button.setFont(largeFont);
+                            button.setStyle(baseButtonStyle);
+                            // Add hover/pressed styles
+                            button.setOnMouseEntered(e -> button.setStyle(hoverButtonStyle));
+                            button.setOnMouseExited(e -> button.setStyle(baseButtonStyle));
+                            button.setOnMousePressed(e -> button.setStyle(pressedButtonStyle));
+                            button.setOnMouseReleased(e -> button.setStyle(hoverButtonStyle));
+                        }
+
+                        // Create slide-out animations for the new buttons
+                        TranslateTransition fightButtonHide = new TranslateTransition(Duration.millis(500),
+                                fightButton);
+                        fightButtonHide.setFromY(0);
+                        fightButtonHide.setToY(100);
+                        fightButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+                        TranslateTransition catchButtonHide = new TranslateTransition(Duration.millis(550),
+                                catchButton);
+                        catchButtonHide.setFromY(0);
+                        catchButtonHide.setToY(100);
+                        catchButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+                        TranslateTransition switchButtonHide = new TranslateTransition(Duration.millis(600),
+                                switchButton);
+                        switchButtonHide.setFromY(0);
+                        switchButtonHide.setToY(100);
+                        switchButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+                        TranslateTransition runButtonHide = new TranslateTransition(Duration.millis(700), runButton);
+                        runButtonHide.setFromY(0);
+                        runButtonHide.setToY(100);
+                        runButtonHide.setInterpolator(Interpolator.EASE_IN);
+
+                        // Set button positions
+                        for (Button button : battleButtons) {
+                            button.setTranslateY(scene.getHeight());
+                        }
+
+                        // Create modified event handlers that incorporate the slide-out animations
+                        fightButton.setOnAction(e -> {
+                            fightButtonHide.play();
+                            catchButtonHide.play();
+                            switchButtonHide.play();
+                            runButtonHide.play();
+
+                            runButtonHide.setOnFinished(finishedEvent -> {
+                                // Execute the original fight button handler logic
+                                fightButtonHandler.handle(e);
+                            });
+                        });
+
+                        catchButton.setOnAction(e -> {
+                            fightButtonHide.play();
+                            catchButtonHide.play();
+                            switchButtonHide.play();
+                            runButtonHide.play();
+
+                            runButtonHide.setOnFinished(finishedEvent -> {
+                                // Execute the original catch button handler logic
+                                catchButtonHandler.handle(e);
+                            });
+                        });
+
+                        switchButton.setOnAction(e -> {
+                            fightButtonHide.play();
+                            catchButtonHide.play();
+                            switchButtonHide.play();
+                            runButtonHide.play();
+
+                            runButtonHide.setOnFinished(finishedEvent -> {
+                                // Execute the original switch button handler logic
+                                switchButtonHandler.handle(e);
+                            });
+                        });
+
+                        runButton.setOnAction(e -> {
+                            fightButtonHide.play();
+                            catchButtonHide.play();
+                            switchButtonHide.play();
+                            runButtonHide.play();
+
+                            runButtonHide.setOnFinished(finishedEvent -> {
+                                // Execute the original run button handler logic
+                                runButtonHandler.handle(e);
+                            });
+                        });
+
+                        // Add buttons to controlsBox
+                        controlsBox.getChildren().addAll(fightButton, catchButton, switchButton, runButton);
+
+                        // Make buttons grow to fill space
+                        HBox.setHgrow(fightButton, Priority.ALWAYS);
+                        HBox.setHgrow(catchButton, Priority.ALWAYS);
+                        HBox.setHgrow(switchButton, Priority.ALWAYS);
+                        HBox.setHgrow(runButton, Priority.ALWAYS);
+
+                        // Animate buttons in
+                        TranslateTransition fightAnim = new TranslateTransition(Duration.millis(500), fightButton);
+                        fightAnim.setFromY(scene.getHeight());
+                        fightAnim.setToY(0);
+                        fightAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                        TranslateTransition catchAnim = new TranslateTransition(Duration.millis(525), catchButton);
+                        catchAnim.setFromY(scene.getHeight());
+                        catchAnim.setToY(0);
+                        catchAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                        TranslateTransition switchAnim = new TranslateTransition(Duration.millis(550), switchButton);
+                        switchAnim.setFromY(scene.getHeight());
+                        switchAnim.setToY(0);
+                        switchAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                        TranslateTransition runAnim = new TranslateTransition(Duration.millis(600), runButton);
+                        runAnim.setFromY(scene.getHeight());
+                        runAnim.setToY(0);
+                        runAnim.setInterpolator(Interpolator.EASE_OUT);
+
+                        // Play animations
+                        fightAnim.play();
+                        catchAnim.play();
+                        switchAnim.play();
+                        runAnim.play();
+                    });
+
+                    newPokemonEntrance.play();
+                });
+
+                menuOut.play();
+            });
+
+            switchBox.getChildren().add(pokemonButton);
+        }
+
+        // If there are no non-fainted Pokemon to switch to
+        if (switchBox.getChildren().isEmpty()) {
+            System.out.println("No usable Pokemon left!");
+            System.out.println("You blacked out!");
+
+            // Close battle window
+            Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
+                Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
+                Platform.runLater(() -> stage.close());
+            }));
+            exitDelay.play();
+            return;
+        }
+
+        // Add the switch box to the controls
+        controlsBox.getChildren().clear();
+        controlsBox.getChildren().add(switchBox);
+
+        // Animate the switch box sliding up
+        TranslateTransition switchBoxAnim = new TranslateTransition(Duration.millis(800), switchBox);
+        switchBoxAnim.setToY(-20); // Slide up to position
+        switchBoxAnim.setInterpolator(Interpolator.EASE_OUT);
+        switchBoxAnim.play();
     }
 }

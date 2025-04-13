@@ -334,6 +334,64 @@ public class moveFactory {
                                 .collect(Collectors.toList()))
                         : new ArrayList<>());
 
+        // Parse the "effect" field from moves.json
+        if (moveJson.has("effect")) {
+            String effect = moveJson.getString("effect");
+            if (effect.startsWith("burnChance")) {
+                int chance = Integer.parseInt(effect.substring(effect.indexOf('(') + 1, effect.indexOf(')')));
+                move.burnChance(chance);
+            } else if (effect.startsWith("poisonChance")) {
+                int chance = Integer.parseInt(effect.substring(effect.indexOf('(') + 1, effect.indexOf(')')));
+                move.poisonChance(chance);
+            } else if (effect.startsWith("paralyzeChance")) {
+                int chance = Integer.parseInt(effect.substring(effect.indexOf('(') + 1, effect.indexOf(')')));
+                move.paralyzeChance(chance);
+            } else if (effect.startsWith("sleepChance")) {
+                int chance = Integer.parseInt(effect.substring(effect.indexOf('(') + 1, effect.indexOf(')')));
+                move.sleepChance(chance);
+            }
+        }
+
         return move;
+    }
+
+    public boolean validateDataIntegrity() {
+        boolean isValid = true;
+
+        // Check if required resources exist
+        if (getClass().getResourceAsStream("/moves.json") == null) {
+            System.err.println("ERROR: moves.json not found");
+            isValid = false;
+        }
+
+        if (getClass().getResourceAsStream("/movesets.json") == null) {
+            System.err.println("ERROR: movesets.json not found");
+            isValid = false;
+        }
+
+        // Validate that each Pokemon has valid moves
+        for (String pokemonName : pokemonLearnsets.keySet()) {
+            Map<Integer, List<String>> learnset = pokemonLearnsets.get(pokemonName);
+            for (List<String> moves : learnset.values()) {
+                for (String moveName : moves) {
+                    if (findMoveByName(moveName) == null) {
+                        System.err.println("WARNING: Move '" + moveName + "' for Pokemon '" + pokemonName
+                                + "' not found in moves database");
+                    }
+                }
+            }
+        }
+
+        return isValid;
+    }
+
+    // Helper method to find a move by name
+    private Move findMoveByName(String name) {
+        for (Move move : createMovesFromJson()) {
+            if (move.getName().equalsIgnoreCase(name)) {
+                return move;
+            }
+        }
+        return null;
     }
 }

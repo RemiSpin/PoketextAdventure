@@ -1,44 +1,100 @@
 package WindowThings;
 
+import java.io.File;
 import java.io.IOException;
 
 import BattleLogic.Battle;
 import BattleLogic.Trainer;
 import BattleLogic.trainerPokemon;
+import Overworld.Buildings.PlayerHome;
+import Overworld.Town;
+import Overworld.Towns.Pallet;
+import PlayerRelated.LoadGame;
 import PlayerRelated.Player;
 import PokemonLogic.Pokemon;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 @SuppressWarnings("unused")
-
 
 public class PokeText_Adventure extends Application {
     public static void main(String[] args) {
         Application.launch(mainWindow.class, args);
     }
+
     public static Player player = new Player();
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Pokemon bulbasaur = new Pokemon("Bulbasaur", 5);
-        Pokemon pidgey = new Pokemon("Pidgey", 3);
-        Pokemon rattata = new Pokemon("Rattata", 2);
-        Pokemon pikachu = new Pokemon("Pikachu", 4);
-        Pokemon mankey = new Pokemon("Mankey", 3);
-        Pokemon caterpie = new Pokemon("Caterpie", 4);
+        // Check if a save file exists
+        File saveFile = new File("savegame.db");
+        if (saveFile.exists()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Load Game");
+            alert.setHeaderText("Save game found");
+            alert.setContentText("Would you like to load your saved game?");
+
+            ButtonType result = alert.showAndWait().orElse(ButtonType.NO);
+
+            if (result == ButtonType.OK) {
+                LoadGame loadGame = new LoadGame();
+                Player loadedPlayer = loadGame.loadGame();
+                if (loadedPlayer != null) {
+                    player = loadedPlayer;
+
+                    // Create the correct town based on saved location
+                    Town startingTown;
+                    String savedTownName = loadedPlayer.getCurrentTownName();
+
+                    if (savedTownName != null) {
+                        if (savedTownName.equals(Player.getName() + "'s Home")) {
+                            // If saved in player's home
+                            Pallet pallet = new Pallet();
+                            startingTown = (PlayerHome) pallet.getPokemonCenter();
+                        } else {
+                            // Default to Pallet Town for now
+                            startingTown = new Pallet();
+                        }
+                    } else {
+                        // Fallback if no town name was saved
+                        startingTown = new Pallet();
+                    }
+
+                    exploreWindow explorationWindow = new exploreWindow(startingTown);
+                    explorationWindow.show();
+                    return;
+                }
+            }
+        }
+
+        // If no save was loaded or user chose not to load, create a new game
+        Pokemon bulbasaur = new Pokemon("Bulbasaur", 15);
+        Pokemon squirtle = new Pokemon("Squirtle", 5);
+
         Player.setName();
         player.addPokemonToParty(bulbasaur);
-        player.addPokemonToParty(pidgey);
-        player.addPokemonToParty(rattata);
-        player.addPokemonToParty(pikachu);
-        player.addPokemonToParty(mankey);
-        player.addPokemonToParty(caterpie);
+        player.addPokemonToParty(squirtle);
 
-    //    PokemonInfo biDetailsWindow = new PokemonInfo(bulbasaur);
-    //    while (bulbasaur.getLevel() != 16){ bulbasaur.gainExperience(); }
-    //    PokemonInfo bDetailsWindow = new PokemonInfo(bulbasaur);
+        // while (bulbasaur.getLevel() < 16) {bulbasaur.gainExperience();}
 
-        Battle battleWindow = new Battle(player, new Trainer("Gary", 500, new trainerPokemon("Charmander", 5, "Scratch", "Growl")));
+        // Create Pallet Town first to access Player's Home
+        Pallet palletTown = new Pallet();
+        // Get the PlayerHome instance from Pallet Town
+        PlayerHome playerHome = (PlayerHome) palletTown.getPokemonCenter();
+
+        // Set the current town name in the player object
+        player.setCurrentTownName(Player.getName() + "'s Home");
+
+        // Start the game in Player's Home instead of Pallet Town
+        exploreWindow explorationWindow = new exploreWindow(playerHome);
+        explorationWindow.show();
+
+        Battle battleWindow = new Battle(player, new Trainer("Gary", 500, new trainerPokemon("Charmander", 3, "Scratch", "Growl"),
+                new trainerPokemon("Pidgey", 3, "Tackle", "Sand Attack")));
     }
 }
+
+// make the turn battle system
+// add status effects

@@ -46,4 +46,14 @@ public class Trainer {
     public void setCurrentPokemon(trainerPokemon pokemon) {
         this.currentPokemon = pokemon;
     }
+
+    public void switchToNextPokemon() {
+        // Find the next usable Pokemon
+        for (trainerPokemon pokemon : pokemonList) {
+            if (pokemon.getRemainingHealth() > 0) {
+                currentPokemon = pokemon;
+                return;
+            }
+        }
+    }
 }

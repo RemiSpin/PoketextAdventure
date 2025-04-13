@@ -1,0 +1,20 @@
+{
+  "routes": {
+    "Route 1": {
+      "encounters": [
+        {
+          "pokemon": "Pidgey",
+          "minLevel": 2,
+          "maxLevel": 5,
+          "weight": 50
+        },
+        {
+          "pokemon": "Rattata",
+          "minLevel": 2,
+          "maxLevel": 4,
+          "weight": 50
+        }
+      ]
+    }
+  }
+}
