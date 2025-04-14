@@ -3,6 +3,8 @@ package WindowThings;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import Overworld.Town;
 import PlayerRelated.Player;
@@ -98,6 +100,7 @@ public class mainWindow extends Application {
                 System.out.println("- Save : Saves your current game progress");
                 System.out.println("- Pokemon : Shows a list of Pokemon in your party");
                 System.out.println("- Pokemon (nickname) : Shows detailed stats for a specific Pokemon");
+                System.out.println("- Lead : Change which Pokemon appears first in your party");
                 System.out.println("- Area : Shows information about your current location");
                 System.out.println("- " + Player.getName() + " : Shows your trainer information");
                 System.out.println("- Help : Shows this help message");
@@ -124,6 +127,89 @@ public class mainWindow extends Application {
                     System.out.println("- " + pokemon.getNickname());
                 }
                 System.out.println("\nIf you wish to see the stats of a pokemon, say: \nPokemon (Nickname)!");
+            }
+            case "lead", "switchlead" -> {
+                // Get the player's current party
+                List<Pokemon> party = PokeText_Adventure.player.getParty();
+
+                if (party.size() <= 1) {
+                    System.out.println("You need at least two Pokemon to change your lead Pokemon!");
+                    return;
+                }
+
+                // Show current party order
+                System.out.println("Your current party order:");
+                for (int i = 0; i < party.size(); i++) {
+                    Pokemon pokemon = party.get(i);
+                    String status = (pokemon.getRemainingHealth() <= 0) ? " (Fainted)" : "";
+                    System.out.println((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
+                            pokemon.getLevel() + " " + pokemon.getName() + ")" + status);
+                }
+
+                System.out.println("\nEnter the number of the Pokemon you want as your lead:");
+
+                // Store the current event handler to restore it later
+                javafx.event.EventHandler<javafx.event.ActionEvent> originalHandler = inputField.getOnAction();
+
+                // Set a new temporary handler for this specific input
+                inputField.setOnAction(e -> {
+                    String selection = inputField.getText().trim();
+                    inputField.clear();
+
+                    try {
+                        int choice = Integer.parseInt(selection);
+                        if (choice < 1 || choice > party.size()) {
+                            System.out
+                                    .println("Invalid selection! Please enter a number between 1 and " + party.size());
+                        } else {
+                            // Check if selected Pokemon is fainted
+                            Pokemon selectedPokemon = party.get(choice - 1);
+                            if (selectedPokemon.getRemainingHealth() <= 0) {
+                                System.out.println("Cannot set " + selectedPokemon.getNickname() +
+                                        " as your lead Pokemon because it has fainted!");
+                            }
+                            // If not selecting the current lead (1) and not fainted
+                            else if (choice != 1) {
+                                // Create a modifiable copy of the party list
+                                List<Pokemon> modifiableParty = new ArrayList<>(party);
+
+                                // Store the Pokemon we want to swap
+                                Pokemon firstPokemon = modifiableParty.get(0);
+                                Pokemon selectedPkm = modifiableParty.get(choice - 1);
+
+                                // Update the player's party with the modified order
+                                // Use the appropriate Player method to set the party
+                                PokeText_Adventure.player.swapPokemonPosition(0, choice - 1);
+
+                                // Update current Pokemon if needed
+                                if (PokeText_Adventure.player.getCurrentPokemon() == firstPokemon) {
+                                    PokeText_Adventure.player.setCurrentPokemon(selectedPkm);
+                                } else if (PokeText_Adventure.player.getCurrentPokemon() == selectedPkm) {
+                                    PokeText_Adventure.player.setCurrentPokemon(firstPokemon);
+                                }
+
+                                System.out.println(selectedPkm.getNickname() + " is now your lead Pokemon!");
+
+                                // Show updated party order
+                                System.out.println("Updated party order:");
+                                List<Pokemon> updatedParty = PokeText_Adventure.player.getParty();
+                                for (int i = 0; i < updatedParty.size(); i++) {
+                                    Pokemon pokemon = updatedParty.get(i);
+                                    String status = (pokemon.getRemainingHealth() <= 0) ? " (Fainted)" : "";
+                                    System.out.println((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
+                                            pokemon.getLevel() + " " + pokemon.getName() + ")" + status);
+                                }
+                            } else {
+                                System.out.println(selectedPokemon.getNickname() + " is already your lead Pokemon!");
+                            }
+                        }
+                    } catch (NumberFormatException ex) {
+                        System.out.println("Please enter a valid number!");
+                    } finally {
+                        // Always restore the original event handler
+                        inputField.setOnAction(originalHandler);
+                    }
+                });
             }
             default -> {
                 if (input.equals(Player.getName().toLowerCase())) {

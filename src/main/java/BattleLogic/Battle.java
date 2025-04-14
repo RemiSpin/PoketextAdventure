@@ -1795,7 +1795,7 @@ public class Battle extends Application {
             RotateTransition tiltCenter = new RotateTransition(Duration.millis(150), pokeball);
             tiltCenter.setFromAngle(20);
             tiltCenter.setToAngle(0);
-            tiltCenter.setInterpolator(Interpolator.EASE_IN;
+            tiltCenter.setInterpolator(Interpolator.EASE_IN);
 
             // Add pause between shakes
             PauseTransition pauseBetweenShakes = new PauseTransition(Duration.millis(300));

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 import PokemonLogic.Pokemon;
@@ -24,12 +23,12 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-@SuppressWarnings("FieldMayBeFinal")
+@SuppressWarnings({"FieldMayBeFinal", "unused"})
 
 public class Player {
     private static String name = "Red";
     private int money;
-    private final List<Pokemon> party;
+    private List<Pokemon> party;
     private final List<Pokemon> pc;
     private final List<String> badges;
     private Pokemon currentPokemon;
@@ -395,44 +394,6 @@ public class Player {
         }
     }
 
-    public void switchPokemonOutsideBattle() {
-        try (Scanner scanner = new Scanner(System.in)) {
-
-            while (true) {
-                for (int i = 0; i < party.size(); i++) {
-                    System.out.println((i + 1) + ". " + party.get(i).getNickname());
-                }
-
-                System.out.println("Choose a Pokemon to switch (1-" + party.size() + "), or press 0 to go back:");
-                int choice = scanner.nextInt();
-
-                // Check if the user wants to go back
-                if (choice == 0) {
-                    System.out.println("Going back to the previous menu.");
-                    return;
-                }
-
-                // Validate the input
-                if (choice < 1 || choice > party.size()) {
-                    System.out.println("Invalid choice. Please choose a number between 1 and " + party.size()
-                            + ", or press 0 to go back.");
-                    continue;
-                }
-
-                // Adjust the choice to be zero-based
-                choice--;
-
-                // Swap the chosen Pokemon with the first Pokemon in the party
-                Pokemon temp = party.get(0);
-                party.set(0, party.get(choice));
-                party.set(choice, temp);
-
-                System.out.println(party.get(0).getNickname() + " is in front.");
-                break;
-            }
-        }
-    }
-
     public void removePokemonFromParty(Pokemon pokemon) {
         if (party.contains(pokemon)) {
             party.remove(pokemon);
@@ -531,5 +492,13 @@ public class Player {
         party.remove(partyIndex);
         pc.add(pokemon);
         return true;
+    }
+
+    public void swapPokemonPosition(int position1, int position2) {
+        List<Pokemon> modifiableParty = new ArrayList<>(party);
+        Pokemon temp = modifiableParty.get(position1);
+        modifiableParty.set(position1, modifiableParty.get(position2));
+        modifiableParty.set(position2, temp);
+        this.party = modifiableParty;
     }
 }
