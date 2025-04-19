@@ -348,7 +348,7 @@
       { "move": "Sandstorm", "level": 62 }
     ]
   },
-  "Nidoran♀": {
+  "NidoranF": {
     "moveset": [
       { "move": "Growl", "level": 1 },
       { "move": "Scratch", "level": 1 },
@@ -386,7 +386,7 @@
       { "move": "Superpower", "level": 43 }
     ]
   },
-  "Nidoran♂": {
+  "NidoranM": {
     "moveset": [
       { "move": "Leer", "level": 1 },
       { "move": "Peck", "level": 1 },

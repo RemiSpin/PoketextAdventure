@@ -1,10 +1,8 @@
 package BattleLogic;
 
 import java.io.IOException;
+import java.io.InputStream; // Import InputStream
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,12 +22,18 @@ public class moveFactory {
     private static JSONObject typeChart; // JSON object of the type chart
 
     public moveFactory() {
-        // Load the type chart from the JSON file
-        try {
-            String content = new String(
-                    Files.readAllBytes(Paths.get(getClass().getResource("/TypeChart.json").toURI())));
-            typeChart = new JSONObject(content);
-        } catch (IOException | URISyntaxException e) {
+        // Load the type chart from the JSON file using getResourceAsStream
+        try (InputStream inputStream = getClass().getResourceAsStream("/TypeChart.json")) {
+            if (inputStream == null) {
+                throw new RuntimeException("Failed to load type chart: Resource /TypeChart.json not found.");
+            }
+            // Use InputStreamReader to handle potential encoding issues if needed, or read
+            // directly
+            InputStreamReader reader = new InputStreamReader(inputStream);
+            JSONTokener tokener = new JSONTokener(reader);
+            typeChart = new JSONObject(tokener);
+        } catch (IOException e) {
+            // Catch IOException instead of URISyntaxException
             throw new RuntimeException("Failed to load type chart: " + e.getMessage(), e);
         }
     }
@@ -371,7 +375,7 @@ public class moveFactory {
     public boolean validateDataIntegrity() {
         boolean isValid = true;
 
-        // Check if required resources exist
+        // Check if required resources exist using getResourceAsStream
         if (getClass().getResourceAsStream("/moves.json") == null) {
             System.err.println("ERROR: moves.json not found");
             isValid = false;

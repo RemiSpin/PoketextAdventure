@@ -20,12 +20,6 @@ import javafx.stage.Stage;
 @SuppressWarnings("unused")
 
 public class PokeText_Adventure extends Application {
-    public static void main(String[] args) {
-        Application.launch(mainWindow.class, args);
-    }
-
-    public static Player player = new Player();
-
     @Override
     public void start(Stage primaryStage) throws IOException {
         // Check if a save file exists
@@ -91,9 +85,15 @@ public class PokeText_Adventure extends Application {
         exploreWindow explorationWindow = new exploreWindow(playerHome);
         explorationWindow.show();
 
-        Battle battleWindow = new Battle(player, new Trainer("Gary", 500, new trainerPokemon("Charmander", 3, "Scratch", "Growl"),
-                new trainerPokemon("Pidgey", 3, "Tackle", "Sand Attack")));
+        Battle battleWindow = new Battle(player,
+                new Trainer("Gary", 500, new trainerPokemon("Charmander", 3, "Scratch", "Growl"),
+                        new trainerPokemon("Pidgey", 3, "Tackle", "Sand Attack")));
     }
-}
 
-// add status effects
+    // Make sure this main method exists and calls launch()
+    public static void main(String[] args) {
+        Application.launch(mainWindow.class, args);
+    }
+
+    public static Player player = new Player();
+}

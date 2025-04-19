@@ -356,11 +356,11 @@ public class trainerPokemon implements IPokemon {
 
     @Override
     public int getSpecialAttack() {
-        return this.specialAttack;
+        return this.SpecialAttack;
     }
 
     @Override
     public int getSpecialDefense() {
-        return this.specialDefense;
+        return this.SpecialDefense;
     }
 }

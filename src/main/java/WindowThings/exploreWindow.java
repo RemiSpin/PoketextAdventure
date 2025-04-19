@@ -292,16 +292,94 @@ public class exploreWindow {
                 Route route1 = pallet.getRoute1();
                 updateTown(route1);
             });
+            
+            // Add "To Route 22" button
+            Button toRoute22Button = new Button("To Route 22");
+            toRoute22Button.setOnAction(e -> {
+                // Access Route 22 from Viridian City
+                if (currentTown instanceof Overworld.Towns.Viridian viridian) {
+                    Route route22 = viridian.getRoute22();
+                    updateTown(route22);
+                    WindowThings.mainWindow.appendToOutput("You head west toward Route 22.");
+                }
+            });
 
-            // Apply styling to the text button
+            // Apply styling to the text buttons
             applyButtonStyle(toRoute1Button);
+            applyButtonStyle(toRoute22Button);
 
             // Create a horizontal layout for the buttons
             javafx.scene.layout.HBox buttonBar = new javafx.scene.layout.HBox(10);
-            buttonBar.getChildren().addAll(pokeCenterButton, toRoute1Button);
+            buttonBar.getChildren().addAll(pokeCenterButton, toRoute1Button, toRoute22Button);
             buttonBar.setAlignment(javafx.geometry.Pos.CENTER);
 
             // Add the button to the layout
+            StackPane buttonContainer = new StackPane(buttonBar);
+            buttonContainer.setPadding(new javafx.geometry.Insets(10));
+            buttonContainer.setStyle("-fx-background-color: transparent;");
+            mainLayout.setBottom(buttonContainer);
+        }
+        // Add handling for Route 22
+        else if (currentTown instanceof Route && currentTown.getName().equals("Route 22")) {
+            // Create button to go back to Viridian City
+            Button toViridianButton = new Button("To Viridian City");
+            toViridianButton.setOnAction(e -> {
+                Route route22 = (Route) currentTown;
+                // Get Viridian City (should be destination1)
+                Town viridianCity = route22.getDestination1();
+                updateTown(viridianCity);
+            });
+            
+            // Create button to force a wild Pokémon encounter with grass icon
+            Button encounterButton = createButtonWithIcon("/Icons/Grass.png");
+            // Update tooltip text for the grass icon
+            encounterButton.getTooltip().setText("Look for Pokémon");
+            encounterButton.setOnAction(e -> {
+                // Get a random Pokémon from the encounter pool for this route
+                Pokemon wildPokemon = EncounterPool.getRandomEncounter(currentTown.getName());
+
+                if (wildPokemon != null) {
+                    WindowThings.mainWindow.appendToOutput("A wild " + wildPokemon.getName() + " appeared!");
+
+                    // Start battle in a separate thread
+                    javafx.application.Platform.runLater(() -> {
+                        try {
+                            // Make sure player has a current Pokémon set
+                            if (PokeText_Adventure.player.getCurrentPokemon() == null) {
+                                // If current Pokémon is null, use the first Pokémon in the party
+                                Pokemon firstPokemon = PokeText_Adventure.player.getFirstPokemon();
+
+                                if (firstPokemon != null) {
+                                    PokeText_Adventure.player.setCurrentPokemon(firstPokemon);
+                                } else {
+                                    WindowThings.mainWindow
+                                            .appendToOutput("You don't have any Pokémon to battle with!");
+                                    return;
+                                }
+                            }
+
+                            Battle battle = new Battle(PokeText_Adventure.player.getCurrentPokemon(),
+                                    wildPokemon,
+                                    PokeText_Adventure.player,
+                                    true);
+                        } catch (Exception ex) {
+                            System.out.println("Error starting battle: " + ex.getMessage());
+                        }
+                    });
+                } else {
+                    WindowThings.mainWindow.appendToOutput("No Pokémon found!");
+                }
+            });
+
+            // Apply styling to the text button
+            applyButtonStyle(toViridianButton);
+
+            // Arrange buttons in a horizontal box
+            javafx.scene.layout.HBox buttonBar = new javafx.scene.layout.HBox(10);
+            buttonBar.getChildren().addAll(toViridianButton, encounterButton);
+            buttonBar.setAlignment(javafx.geometry.Pos.CENTER);
+
+            // Add the buttons to the layout
             StackPane buttonContainer = new StackPane(buttonBar);
             buttonContainer.setPadding(new javafx.geometry.Insets(10));
             buttonContainer.setStyle("-fx-background-color: transparent;");

@@ -1657,7 +1657,7 @@ public class Battle extends Application {
         int numShakes = catchSuccess ? 3 : new Random().nextInt(3);
 
         // Create pokeball image view
-        Image pokeballImage = new Image(getClass().getResourceAsStream("/Pokeball.png"));
+        Image pokeballImage = new Image(getClass().getResourceAsStream("/Icons/Pokeball.png"));
         ImageView pokeball = new ImageView(pokeballImage);
         pokeball.setFitWidth(30);
         pokeball.setFitHeight(30);
