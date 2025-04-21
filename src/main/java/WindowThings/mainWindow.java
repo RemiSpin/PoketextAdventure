@@ -15,6 +15,8 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +31,44 @@ public class mainWindow extends Application {
     private static TextArea textArea = new TextArea();
     private TextField inputField = new TextField();
     private static Stage primaryStage;
+
+    // Add a static list to track all secondary windows
+    private static final List<Stage> secondaryWindows = new ArrayList<>();
+
+    // Method to register a secondary window
+    public static void registerWindow(Stage window) {
+        secondaryWindows.add(window);
+    }
+
+    // Method to unregister a secondary window
+    public static void unregisterWindow(Stage window) {
+        secondaryWindows.remove(window);
+    }
+
+    // Method to check if there are any open secondary windows
+    public static boolean hasSecondaryWindows() {
+        return !secondaryWindows.isEmpty();
+    }
+
+    // Method to check if there are any secondary windows EXCEPT exploreWindow
+    public static boolean hasSecondaryWindowsExceptExplore() {
+        for (Stage window : secondaryWindows) {
+            if (!exploreWindow.isExploreWindow(window)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Method to close all secondary windows
+    public static void closeAllSecondaryWindows() {
+        // Create a copy to avoid concurrent modification
+        List<Stage> windowsToClose = new ArrayList<>(secondaryWindows);
+        for (Stage window : windowsToClose) {
+            window.close();
+        }
+        secondaryWindows.clear();
+    }
 
     // Getter for the primary stage
     public static Stage getPrimaryStage() {
@@ -71,6 +111,40 @@ public class mainWindow extends Application {
         primaryStage.setTitle("PokeText");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+        // Add close request handler to the primary stage
+        primaryStage.setOnCloseRequest(event -> {
+            if (hasSecondaryWindowsExceptExplore()) {
+                // If there are secondary windows (except exploreWindow), prevent closing
+                event.consume();
+                appendToOutput("Please close all windows except the exploration window before exiting the game.");
+            } else {
+                // Show confirmation dialog
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Confirm Exit");
+                alert.setHeaderText("Exit PokeText Adventure");
+                alert.setContentText("Are you sure you want to exit the game?");
+
+                // Use the same font for the alert if possible
+                try {
+                    alert.getDialogPane().getScene().getStylesheets().add(
+                            getClass().getResource("/styles.css").toExternalForm());
+                } catch (Exception e) {
+                    // If style can't be applied, continue without it
+                }
+
+                // Wait for user response
+                alert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        // User confirmed, close all secondary windows and exit
+                        closeAllSecondaryWindows();
+                    } else {
+                        // User cancelled, prevent window from closing
+                        event.consume();
+                    }
+                });
+            }
+        });
 
         // Display welcome message in the main text area BEFORE starting the game
         appendToOutput("Welcome to PokeText Adventure!");

@@ -1,5 +1,6 @@
 package Overworld.Towns;
 
+import Overworld.Buildings.OaksLab;
 import Overworld.Buildings.PlayerHome;
 import Overworld.Buildings.PokemonCenter;
 import Overworld.Route;
@@ -14,6 +15,7 @@ public class Pallet implements Town {
     private String description;
     private boolean firstTimeEntry = true;
     private PokemonCenter playerHome;
+    private OaksLab oaksLab;
     private String imageFile = "Pallet.png";
     private Route route1;
 
@@ -21,6 +23,8 @@ public class Pallet implements Town {
         this.name = "Pallet Town";
         this.description = "The small town where you grew up.";
         this.playerHome = new PlayerHome(Player.getName() + "'s Home", "Your cozy home.");
+        this.oaksLab = new OaksLab("Professor Oak's Laboratory",
+                "The famous research lab where new trainers receive their first Pokémon.");
     }
 
     @Override
@@ -67,5 +71,14 @@ public class Pallet implements Town {
             route1 = new Route1(this, viridian);
         }
         return route1;
+    }
+
+    /**
+     * Returns Professor Oak's Laboratory.
+     * 
+     * @return The Oak's Lab instance for Pallet Town
+     */
+    public OaksLab getOaksLab() {
+        return oaksLab;
     }
 }

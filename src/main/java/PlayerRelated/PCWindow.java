@@ -24,7 +24,7 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
-@SuppressWarnings({"FieldMayBeFinal", "unused"})
+@SuppressWarnings({ "FieldMayBeFinal", "unused" })
 
 public class PCWindow {
     private Stage stage;
@@ -56,6 +56,15 @@ public class PCWindow {
         if (mainStage != null) {
             stage.initOwner(mainStage);
         }
+
+        // Prevent manual closing
+        stage.setOnCloseRequest(event -> {
+            event.consume();
+            System.out.println("Use the Close button to exit the PC Storage System.");
+        });
+
+        // Register with main window
+        WindowThings.mainWindow.registerWindow(stage);
 
         // Create the main layout
         BorderPane mainLayout = new BorderPane();
@@ -213,7 +222,7 @@ public class PCWindow {
 
         // Set default image
         try {
-            Image defaultImage = new Image(getClass().getResourceAsStream("/Pokeball.png"));
+            Image defaultImage = new Image(getClass().getResourceAsStream("/Icons/Pokeball.png"));
             pokemonPreviewImage.setImage(defaultImage);
         } catch (Exception e) {
             System.out.println("Could not load default image: " + e.getMessage());
@@ -256,7 +265,11 @@ public class PCWindow {
         // Add event handling
         withdrawButton.setOnAction(e -> withdrawPokemon());
         depositButton.setOnAction(e -> depositPokemon());
-        closeButton.setOnAction(e -> stage.close());
+        closeButton.setOnAction(e -> {
+            // Properly close the window
+            WindowThings.mainWindow.unregisterWindow(stage);
+            stage.close();
+        });
 
         partyListView.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
@@ -363,12 +376,12 @@ public class PCWindow {
 
         // Simple monochrome details without color formatting
         String formattedDetails = String.format("""
-                                                Name: %s
-                                                Species: %s
-                                                Level: %d
-                                                HP: %d/%d (%s)
-                                                Type: %s%s
-                                                Exp: %d/%d""",
+                Name: %s
+                Species: %s
+                Level: %d
+                HP: %d/%d (%s)
+                Type: %s%s
+                Exp: %d/%d""",
                 pokemon.getNickname(),
                 pokemon.getName(),
                 pokemon.getLevel(),
@@ -526,7 +539,6 @@ public class PCWindow {
         // Show the dialog and wait for it to be closed
         dialogStage.showAndWait();
     }
-
 
     public void show() {
         // Refresh the list views when showing the window

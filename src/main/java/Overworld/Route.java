@@ -15,7 +15,7 @@ public class Route implements Town {
     private String description;
     private String imageFile;
     private Town destination1;
-    private Town destination2;
+    protected Town destination2; // Change from private to protected for subclass access
     private Random random = new Random();
     private int encounterChance = 30;
 

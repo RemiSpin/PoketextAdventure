@@ -6,3 +6,10 @@ public class Launcher {
         PokeText_Adventure.main(args);
     }
 }
+
+// gym
+// clean up text
+// pokedex
+// animations
+// add color to dialogue (?)
+// save and load

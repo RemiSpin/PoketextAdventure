@@ -23,7 +23,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-@SuppressWarnings({"FieldMayBeFinal", "unused"})
+@SuppressWarnings({ "FieldMayBeFinal", "unused" })
 
 public class Player {
     private static String name = "Red";
@@ -35,6 +35,9 @@ public class Player {
     private String currentTownName;
     private static Font pokemonFont;
     private static Font pokemonFontSmall;
+    private String chosenStarter; // Add field to track which starter Pokémon was chosen
+    private boolean hasOaksParcel = false; // Track if player has Oak's Parcel
+    private boolean deliveredOaksParcel = false; // Track if player has delivered the parcel
 
     static {
         try {
@@ -52,6 +55,7 @@ public class Player {
         this.party = new ArrayList<>();
         this.pc = new ArrayList<>();
         this.badges = new ArrayList<>();
+        this.chosenStarter = null; // Initialize to null
     }
 
     // Constructor that takes a name parameter
@@ -60,6 +64,7 @@ public class Player {
         this.party = new ArrayList<>();
         this.pc = new ArrayList<>();
         this.badges = new ArrayList<>();
+        this.chosenStarter = null; // Initialize to null
         name = playerName; // Set the static name field
     }
 
@@ -283,11 +288,29 @@ public class Player {
 
         // Schedule the dialog to show after the current animation/layout cycle is done
         Platform.runLater(() -> {
-            showNicknameDialog(pokemon);
+            showNicknameDialog(pokemon, null);
+        });
+    }
+
+    // Overloaded version that accepts a callback
+    public void addPokemonToParty(Pokemon pokemon, Runnable afterNicknameCallback) {
+        if (party.size() < 6) {
+            party.add(pokemon);
+        } else {
+            pc.add(pokemon);
+        }
+
+        // Schedule the dialog to show after the current animation/layout cycle is done
+        Platform.runLater(() -> {
+            showNicknameDialog(pokemon, afterNicknameCallback);
         });
     }
 
     private void showNicknameDialog(Pokemon pokemon) {
+        showNicknameDialog(pokemon, null);
+    }
+
+    private void showNicknameDialog(Pokemon pokemon, Runnable afterNicknameCallback) {
         // Create custom nickname dialog
         Stage dialogStage = new Stage();
         dialogStage.initModality(Modality.APPLICATION_MODAL);
@@ -339,11 +362,19 @@ public class Player {
                 pokemon.setNickname(nickname);
             }
             dialogStage.close();
+            // Execute the callback if provided
+            if (afterNicknameCallback != null) {
+                afterNicknameCallback.run();
+            }
         });
 
         cancelButton.setOnAction(e -> {
             // Keep default name (pokemon's name)
             dialogStage.close();
+            // Execute the callback if provided
+            if (afterNicknameCallback != null) {
+                afterNicknameCallback.run();
+            }
         });
 
         // Button container
@@ -450,6 +481,23 @@ public class Player {
         return currentTownName;
     }
 
+    // Oak's Parcel methods
+    public boolean hasOaksParcel() {
+        return hasOaksParcel;
+    }
+
+    public void setHasOaksParcel(boolean hasParcel) {
+        this.hasOaksParcel = hasParcel;
+    }
+
+    public boolean hasDeliveredOaksParcel() {
+        return deliveredOaksParcel;
+    }
+
+    public void setDeliveredOaksParcel(boolean delivered) {
+        this.deliveredOaksParcel = delivered;
+    }
+
     // Method to withdraw a Pokemon from PC to party
     public boolean withdrawPokemonFromPC(int pcIndex) {
         if (pcIndex < 0 || pcIndex >= pc.size()) {
@@ -500,5 +548,23 @@ public class Player {
         modifiableParty.set(position1, modifiableParty.get(position2));
         modifiableParty.set(position2, temp);
         this.party = modifiableParty;
+    }
+
+    /**
+     * Gets the name of the starter Pokémon chosen by the player
+     * 
+     * @return The name of the chosen starter Pokémon or null if not yet chosen
+     */
+    public String getChosenStarter() {
+        return chosenStarter;
+    }
+
+    /**
+     * Sets the name of the starter Pokémon chosen by the player
+     * 
+     * @param starterName The name of the chosen starter Pokémon
+     */
+    public void setChosenStarter(String starterName) {
+        this.chosenStarter = starterName;
     }
 }

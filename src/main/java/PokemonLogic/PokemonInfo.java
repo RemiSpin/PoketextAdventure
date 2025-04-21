@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -32,6 +33,7 @@ public class PokemonInfo {
     public static List<PokemonInfo> getActiveWindows() {
         return new ArrayList<>(activeWindows);
     }
+
     private Pokemon pokemon;
     private Stage stage;
 
@@ -47,6 +49,15 @@ public class PokemonInfo {
             stage.setTitle(pokemon.getNickname() + "'s Stats");
             root.setAlignment(Pos.CENTER);
             root.setPadding(new Insets(10, 10, 10, 10));
+
+            // Prevent manual closing
+            stage.setOnCloseRequest(e -> {
+                e.consume();
+                System.out.println("Please use the window controls to close this window.");
+            });
+
+            // Register with main window
+            WindowThings.mainWindow.registerWindow(stage);
 
             Image backgroundImage = new Image(getClass().getResourceAsStream("/infoBG.png"));
             BackgroundSize backgroundSize = new BackgroundSize(BackgroundSize.AUTO, 100, false, false, false, true);
@@ -140,16 +151,22 @@ public class PokemonInfo {
             root.addRow(20, new Label());
             root.addRow(21, movesLabel);
 
-            stage.setOnCloseRequest(e -> {
+            // Add a close button to the window
+            Button closeButton = new Button("Close");
+            closeButton.setOnAction(e -> {
                 activeWindows.remove(this);
+                WindowThings.mainWindow.unregisterWindow(stage);
                 stage.close();
             });
+
+            // Add the close button to a new row in the GridPane
+            GridPane.setHalignment(closeButton, HPos.CENTER);
+            root.addRow(22, closeButton);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.sizeToScene();
             stage.setResizable(false);
-            stage.show();
             stage.show();
             activeWindows.add(PokemonInfo.this);
         } catch (Exception e) {

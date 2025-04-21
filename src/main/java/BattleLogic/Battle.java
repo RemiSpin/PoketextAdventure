@@ -87,9 +87,17 @@ public class Battle extends Application {
     private Label playerStatusLabel;
     private Label opponentStatusLabel;
 
+    // Add field to store post-battle dialogue
+    private String postBattleDialogue;
+
     public Battle(Player player, Trainer opponent) {
+        this(player, opponent, null);
+    }
+
+    public Battle(Player player, Trainer opponent, String postBattleDialogue) {
         this.player = player;
         this.opponent = opponent;
+        this.postBattleDialogue = postBattleDialogue;
         player.setCurrentPokemon(player.getParty().get(0));
         opponent.setCurrentPokemon(opponent.getPokemonList().get(0));
 
@@ -103,9 +111,15 @@ public class Battle extends Application {
     }
 
     public Battle(Pokemon playerPokemon, Pokemon wildPokemon, Player player, boolean isWildBattle) {
+        this(playerPokemon, wildPokemon, player, isWildBattle, null);
+    }
+
+    public Battle(Pokemon playerPokemon, Pokemon wildPokemon, Player player, boolean isWildBattle,
+            String postBattleDialogue) {
         this.player = player;
         this.wildPokemon = wildPokemon;
         this.isWildBattle = isWildBattle;
+        this.postBattleDialogue = postBattleDialogue;
         player.setCurrentPokemon(playerPokemon);
 
         Stage battleStage = new Stage();
@@ -221,7 +235,7 @@ public class Battle extends Application {
                         // Close battle window
                         Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                             Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
-                            Platform.runLater(() -> stage.close());
+                            Platform.runLater(() -> closeBattleWindow(stage));
                         }));
                         exitDelay.play();
                     } else {
@@ -336,7 +350,7 @@ public class Battle extends Application {
                         // Close battle window with a small delay
                         Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                             Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
-                            Platform.runLater(() -> stage.close());
+                            Platform.runLater(() -> closeBattleWindow(stage));
                         }));
                         exitDelay.play();
                     });
@@ -382,10 +396,15 @@ public class Battle extends Application {
                             player.addMoney(prizeMoney);
                             System.out.println("You got $" + prizeMoney + " for winning!");
 
+                            // Display post-battle dialogue if available
+                            if (postBattleDialogue != null && !postBattleDialogue.isEmpty()) {
+                                System.out.println(postBattleDialogue);
+                            }
+
                             // Close battle window with a small delay
                             Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                                 Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
-                                Platform.runLater(() -> stage.close());
+                                Platform.runLater(() -> closeBattleWindow(stage));
                             }));
                             exitDelay.play();
                         } else {
@@ -591,6 +610,15 @@ public class Battle extends Application {
         try {
             root = new Pane(); // Initialize root as class member
             scene = new Scene(root, 500, 500);
+
+            // Prevent manual closing
+            primaryStage.setOnCloseRequest(event -> {
+                event.consume();
+                System.out.println("You cannot exit a battle! You must either win, lose, or run away.");
+            });
+
+            // Register with main window
+            WindowThings.mainWindow.registerWindow(primaryStage);
 
             // Load the custom font
             Font font = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 11);
@@ -1469,7 +1497,7 @@ public class Battle extends Application {
                                                         // Close battle window
                                                         Stage stage = (Stage) playerHealthBarForeground.getScene()
                                                                 .getWindow();
-                                                        Platform.runLater(stage::close);
+                                                        Platform.runLater(() -> closeBattleWindow(stage));
                                                     } else {
                                                         // Force player to switch Pokemon
                                                         System.out.println("Choose your next Pokemon!");
@@ -1551,7 +1579,7 @@ public class Battle extends Application {
                                 // Close the battle window on the FX thread after a short delay
                                 Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1500), exitEvent -> {
                                     Stage stage = (Stage) controlsBox.getScene().getWindow();
-                                    Platform.runLater(stage::close);
+                                    Platform.runLater(() -> closeBattleWindow(stage));
                                 }));
                                 exitDelay.play();
                             } else {
@@ -1601,7 +1629,7 @@ public class Battle extends Application {
 
                             // Close the battle window
                             Stage stage = (Stage) controlsBox.getScene().getWindow();
-                            Platform.runLater(() -> stage.close());
+                            Platform.runLater(() -> closeBattleWindow(stage));
                         } else {
                             System.out.println("Can't escape!");
 
@@ -1795,7 +1823,7 @@ public class Battle extends Application {
             RotateTransition tiltCenter = new RotateTransition(Duration.millis(150), pokeball);
             tiltCenter.setFromAngle(20);
             tiltCenter.setToAngle(0);
-            tiltCenter.setInterpolator(Interpolator.EASE_IN);
+            tiltCenter.setInterpolator(Interpolator.EASE_IN;
 
             // Add pause between shakes
             PauseTransition pauseBetweenShakes = new PauseTransition(Duration.millis(300));
@@ -1937,7 +1965,7 @@ public class Battle extends Application {
                     // Close battle window
                     Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                         Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
-                        Platform.runLater(() -> stage.close());
+                        Platform.runLater(() -> closeBattleWindow(stage));
                     }));
                     exitDelay.play();
                 } else {
@@ -2418,7 +2446,7 @@ public class Battle extends Application {
             // Close battle window
             Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                 Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
-                Platform.runLater(() -> stage.close());
+                Platform.runLater(() -> closeBattleWindow(stage));
             }));
             exitDelay.play();
             return;
@@ -2575,7 +2603,7 @@ public class Battle extends Application {
                         // Close battle window
                         Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                             Stage stage = (Stage) playerHealthBarForeground.getScene().getWindow();
-                            Platform.runLater(() -> stage.close());
+                            Platform.runLater(() -> closeBattleWindow(stage));
                         }));
                         exitDelay.play();
                     } else {
@@ -2597,7 +2625,7 @@ public class Battle extends Application {
 
                     Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                         Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
-                        Platform.runLater(() -> stage.close());
+                        Platform.runLater(() -> closeBattleWindow(stage));
                     }));
                     exitDelay.play();
                 });
@@ -2615,14 +2643,18 @@ public class Battle extends Application {
                         player.addMoney(prizeMoney);
                         System.out.println("You got $" + prizeMoney + " for winning!");
 
+                        // Display post-battle dialogue if available
+                        if (postBattleDialogue != null && !postBattleDialogue.isEmpty()) {
+                            System.out.println(postBattleDialogue);
+                        }
+
                         Timeline exitDelay = new Timeline(new KeyFrame(Duration.millis(1000), exitEvent -> {
                             Stage stage = (Stage) opponentHealthBarForeground.getScene().getWindow();
-                            Platform.runLater(() -> stage.close());
+                            Platform.runLater(() -> closeBattleWindow(stage));
                         }));
                         exitDelay.play();
                     } else {
                         opponent.switchToNextPokemon();
-                        // ...existing code for switching opponent Pokemon
                     }
                 });
             }
@@ -2743,5 +2775,13 @@ public class Battle extends Application {
             case FRZ -> Color.DEEPSKYBLUE;
             default -> Color.BLACK;
         };
+    }
+
+    /**
+     * Helper method to properly close the battle window
+     */
+    private void closeBattleWindow(Stage stage) {
+        WindowThings.mainWindow.unregisterWindow(stage);
+        stage.close();
     }
 }
