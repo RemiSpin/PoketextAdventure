@@ -26,7 +26,8 @@ public class Route22 extends Route {
     public String getInitialEntryMessage() {
         return "A winding path stretches before you, marking the beginning of the journey to the Indigo Plateau. " +
                 "The terrain is rugged, with tall grass swaying in the breeze, hiding wild Pokémon eager for battle. " +
-                "In the distance, you can see the silhouette of mountains where the Pokémon League awaits challengers " +
+                "In the distance, you can see the silhouette of mountains where the Pokémon League awaits challengers "
+                +
                 "who prove their worth.";
     }
 
@@ -75,14 +76,16 @@ public class Route22 extends Route {
 
             // Show encounter dialogue
             mainWindow.appendToOutput("As you explore Route 22, a familiar voice calls out.");
-            mainWindow.appendToOutput("Gary: Hey! " + Player.getName() + "!");
+            mainWindow.appendToOutput("Gary: Hey! " + Player.getName() + "!", "green");
             mainWindow.appendToOutput("You turn to see Gary approaching with a confident smirk.");
             mainWindow.appendToOutput(
-                    "Gary: You're heading to the Pokémon League? Forget it! You probably don't even have any badges!");
+                    "Gary: You're heading to the Pokémon League? Forget it! You probably don't even have any badges!",
+                    "green");
             mainWindow.appendToOutput(
-                    "Gary: The guard won't let you through without them, and frankly, you'd never get them anyway!");
+                    "Gary: The guard won't let you through without them, and frankly, you'd never get them anyway!",
+                    "green");
             mainWindow.appendToOutput("Gary's eyes narrow as he readies a Poké Ball.");
-            mainWindow.appendToOutput("Gary: I'll show you just how outclassed you really are. Go!");
+            mainWindow.appendToOutput("Gary: I'll show you just how outclassed you really are. Go!", "green");
 
             // Create post-battle dialogue
             String postBattleDialogue = "";
@@ -111,5 +114,15 @@ public class Route22 extends Route {
     // Reset method for testing purposes or new game
     public static void resetRivalBattleFlag() {
         rivalBattleOccurred = false;
+    }
+
+    // Getter to check if rival battle has occurred (for save/load)
+    public static boolean hasRivalBattleOccurred() {
+        return rivalBattleOccurred;
+    }
+
+    // Setter for rival battle state (for loading saved games)
+    public static void setRivalBattleOccurred(boolean occurred) {
+        rivalBattleOccurred = occurred;
     }
 }

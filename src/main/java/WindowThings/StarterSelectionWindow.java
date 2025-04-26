@@ -280,7 +280,6 @@ public class StarterSelectionWindow {
         }
     }
 
-    // Extracted method to start the rival battle
     private void startRivalBattle(String starterName) {
         try {
             // Gary chooses the Pokemon with type advantage
@@ -297,15 +296,15 @@ public class StarterSelectionWindow {
                 rivalStarter = new trainerPokemon("Bulbasaur", 5, "Tackle", "Growl");
             }
 
-            // Show Gary choosing his Pokemon and challenging the player
-            WindowThings.mainWindow.appendToOutput("Gary: Hah! I'll take this one then!");
-            WindowThings.mainWindow.appendToOutput("Gary picks " + rivalStarter.getName() + "!");
+            // Show Gary choosing his Pokemon and challenging the player - now with colors!
+            WindowThings.mainWindow.appendToOutput("Gary: Hah! I'll take this one then!", "green");
+            WindowThings.mainWindow.appendToOutput("Gary picks " + rivalStarter.getName() + "!", "green");
             WindowThings.mainWindow.appendToOutput(
-                    "Professor Oak: Take good care of your Pokemon, both of you.");
+                    "Professor Oak: Take good care of your Pokemon, both of you.", "blue");
             WindowThings.mainWindow.appendToOutput(
                     "Gary turns to you with a smirk on his face.");
             WindowThings.mainWindow.appendToOutput(
-                    "Gary: Let's see which one of us picked the better Pokemon! Let's go!");
+                    "Gary: Let's see which one of us picked the better Pokemon! Let's go!", "green");
 
             // Create post-battle dialogue based on win condition
             String postBattleDialogue = "Gary: What? Unbelievable! I picked the wrong Pokemon!\n" +
@@ -315,17 +314,30 @@ public class StarterSelectionWindow {
                     "Professor Oak approaches you with a smile.\n" +
                     "Professor Oak: Well done! That was an impressive first battle!\n" +
                     "Professor Oak: Here, I have something for you that will help on your journey.\n" +
-                    "Professor Oak hands you 5 Poke Balls.\n" +
+                    "Professor Oak hands you Poke Balls.\n" +
                     "Professor Oak: And this is my invention, the Pokedex!\n" +
                     "Professor Oak: It automatically records data on Pokemon you've seen or caught.\n" +
                     "Professor Oak hands you a Pokedex.\n" +
-                    "Professor Oak: To make a complete guide on all the Pokemon in the world...\n" +
-                    "That was my dream! But I'm too old to do it now.\n" +
-                    "So, I want you to fulfill my dream for me!\n" +
-                    "Now get moving! Your legend is about to unfold!";
+                    "Professor Oak: To make a complete guide on all the Pokemon in the world... That was my dream! But I'm too old to do it now. So, I want you to fulfill my dream for me! Now get moving! Your legend is about to unfold!";
 
-            // Create the trainer battle with Gary, including post-battle dialogue
-            Battle battleWindow = new Battle(player, new Trainer("Gary", 80, rivalStarter), postBattleDialogue);
+            // Create the trainer battle with Gary, but pass empty dialogue string
+            // to avoid the default display mechanism
+            Battle battleWindow = new Battle(player, new Trainer("Gary", 80, rivalStarter), "");
+
+            // Use post-battle action to display colored dialogue
+            battleWindow.setPostBattleAction(() -> {
+                // Split dialogue by lines
+                String[] lines = postBattleDialogue.split("\n");
+                for (String line : lines) {
+                    if (line.startsWith("Gary:")) {
+                        WindowThings.mainWindow.appendToOutput(line, "green");
+                    } else if (line.startsWith("Professor Oak:")) {
+                        WindowThings.mainWindow.appendToOutput(line, "blue");
+                    } else {
+                        WindowThings.mainWindow.appendToOutput(line);
+                    }
+                }
+            });
 
         } catch (Exception e) {
             System.out.println("Error starting rival battle: " + e.getMessage());

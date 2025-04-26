@@ -4,8 +4,11 @@ import java.io.File;
 import java.io.IOException;
 
 import Overworld.Buildings.PlayerHome;
+import Overworld.Buildings.PokemonCenter;
 import Overworld.Town;
 import Overworld.Towns.Pallet;
+import Overworld.Towns.Pewter;
+import Overworld.Towns.Viridian;
 import PlayerRelated.LoadGame;
 import PlayerRelated.Player;
 import javafx.application.Application;
@@ -39,19 +42,18 @@ public class PokeText_Adventure extends Application {
                     String savedTownName = loadedPlayer.getCurrentTownName();
 
                     if (savedTownName != null) {
-                        if (savedTownName.equals(Player.getName() + "'s Home")) {
-                            // If saved in player's home
-                            Pallet pallet = new Pallet();
-                            startingTown = (PlayerHome) pallet.getPokemonCenter();
-                        } else {
-                            // Default to Pallet Town for now
-                            startingTown = new Pallet();
+                        // Resolve the town by its name
+                        startingTown = resolveTownByName(savedTownName);
+
+                        if (startingTown != null) {
+                            exploreWindow explorationWindow = new exploreWindow(startingTown);
+                            explorationWindow.show();
+                            return;
                         }
-                    } else {
-                        // Fallback if no town name was saved
-                        startingTown = new Pallet();
                     }
 
+                    // Fallback to Pallet Town if town resolution failed
+                    startingTown = new Pallet();
                     exploreWindow explorationWindow = new exploreWindow(startingTown);
                     explorationWindow.show();
                     return;
@@ -72,6 +74,65 @@ public class PokeText_Adventure extends Application {
         // Start the game in Player's Home
         exploreWindow explorationWindow = new exploreWindow(playerHome);
         explorationWindow.show();
+    }
+
+    /**
+     * Resolves a town object based on its name
+     * 
+     * @param townName The name of the town to resolve
+     * @return The resolved town object, or null if not found
+     */
+    private Town resolveTownByName(String townName) {
+        // Check for major towns
+        if (townName.equals("Pallet Town")) {
+            return new Pallet();
+        } else if (townName.equals("Viridian City")) {
+            return new Viridian();
+        } else if (townName.equals("Pewter City")) {
+            return new Pewter();
+        }
+        // Check for buildings in towns
+        else if (townName.equals(Player.getName() + "'s Home")) {
+            Pallet pallet = new Pallet();
+            return (PlayerHome) pallet.getPokemonCenter();
+        } else if (townName.equals("Professor Oak's Laboratory")) {
+            Pallet pallet = new Pallet();
+            return pallet.getOaksLab();
+        } else if (townName.equals("Viridian Pokemon Center")) {
+            Viridian viridian = new Viridian();
+            PokemonCenter center = viridian.getPokemonCenter();
+            if (center instanceof Town) {
+                return (Town) center;
+            }
+        } else if (townName.equals("Pewter Pokemon Center")) {
+            Pewter pewter = new Pewter();
+            PokemonCenter center = pewter.getPokemonCenter();
+            if (center instanceof Town) {
+                return (Town) center;
+            }
+        } else if (townName.equals("Pewter Gym")) {
+            Pewter pewter = new Pewter();
+            return pewter.getPewterGym();
+        }
+        // Check for routes - we'll recreate them through their parent towns
+        else if (townName.startsWith("Route ")) {
+            if (townName.equals("Route 1")) {
+                Pallet pallet = new Pallet();
+                return pallet.getRoute1();
+            } else if (townName.equals("Route 22")) {
+                Viridian viridian = new Viridian();
+                return viridian.getRoute22();
+            } else if (townName.equals("Route 2 South")) {
+                Viridian viridian = new Viridian();
+                return viridian.getRoute2South();
+            } else if (townName.equals("Route 2 North")) {
+                Pewter pewter = new Pewter();
+                return pewter.getRoute2North();
+            }
+        }
+
+        // Default to null if town not found
+        return null;
     }
 
     public static void main(String[] args) {

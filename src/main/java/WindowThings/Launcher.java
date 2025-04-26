@@ -7,9 +7,7 @@ public class Launcher {
     }
 }
 
-// gym
-// clean up text
-// pokedex
-// animations
-// add color to dialogue (?)
-// save and load
+// battle animations and background
+// remove comments
+// make buttons not clcikable during animations
+// music

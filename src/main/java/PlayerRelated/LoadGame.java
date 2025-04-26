@@ -7,9 +7,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import Overworld.Routes.Route22;
 import PokemonLogic.Pokemon;
+import WindowThings.exploreWindow;
 
 @SuppressWarnings("unused")
 
@@ -31,14 +35,25 @@ public class LoadGame {
 
         try {
             // Load player data
-            PreparedStatement playerStmt = conn.prepareStatement("SELECT name, money FROM Player");
+            PreparedStatement playerStmt = conn
+                    .prepareStatement(
+                            "SELECT name, money, has_oaks_parcel, delivered_oaks_parcel, chosen_starter FROM Player");
             ResultSet playerRs = playerStmt.executeQuery();
 
             if (playerRs.next()) {
                 String name = playerRs.getString("name");
                 int money = playerRs.getInt("money");
+                boolean hasOaksParcel = playerRs.getBoolean("has_oaks_parcel");
+                boolean deliveredOaksParcel = playerRs.getBoolean("delivered_oaks_parcel");
+                String chosenStarter = playerRs.getString("chosen_starter");
+
                 player = new Player(name);
                 player.setMoney(money);
+                player.setHasOaksParcel(hasOaksParcel);
+                player.setDeliveredOaksParcel(deliveredOaksParcel);
+                if (chosenStarter != null) {
+                    player.setChosenStarter(chosenStarter);
+                }
 
                 // Load party Pokemon
                 List<Pokemon> party = loadPokemonFromTable("Party_Pokemon");
@@ -68,13 +83,36 @@ public class LoadGame {
                 }
 
                 // Load current location
-                PreparedStatement locationStmt = conn
-                        .prepareStatement("SELECT town_name FROM CurrentLocation");
+                PreparedStatement locationStmt = conn.prepareStatement("SELECT town_name FROM CurrentLocation");
                 ResultSet locationRs = locationStmt.executeQuery();
                 if (locationRs.next()) {
                     currentTownName = locationRs.getString("town_name");
-                    // The actual town object will be set later
                     player.setCurrentTownName(currentTownName);
+                }
+
+                // Load Pokedex entries
+                PreparedStatement pokedexStmt = conn.prepareStatement("SELECT pokemon_id FROM Pokedex");
+                ResultSet pokedexRs = pokedexStmt.executeQuery();
+                while (pokedexRs.next()) {
+                    player.registerPokemonCaught(pokedexRs.getInt("pokemon_id"));
+                }
+
+                // Load Route22 rival battle state
+                PreparedStatement rivalBattleStmt = conn.prepareStatement(
+                        "SELECT rival_battle_occurred FROM RouteBattleFlags WHERE route_name = ?");
+                rivalBattleStmt.setString(1, "Route 22");
+                ResultSet rivalBattleRs = rivalBattleStmt.executeQuery();
+                if (rivalBattleRs.next()) {
+                    boolean rivalBattleOccurred = rivalBattleRs.getBoolean("rival_battle_occurred");
+                    Route22.setRivalBattleOccurred(rivalBattleOccurred);
+                }
+
+                // Load route trainer states
+                Map<String, List<Boolean>> routeTrainers = loadRouteTrainerStates();
+
+                // Apply trainer states to the routes if they exist
+                if (routeTrainers.containsKey("Viridian Forest") && exploreWindow.viridianForest != null) {
+                    exploreWindow.viridianForest.setDefeatedTrainers(routeTrainers.get("Viridian Forest"));
                 }
 
                 System.out.println("Game loaded successfully!");
@@ -83,6 +121,7 @@ public class LoadGame {
             }
         } catch (SQLException e) {
             System.err.println("Failed to load game: " + e.getMessage());
+            e.printStackTrace();
         } finally {
             try {
                 if (conn != null) {
@@ -93,6 +132,50 @@ public class LoadGame {
             }
         }
         return player;
+    }
+
+    private Map<String, List<Boolean>> loadRouteTrainerStates() throws SQLException {
+        Map<String, List<Boolean>> routeTrainers = new HashMap<>();
+
+        PreparedStatement stmt = conn.prepareStatement(
+                "SELECT route_name, trainer_index, defeated FROM RouteTrainers ORDER BY route_name, trainer_index");
+        ResultSet rs = stmt.executeQuery();
+
+        String currentRoute = null;
+        List<Boolean> currentRouteTrainers = null;
+
+        while (rs.next()) {
+            String routeName = rs.getString("route_name");
+            int trainerIndex = rs.getInt("trainer_index");
+            boolean defeated = rs.getBoolean("defeated");
+
+            // If we're processing a new route
+            if (currentRoute == null || !currentRoute.equals(routeName)) {
+                // If we were already processing a route, add it to the map
+                if (currentRoute != null) {
+                    routeTrainers.put(currentRoute, currentRouteTrainers);
+                }
+
+                // Start new route
+                currentRoute = routeName;
+                currentRouteTrainers = new ArrayList<>();
+            }
+
+            // Ensure we have enough entries in the list
+            while (currentRouteTrainers.size() <= trainerIndex) {
+                currentRouteTrainers.add(false);
+            }
+
+            // Set the trainer's state
+            currentRouteTrainers.set(trainerIndex, defeated);
+        }
+
+        // Add the last route if there is one
+        if (currentRoute != null) {
+            routeTrainers.put(currentRoute, currentRouteTrainers);
+        }
+
+        return routeTrainers;
     }
 
     private List<Pokemon> loadPokemonFromTable(String tableName) throws SQLException {

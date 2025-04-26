@@ -46,19 +46,20 @@ public class OaksLab implements Town {
 
             // Show the first-time entry message with Gary
             WindowThings.mainWindow.appendToOutput(
-                    "Professor Oak: Ah, " + player.getName() + "! There you are! I've been waiting for you!");
+                    "Professor Oak: Ah, " + player.getName() + "! There you are! I've been waiting for you!", "blue");
 
             WindowThings.mainWindow.appendToOutput(
                     "A boy with spiky hair turns around and gives you a dismissive look.");
 
             WindowThings.mainWindow.appendToOutput(
-                    "Gary: Hmph! Took you long enough, " + player.getName() + "! I'm ready to get my Pokémon!");
+                    "Gary: Hmph! Took you long enough, " + player.getName() + "! I'm ready to get my Pokémon!",
+                    "green");
 
             WindowThings.mainWindow.appendToOutput(
-                    "Professor Oak: Now, now, Gary. Be patient. You'll both get to choose your partner.");
+                    "Professor Oak: Now, now, Gary. Be patient. You'll both get to choose your partner.", "blue");
 
             WindowThings.mainWindow.appendToOutput(
-                    "Professor Oak: Welcome to the world of Pokémon! It's time for you to choose your first partner.");
+                    "Professor Oak: It's time for you to choose!", "blue");
 
             // Only show starter selection if player doesn't already have Pokemon
             if (player.getParty().isEmpty()) {
@@ -69,7 +70,7 @@ public class OaksLab implements Town {
                 });
             } else {
                 WindowThings.mainWindow.appendToOutput(
-                        "Professor Oak: I see you already have a Pokémon with you! Take good care of it!");
+                        "Professor Oak: I see you already have a Pokémon with you! Take good care of it!", "blue");
             }
         } else {
             // Regular entry message for subsequent visits
@@ -80,7 +81,7 @@ public class OaksLab implements Town {
 
     @Override
     public PokemonCenter getPokemonCenter() {
-        return null; // Oak's Lab doesn't function as a Pokémon Center
+        return null;
     }
 
     @Override

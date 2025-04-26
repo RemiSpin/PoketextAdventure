@@ -8,6 +8,7 @@ import java.util.List;
 
 import Overworld.Town;
 import PlayerRelated.Player;
+import PlayerRelated.PokedexWindow;
 import PlayerRelated.SaveGame;
 import PokemonLogic.Pokemon;
 import PokemonLogic.PokemonInfo;
@@ -15,25 +16,37 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
 @SuppressWarnings({ "FieldMayBeFinal", "unused" })
 
 public class mainWindow extends Application {
-    private static TextArea textArea = new TextArea();
+    private static TextFlow textFlow = new TextFlow();
+    private static ScrollPane scrollPane = new ScrollPane(textFlow);
     private TextField inputField = new TextField();
     private static Stage primaryStage;
+    private static Font pokemonFont;
 
     // Add a static list to track all secondary windows
     private static final List<Stage> secondaryWindows = new ArrayList<>();
+
+    static {
+        try {
+            pokemonFont = Font.loadFont(mainWindow.class.getResourceAsStream("/RBYGSC.ttf"), 16);
+        } catch (Exception e) {
+            System.out.println("Could not load Pokemon font: " + e.getMessage());
+            pokemonFont = Font.font("Arial", 16);
+        }
+    }
 
     // Method to register a secondary window
     public static void registerWindow(Stage window) {
@@ -75,11 +88,64 @@ public class mainWindow extends Application {
         return primaryStage;
     }
 
+    // Original method for backward compatibility
     public static void appendToOutput(String message) {
         Platform.runLater(() -> {
-            textArea.appendText("> " + message + "\n");
-            // Auto-scroll to bottom
-            textArea.setScrollTop(Double.MAX_VALUE);
+            Text prefix = new Text("> ");
+            prefix.setFill(Color.BLACK);
+            prefix.setFont(pokemonFont);
+
+            Text text = new Text(message + "\n");
+            text.setFill(Color.BLACK);
+            text.setFont(pokemonFont);
+
+            textFlow.getChildren().addAll(prefix, text);
+
+            // Improved auto-scroll to ensure we reach the bottom
+            scrollToBottom();
+        });
+    }
+
+    // New method with color support using string color names
+    public static void appendToOutput(String message, String colorName) {
+        Platform.runLater(() -> {
+            Text prefix = new Text("> ");
+            prefix.setFill(Color.BLACK);
+            prefix.setFont(pokemonFont);
+
+            Text text = new Text(message + "\n");
+
+            // Convert string color name to Color
+            Color textColor = Color.BLACK; // Default color
+            try {
+                // Try to parse as a named color
+                textColor = Color.valueOf(colorName.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                // If that fails, try to interpret as a web color
+                try {
+                    textColor = Color.web(colorName);
+                } catch (IllegalArgumentException ex) {
+                    // If all fails, use default black
+                    System.err.println("Invalid color: " + colorName + ". Using default black.");
+                }
+            }
+
+            text.setFill(textColor);
+            text.setFont(pokemonFont);
+
+            textFlow.getChildren().addAll(prefix, text);
+
+            // Improved auto-scroll to ensure we reach the bottom
+            scrollToBottom();
+        });
+    }
+
+    // Helper method to ensure scrolling to the bottom works properly
+    private static void scrollToBottom() {
+        // Use Platform.runLater to ensure this happens after layout
+        Platform.runLater(() -> {
+            scrollPane.layout();
+            scrollPane.setVvalue(1.0);
         });
     }
 
@@ -90,23 +156,38 @@ public class mainWindow extends Application {
         BorderPane root = new BorderPane();
         Scene scene = new Scene(root, 700, 700);
 
-        textArea.setEditable(false);
-        Font customFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 16);
+        // Configure TextFlow with padding but no borders
+        textFlow.setStyle("-fx-background-color: white;");
+        textFlow.setPrefWidth(660);
+        textFlow.setLineSpacing(3);
+        textFlow.setPadding(new javafx.geometry.Insets(15)); // Keep padding inside text area
 
-        System.setOut(new PrintStream(new TextAreaOutputStream(textArea)));
+        // Use TextFlow directly without the container border
+        scrollPane.setContent(textFlow);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setPrefViewportHeight(650);
+        scrollPane.setStyle("-fx-background-color: white; -fx-background: white;");
+        scrollPane.setPadding(new javafx.geometry.Insets(15, 15, 15, 15)); // Keep margin around ScrollPane
 
-        textArea.setFont(customFont);
-        inputField.setFont(customFont);
-        textArea.setWrapText(true);
+        // Setup custom output stream
+        System.setOut(new PrintStream(new TextFlowOutputStream()));
 
-        root.setCenter(textArea);
+        // Style the input field - simplified without borders
+        inputField.setFont(pokemonFont);
+        inputField.setPadding(new javafx.geometry.Insets(5));
+
+        root.setCenter(scrollPane);
 
         HBox inputBox = new HBox();
         inputBox.setAlignment(Pos.CENTER);
+        inputBox.setPadding(new javafx.geometry.Insets(10, 15, 15, 15)); // Keep padding for input area
         inputBox.getChildren().addAll(inputField);
 
         HBox.setHgrow(inputField, Priority.ALWAYS);
         root.setBottom(inputBox);
+
+        // Keep subtle background color for visual separation
+        root.setStyle("-fx-background-color: #f5f5f5;");
 
         primaryStage.setTitle("PokeText");
         primaryStage.setScene(scene);
@@ -117,41 +198,108 @@ public class mainWindow extends Application {
             if (hasSecondaryWindowsExceptExplore()) {
                 // If there are secondary windows (except exploreWindow), prevent closing
                 event.consume();
-                appendToOutput("Please close all windows except the exploration window before exiting the game.");
+                appendToOutput("Please close all windows except the exploration window before exiting the game.",
+                        "red");
             } else {
-                // Show confirmation dialog
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Confirm Exit");
-                alert.setHeaderText("Exit PokeText Adventure");
-                alert.setContentText("Are you sure you want to exit the game?");
+                // Create a custom styled dialog instead of standard alert
+                Stage dialogStage = new Stage();
+                dialogStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
+                dialogStage.setTitle("Confirm Exit");
+                dialogStage.setResizable(true); // Allow resizing
 
-                // Use the same font for the alert if possible
+                // Main container with monochrome background
+                javafx.scene.layout.BorderPane dialogPane = new javafx.scene.layout.BorderPane();
+                dialogPane.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0);");
+                dialogPane.setPadding(new javafx.geometry.Insets(20));
+
+                // Title label with monochrome styling
+                javafx.scene.control.Label titleLabel = new javafx.scene.control.Label("Exit");
+                // Try to use the Pokémon font if available
                 try {
-                    alert.getDialogPane().getScene().getStylesheets().add(
-                            getClass().getResource("/styles.css").toExternalForm());
+                    javafx.scene.text.Font pokemonFontLarge = javafx.scene.text.Font.loadFont(
+                            getClass().getResourceAsStream("/RBYGSC.ttf"), 16);
+                    titleLabel.setFont(pokemonFontLarge);
                 } catch (Exception e) {
-                    // If style can't be applied, continue without it
+                    titleLabel.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 16));
                 }
 
-                // Wait for user response
-                alert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.OK) {
-                        // User confirmed, close all secondary windows and exit
-                        closeAllSecondaryWindows();
-                    } else {
-                        // User cancelled, prevent window from closing
-                        event.consume();
-                    }
+                titleLabel.setTextFill(javafx.scene.paint.Color.BLACK);
+                titleLabel.setAlignment(javafx.geometry.Pos.CENTER);
+                titleLabel.setMaxWidth(300);
+                titleLabel.setPrefWidth(300);
+                titleLabel.setWrapText(true); // Ensure wrapping
+                titleLabel.setPadding(new javafx.geometry.Insets(10));
+                titleLabel.setStyle("-fx-background-color: white; " +
+                        "-fx-background-radius: 10; " +
+                        "-fx-border-color: #000000; " +
+                        "-fx-border-radius: 10; " +
+                        "-fx-border-width: 2;");
+
+                // Use TextFlow instead of Label for better text wrapping
+                javafx.scene.text.TextFlow textFlow = new javafx.scene.text.TextFlow();
+                javafx.scene.text.Text contentText = new javafx.scene.text.Text(
+                        "Are you sure you want to exit? Make sure you saved!");
+
+                // Style the text
+                try {
+                    javafx.scene.text.Font pokemonFontSmall = javafx.scene.text.Font.loadFont(
+                            getClass().getResourceAsStream("/RBYGSC.ttf"), 12);
+                    contentText.setFont(pokemonFontSmall);
+                } catch (Exception e) {
+                    contentText.setFont(javafx.scene.text.Font.font("Arial", 12));
+                }
+
+                textFlow.getChildren().add(contentText);
+                textFlow.setMaxWidth(300);
+                textFlow.setPrefWidth(300);
+                textFlow.setLineSpacing(5);
+                textFlow.setStyle("-fx-background-color: white; " +
+                        "-fx-background-radius: 5; " +
+                        "-fx-border-color: #000000; " +
+                        "-fx-border-radius: 5; " +
+                        "-fx-padding: 15; " +
+                        "-fx-border-width: 1;");
+
+                // Create buttons with custom styling
+                javafx.scene.control.Button yesButton = createStyledButton("Yes", "#404040");
+                javafx.scene.control.Button noButton = createStyledButton("No", "#606060");
+
+                // Button container
+                javafx.scene.layout.HBox buttonBox = new javafx.scene.layout.HBox(15);
+                buttonBox.getChildren().addAll(yesButton, noButton);
+                buttonBox.setAlignment(javafx.geometry.Pos.CENTER);
+                buttonBox.setPadding(new javafx.geometry.Insets(15, 0, 0, 0));
+
+                // Add elements to the layout
+                javafx.scene.layout.VBox contentBox = new javafx.scene.layout.VBox(15);
+                contentBox.getChildren().addAll(titleLabel, textFlow, buttonBox);
+                dialogPane.setCenter(contentBox);
+
+                // Create scene - slightly taller to accommodate wrapped text
+                javafx.scene.Scene dialogScene = new javafx.scene.Scene(dialogPane, 350, 220);
+                dialogStage.setScene(dialogScene);
+
+                // Set button actions
+                yesButton.setOnAction(e -> {
+                    // User confirmed, close all secondary windows and exit
+                    closeAllSecondaryWindows();
+                    dialogStage.close();
                 });
+
+                noButton.setOnAction(e -> {
+                    // User cancelled, prevent window from closing
+                    event.consume();
+                    dialogStage.close();
+                });
+
+                // Show dialog and wait for it to close
+                dialogStage.showAndWait();
             }
         });
 
-        // Display welcome message in the main text area BEFORE starting the game
-        appendToOutput("Welcome to PokeText Adventure!");
-        appendToOutput("");
-
-        // Add a personalized welcome once the player name is set
-        appendToOutput("Type 'help' to see a list of available commands.");
+        // Display welcome message in the main text area
+        appendToOutput("Welcome to PokeText Adventure!", "red");
+        appendToOutput("Type 'help' to see a list of available commands.", "blue");
 
         // Now start the game logic
         PokeText_Adventure pokeTextAdventure = new PokeText_Adventure();
@@ -170,57 +318,63 @@ public class mainWindow extends Application {
                 saveGame.saveGame();
             }
             case "help" -> {
-                System.out.println("Available commands:");
-                System.out.println("- Save : Saves your current game progress");
-                System.out.println("- Pokemon : Shows a list of Pokemon in your party");
-                System.out.println("- Pokemon (nickname) : Shows detailed stats for a specific Pokemon");
-                System.out.println("- Lead : Change which Pokemon appears first in your party");
-                System.out.println("- Area : Shows information about your current location");
-                System.out.println("- " + Player.getName() + " : Shows your trainer information");
-                System.out.println("- Help : Shows this help message");
+                appendToOutput("Available commands:", "blue");
+                appendToOutput("Save : Saves your current game progress");
+                appendToOutput("Pokemon : Shows a list of Pokemon in your party");
+                appendToOutput("Pokemon (nickname) : Shows detailed stats for a specific Pokemon");
+                appendToOutput("Lead : Change which Pokemon appears first in your party");
+                appendToOutput("Area : Shows information about your current location");
+                appendToOutput("Pokedex : Opens the Pokedex to track caught Pokemon");
+                appendToOutput(Player.getName() + " : Shows your trainer information");
+                appendToOutput("Help : Shows this help message");
+            }
+            case "pokedex" -> {
+                // Open the Pokedex window
+                PokedexWindow pokedexWindow = new PokedexWindow();
+                pokedexWindow.show();
             }
             case "area" -> {
                 if (exploreWindow.playerCurrentTown != null) {
                     Town currentTown = exploreWindow.playerCurrentTown;
-                    System.out.println("Current location: " + currentTown.getName());
-                    System.out.println(currentTown.getDescription());
+                    appendToOutput("Current location: " + currentTown.getName(), "blue");
+                    appendToOutput(currentTown.getDescription());
 
                     // Also show Pokemon Center information if available
                     if (currentTown.getPokemonCenter() != null) {
-                        System.out.println("\nFacilities:");
-                        System.out.println("- " + currentTown.getPokemonCenter().getName() + ": " +
+                        appendToOutput("\nFacilities:", "blue");
+                        appendToOutput("- " + currentTown.getPokemonCenter().getName() + ": " +
                                 currentTown.getPokemonCenter().getDescription());
                     }
                 } else {
-                    System.out.println("You are not currently in any town.");
+                    appendToOutput("You are not currently in any town.", "red");
                 }
             }
             case "pokemon" -> {
-                System.out.println("Your Pokemon:");
+                appendToOutput("Your Pokemon:", "blue");
                 for (Pokemon pokemon : PokeText_Adventure.player.getParty()) {
-                    System.out.println("- " + pokemon.getNickname());
+                    appendToOutput("- " + pokemon.getNickname());
                 }
-                System.out.println("\nIf you wish to see the stats of a pokemon, say: \nPokemon (Nickname)!");
+                appendToOutput("\nIf you wish to see the stats of a pokemon, say: \nPokemon (Nickname)!", "green");
             }
             case "lead", "switchlead" -> {
                 // Get the player's current party
                 List<Pokemon> party = PokeText_Adventure.player.getParty();
 
                 if (party.size() <= 1) {
-                    System.out.println("You need at least two Pokemon to change your lead Pokemon!");
+                    appendToOutput("You need at least two Pokemon to change your lead Pokemon!", "red");
                     return;
                 }
 
                 // Show current party order
-                System.out.println("Your current party order:");
+                appendToOutput("Your current party order:", "blue");
                 for (int i = 0; i < party.size(); i++) {
                     Pokemon pokemon = party.get(i);
                     String status = (pokemon.getRemainingHealth() <= 0) ? " (Fainted)" : "";
-                    System.out.println((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
+                    appendToOutput((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
                             pokemon.getLevel() + " " + pokemon.getName() + ")" + status);
                 }
 
-                System.out.println("\nEnter the number of the Pokemon you want as your lead:");
+                appendToOutput("\nEnter the number of the Pokemon you want as your lead:", "green");
 
                 // Store the current event handler to restore it later
                 javafx.event.EventHandler<javafx.event.ActionEvent> originalHandler = inputField.getOnAction();
@@ -233,14 +387,14 @@ public class mainWindow extends Application {
                     try {
                         int choice = Integer.parseInt(selection);
                         if (choice < 1 || choice > party.size()) {
-                            System.out
-                                    .println("Invalid selection! Please enter a number between 1 and " + party.size());
+                            appendToOutput("Invalid selection! Please enter a number between 1 and " + party.size(),
+                                    "red");
                         } else {
                             // Check if selected Pokemon is fainted
                             Pokemon selectedPokemon = party.get(choice - 1);
                             if (selectedPokemon.getRemainingHealth() <= 0) {
-                                System.out.println("Cannot set " + selectedPokemon.getNickname() +
-                                        " as your lead Pokemon because it has fainted!");
+                                appendToOutput("Cannot set " + selectedPokemon.getNickname() +
+                                        " as your lead Pokemon because it has fainted!", "red");
                             }
                             // If not selecting the current lead (1) and not fainted
                             else if (choice != 1) {
@@ -262,23 +416,24 @@ public class mainWindow extends Application {
                                     PokeText_Adventure.player.setCurrentPokemon(firstPokemon);
                                 }
 
-                                System.out.println(selectedPkm.getNickname() + " is now your lead Pokemon!");
+                                appendToOutput(selectedPkm.getNickname() + " is now your lead Pokemon!", "green");
 
                                 // Show updated party order
-                                System.out.println("Updated party order:");
+                                appendToOutput("Updated party order:", "blue");
                                 List<Pokemon> updatedParty = PokeText_Adventure.player.getParty();
                                 for (int i = 0; i < updatedParty.size(); i++) {
                                     Pokemon pokemon = updatedParty.get(i);
                                     String status = (pokemon.getRemainingHealth() <= 0) ? " (Fainted)" : "";
-                                    System.out.println((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
+                                    appendToOutput((i + 1) + ". " + pokemon.getNickname() + " (Lv." +
                                             pokemon.getLevel() + " " + pokemon.getName() + ")" + status);
                                 }
                             } else {
-                                System.out.println(selectedPokemon.getNickname() + " is already your lead Pokemon!");
+                                appendToOutput(selectedPokemon.getNickname() + " is already your lead Pokemon!",
+                                        "green");
                             }
                         }
                     } catch (NumberFormatException ex) {
-                        System.out.println("Please enter a valid number!");
+                        appendToOutput("Please enter a valid number!", "red");
                     } finally {
                         // Always restore the original event handler
                         inputField.setOnAction(originalHandler);
@@ -287,14 +442,14 @@ public class mainWindow extends Application {
             }
             default -> {
                 if (input.equals(Player.getName().toLowerCase())) {
-                    System.out.println("Trainer Information:");
-                    System.out.println("Name: " + Player.getName());
-                    System.out.println("Money: $" + PokeText_Adventure.player.getMoney());
-                    System.out.println("Badges: " + PokeText_Adventure.player.getBadges());
+                    appendToOutput("Trainer Information:", "blue");
+                    appendToOutput("Name: " + Player.getName());
+                    appendToOutput("Money: $" + PokeText_Adventure.player.getMoney());
+                    appendToOutput("Badges: " + PokeText_Adventure.player.getBadges());
 
                     int partySize = PokeText_Adventure.player.getParty().size();
                     int pcSize = PokeText_Adventure.player.getPC().size();
-                    System.out.println("Total Pokemon: " + (partySize + pcSize));
+                    appendToOutput("Total Pokemon: " + (partySize + pcSize));
                     // add playtime
 
                 } else if (input.startsWith("pokemon ")) {
@@ -310,37 +465,40 @@ public class mainWindow extends Application {
                     }
 
                     if (!found) {
-                        System.out.println("Could not find a Pokemon with nickname: " + requestedNickname);
+                        appendToOutput("Could not find a Pokemon with nickname: " + requestedNickname, "red");
                     }
                 } else {
-                    System.out.println("Command doesn't exist! Type 'help' to see a list of available commands.");
+                    appendToOutput("Command doesn't exist! Type 'help' to see a list of available commands.", "red");
                 }
             }
         }
     }
 
-    // Modify the TextAreaOutputStream
-    public static class TextAreaOutputStream extends OutputStream {
-        private TextArea textArea;
+    // Custom OutputStream that writes to our TextFlow
+    public static class TextFlowOutputStream extends OutputStream {
         private StringBuilder buffer = new StringBuilder();
-
-        public TextAreaOutputStream(TextArea textArea) {
-            this.textArea = textArea;
-        }
 
         @Override
         public void write(int b) throws IOException {
             char ch = (char) b;
             buffer.append(ch);
 
-            // When we get a newline, append the complete line to the text area
+            // When we get a newline, append the complete line to the text flow
             if (ch == '\n') {
                 final String text = buffer.toString();
                 Platform.runLater(() -> {
-                    // Add the ">" prefix to the beginning of the line
-                    textArea.appendText(text.startsWith("> ") ? text : "> " + text);
-                    // Auto-scroll to bottom
-                    textArea.setScrollTop(Double.MAX_VALUE);
+                    Text prefix = new Text(text.startsWith("> ") ? "" : "> ");
+                    prefix.setFill(Color.BLACK);
+                    prefix.setFont(pokemonFont);
+
+                    Text content = new Text(text.startsWith("> ") ? text : text);
+                    content.setFill(Color.BLACK);
+                    content.setFont(pokemonFont);
+
+                    textFlow.getChildren().addAll(prefix, content);
+
+                    // Use the improved scrolling method
+                    scrollToBottom();
                 });
                 buffer.setLength(0);
             }
@@ -351,12 +509,63 @@ public class mainWindow extends Application {
             if (buffer.length() > 0) {
                 final String text = buffer.toString();
                 Platform.runLater(() -> {
-                    // Add the ">" prefix to the beginning of the line
-                    textArea.appendText(text.startsWith("> ") ? text : "> " + text);
-                    textArea.setScrollTop(Double.MAX_VALUE);
+                    Text prefix = new Text(text.startsWith("> ") ? "" : "> ");
+                    prefix.setFill(Color.BLACK);
+                    prefix.setFont(pokemonFont);
+
+                    Text content = new Text(text.startsWith("> ") ? text : text);
+                    content.setFill(Color.BLACK);
+                    content.setFont(pokemonFont);
+
+                    textFlow.getChildren().addAll(prefix, content);
+
+                    // Use the improved scrolling method
+                    scrollToBottom();
                 });
                 buffer.setLength(0);
             }
         }
+    }
+
+    // Helper method to create styled buttons
+    private javafx.scene.control.Button createStyledButton(String text, String baseColor) {
+        javafx.scene.control.Button button = new javafx.scene.control.Button(text);
+
+        // Try to use the Pokémon font if available - with smaller font size
+        try {
+            javafx.scene.text.Font pokemonFont = javafx.scene.text.Font.loadFont(
+                    getClass().getResourceAsStream("/RBYGSC.ttf"), 12); // Reduced from 14
+            button.setFont(pokemonFont);
+        } catch (Exception e) {
+            button.setFont(javafx.scene.text.Font.font("Arial", 12)); // Reduced from 14
+        }
+
+        // White background with black text styling
+        String buttonStyle = "-fx-background-color: white; " +
+                "-fx-text-fill: black; " +
+                "-fx-border-color: #000000; " +
+                "-fx-border-width: 2px; " +
+                "-fx-border-radius: 5; " +
+                "-fx-background-radius: 5; " +
+                "-fx-padding: 8 15 8 15; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);";
+
+        String hoverStyle = "-fx-background-color: #f0f0f0; " +
+                "-fx-scale-x: 1.03; " +
+                "-fx-scale-y: 1.03; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);";
+
+        String pressedStyle = "-fx-background-color: #e0e0e0; " +
+                "-fx-scale-x: 0.98; " +
+                "-fx-scale-y: 0.98; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
+
+        button.setStyle(buttonStyle);
+        button.setOnMouseEntered(e -> button.setStyle(buttonStyle + hoverStyle));
+        button.setOnMouseExited(e -> button.setStyle(buttonStyle));
+        button.setOnMousePressed(e -> button.setStyle(buttonStyle + pressedStyle));
+        button.setOnMouseReleased(e -> button.setStyle(buttonStyle + hoverStyle));
+
+        return button;
     }
 }

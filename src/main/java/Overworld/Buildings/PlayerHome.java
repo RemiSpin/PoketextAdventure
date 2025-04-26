@@ -52,8 +52,11 @@ public class PlayerHome extends PokemonCenter implements Town {
             pokemon.setStatusCondition(Pokemon.StatusCondition.none);
         }
         WindowThings.mainWindow
-                .appendToOutput("You took a nice rest at home!");
+                .appendToOutput(
+                        "Mom: Good morning, sleepyhead! I made your favorite breakfast. Your Pokémon look well-rested too! Remember to call sometimes during your journey!",
+                        "red");
     }
+
     public Pallet getParentTown() {
         return new Pallet();
     }

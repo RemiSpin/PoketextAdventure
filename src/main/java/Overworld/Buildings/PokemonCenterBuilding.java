@@ -29,11 +29,12 @@ public class PokemonCenterBuilding extends PokemonCenter implements Town {
                     && !player.hasDeliveredOaksParcel()) {
                 WindowThings.mainWindow
                         .appendToOutput("The shopkeeper at the counter notices you're from Pallet Town.");
-                WindowThings.mainWindow.appendToOutput("Vendor: Oh! You're " + Player.getName() + " from Pallet Town?");
+                WindowThings.mainWindow.appendToOutput("Vendor: Oh! You're " + Player.getName() + " from Pallet Town?",
+                        "gray");
                 WindowThings.mainWindow.appendToOutput(
-                        "Vendor: Professor Oak placed an order for a custom Poké Ball. It just arrived.");
+                        "Vendor: Professor Oak placed an order for a custom Poké Ball. It just arrived.", "gray");
                 WindowThings.mainWindow
-                        .appendToOutput("Vendor: Could you take this parcel to him? He's been waiting for it.");
+                        .appendToOutput("Vendor: Could you take this parcel to him? He's been waiting for it.", "gray");
                 WindowThings.mainWindow.appendToOutput("You received OAK'S PARCEL!");
                 player.setHasOaksParcel(true);
             }

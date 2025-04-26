@@ -168,4 +168,36 @@ public class ViridianForest extends Route {
             mainWindow.appendToOutput("There are no more trainers to battle in this area!");
         }
     }
+
+    // Getter for the defeated trainers list (for save/load)
+    public List<Boolean> getDefeatedTrainers() {
+        return defeatedTrainers;
+    }
+
+    // Setter for trainer defeated states (for loading saved games)
+    public void setDefeatedTrainers(List<Boolean> defeatedStates) {
+        if (defeatedStates == null || defeatedStates.isEmpty()) {
+            return;
+        }
+
+        // Copy the states to our list
+        for (int i = 0; i < Math.min(defeatedTrainers.size(), defeatedStates.size()); i++) {
+            defeatedTrainers.set(i, defeatedStates.get(i));
+        }
+
+        // Recalculate the current trainer index based on defeated states
+        currentTrainerIndex = 0;
+        for (Boolean defeated : defeatedTrainers) {
+            if (defeated) {
+                currentTrainerIndex++;
+            } else {
+                break;
+            }
+        }
+    }
+
+    // Method to set the current trainer index directly (for loading saved games)
+    public void setCurrentTrainerIndex(int index) {
+        this.currentTrainerIndex = Math.min(index, forestTrainers.size());
+    }
 }

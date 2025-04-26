@@ -38,6 +38,7 @@ public class Player {
     private String chosenStarter; // Add field to track which starter Pokémon was chosen
     private boolean hasOaksParcel = false; // Track if player has Oak's Parcel
     private boolean deliveredOaksParcel = false; // Track if player has delivered the parcel
+    private final Set<Integer> pokedexCaught;
 
     static {
         try {
@@ -56,6 +57,7 @@ public class Player {
         this.pc = new ArrayList<>();
         this.badges = new ArrayList<>();
         this.chosenStarter = null; // Initialize to null
+        this.pokedexCaught = new HashSet<>();
     }
 
     // Constructor that takes a name parameter
@@ -66,6 +68,7 @@ public class Player {
         this.badges = new ArrayList<>();
         this.chosenStarter = null; // Initialize to null
         name = playerName; // Set the static name field
+        this.pokedexCaught = new HashSet<>();
     }
 
     public static String getName() {
@@ -286,6 +289,9 @@ public class Player {
             pc.add(pokemon);
         }
 
+        // Register in Pokedex
+        registerCaughtPokemon(pokemon);
+
         // Schedule the dialog to show after the current animation/layout cycle is done
         Platform.runLater(() -> {
             showNicknameDialog(pokemon, null);
@@ -299,6 +305,9 @@ public class Player {
         } else {
             pc.add(pokemon);
         }
+
+        // Register in Pokedex
+        registerCaughtPokemon(pokemon);
 
         // Schedule the dialog to show after the current animation/layout cycle is done
         Platform.runLater(() -> {
@@ -566,5 +575,32 @@ public class Player {
      */
     public void setChosenStarter(String starterName) {
         this.chosenStarter = starterName;
+    }
+
+    /**
+     * Register a Pokemon as caught in the Pokedex
+     * 
+     * @param pokemonNumber The Pokedex number of the Pokemon
+     */
+    public void registerPokemonCaught(int pokemonNumber) {
+        pokedexCaught.add(pokemonNumber);
+    }
+
+    /**
+     * Get the set of Pokemon numbers that have been caught
+     * 
+     * @return Set of caught Pokemon numbers
+     */
+    public Set<Integer> getPokedexCaught() {
+        return Collections.unmodifiableSet(pokedexCaught);
+    }
+
+    /**
+     * Register a Pokemon in the Pokedex when it's caught
+     * 
+     * @param pokemon The Pokemon that was caught
+     */
+    public void registerCaughtPokemon(Pokemon pokemon) {
+        registerPokemonCaught(pokemon.getNumber());
     }
 }

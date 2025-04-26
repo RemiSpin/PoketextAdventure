@@ -90,6 +90,10 @@ public class Battle extends Application {
     // Add field to store post-battle dialogue
     private String postBattleDialogue;
 
+    // Add these fields
+    private Runnable postBattleAction = null;
+    private boolean battleComplete = false;
+
     public Battle(Player player, Trainer opponent) {
         this(player, opponent, null);
     }
@@ -129,6 +133,11 @@ public class Battle extends Application {
             // Improve error reporting
             System.err.println("Error starting wild battle: " + e.getMessage());
         }
+    }
+
+    // Add this method near other constructors
+    public void setPostBattleAction(Runnable action) {
+        this.postBattleAction = action;
     }
 
     private void aiTurn() {
@@ -1823,7 +1832,7 @@ public class Battle extends Application {
             RotateTransition tiltCenter = new RotateTransition(Duration.millis(150), pokeball);
             tiltCenter.setFromAngle(20);
             tiltCenter.setToAngle(0);
-            tiltCenter.setInterpolator(Interpolator.EASE_IN;
+            tiltCenter.setInterpolator(Interpolator.EASE_IN);
 
             // Add pause between shakes
             PauseTransition pauseBetweenShakes = new PauseTransition(Duration.millis(300));
@@ -2683,7 +2692,7 @@ public class Battle extends Application {
 
         if (isWildBattle) {
             opponentStatus = wildPokemon.getStatusCondition();
-            opponentHealthPercent = (double) wildPokemon.getRemainingHealth() / wildPokemon.getHp() * 100;
+            opponentHealthPercent = (double) wildPokemon.getRemainingHealth() / wildPokemon.getHp();
         } else {
             opponentStatus = ((trainerPokemon) opponent.getCurrentPokemon()).getStatusCondition();
             opponentHealthPercent = (double) opponent.getCurrentPokemon().getRemainingHealth() /
@@ -2781,6 +2790,11 @@ public class Battle extends Application {
      * Helper method to properly close the battle window
      */
     private void closeBattleWindow(Stage stage) {
+        // Only execute post battle action once
+        if (!battleComplete && postBattleAction != null) {
+            postBattleAction.run();
+            battleComplete = true;
+        }
         WindowThings.mainWindow.unregisterWindow(stage);
         stage.close();
     }

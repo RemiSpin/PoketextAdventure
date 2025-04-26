@@ -14,7 +14,8 @@
         "EvolutionLevel": 16,
         "BaseExperience": 64,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_001.gif"
+        "Sprite": "GIFs/ani_bw_001.gif",
+        "PokedexEntry": "A strange seed was planted on its back at birth. The plant sprouts and grows with this POKéMON."
     },
     {
         "#": 2,
@@ -31,7 +32,8 @@
         "EvolutionLevel": 32,
         "BaseExperience": 141,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_002.gif"
+        "Sprite": "GIFs/ani_bw_002.gif",
+        "PokedexEntry": "When the bulb on its back grows large, it appears to lose the ability to stand on its hind legs."
     },
     {
         "#": 3,
@@ -48,7 +50,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 208,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_003_m.gif"
+        "Sprite": "GIFs/ani_bw_003_m.gif",
+        "PokedexEntry": "The plant blooms when it is absorbing solar energy. It stays on the move to seek sunlight."
     },
     {
         "#": 4,
@@ -65,7 +68,8 @@
         "EvolutionLevel": 16,
         "BaseExperience": 65,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_004.gif"
+        "Sprite": "GIFs/ani_bw_004.gif",
+        "PokedexEntry": "Obviously prefers hot places. When it rains, steam is said to spout from the tip of its tail."
     },
     {
         "#": 5,
@@ -82,7 +86,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 142,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_005.gif"
+        "Sprite": "GIFs/ani_bw_005.gif",
+        "PokedexEntry": "When it swings its burning tail, it elevates the temperature to unbearably high levels."
     },
     {
         "#": 6,
@@ -99,7 +104,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 209,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_006.gif"
+        "Sprite": "GIFs/ani_bw_006.gif",
+        "PokedexEntry": "Spits fire that is hot enough to melt boulders. Known to cause forest fires unintentionally."
     },
     {
         "#": 7,
@@ -116,7 +122,8 @@
         "EvolutionLevel": 16,
         "BaseExperience": 66,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_007.gif"
+        "Sprite": "GIFs/ani_bw_007.gif",
+        "PokedexEntry": "After birth, its back swells and hardens into a shell. Powerfully sprays foam from its mouth."
     },
     {
         "#": 8,
@@ -133,7 +140,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 143,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_008.gif"
+        "Sprite": "GIFs/ani_bw_008.gif",
+        "PokedexEntry": "Often hides in water to stalk unwary prey. For swimming fast, it moves its ears to maintain balance."
     },
     {
         "#": 9,
@@ -150,7 +158,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 209,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_009.gif"
+        "Sprite": "GIFs/ani_bw_009.gif",
+        "PokedexEntry": "A brutal POKéMON with pressurized water jets on its shell. They are used for high speed tackles."
     },
     {
         "#": 10,
@@ -167,7 +176,8 @@
         "EvolutionLevel": 7,
         "BaseExperience": 53,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_010.gif"
+        "Sprite": "GIFs/ani_bw_010.gif",
+        "PokedexEntry": "Its short feet are tipped with suction pads that enable it to tirelessly climb slopes and walls."
     },
     {
         "#": 11,
@@ -184,7 +194,8 @@
         "EvolutionLevel": 10,
         "BaseExperience": 72,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_011.gif"
+        "Sprite": "GIFs/ani_bw_011.gif",
+        "PokedexEntry": "This POKéMON is vulnerable to attack while its shell is soft, exposing its weak and tender body."
     },
     {
         "#": 12,
@@ -201,7 +212,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 160,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_012_f.gif"
+        "Sprite": "GIFs/ani_bw_012_f.gif",
+        "PokedexEntry": "In battle, it flaps its wings at high speed to release highly toxic dust into the air."
     },
     {
         "#": 13,
@@ -218,7 +230,8 @@
         "EvolutionLevel": 7,
         "BaseExperience": 52,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_013.gif"
+        "Sprite": "GIFs/ani_bw_013.gif",
+        "PokedexEntry": "Often found in forests, eating leaves. It has a sharp stinger on its head that injects poison."
     },
     {
         "#": 14,
@@ -235,7 +248,8 @@
         "EvolutionLevel": 10,
         "BaseExperience": 71,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_014.gif"
+        "Sprite": "GIFs/ani_bw_014.gif",
+        "PokedexEntry": "Almost incapable of moving, this POKéMON can only harden its shell to protect itself from predators."
     },
     {
         "#": 15,
@@ -252,7 +266,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 159,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_015.gif"
+        "Sprite": "GIFs/ani_bw_015.gif",
+        "PokedexEntry": "Flies at high speed and attacks using its large venomous stingers on its forelegs and tail."
     },
     {
         "#": 16,
@@ -269,7 +284,8 @@
         "EvolutionLevel": 18,
         "BaseExperience": 55,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_016.gif"
+        "Sprite": "GIFs/ani_bw_016.gif",
+        "PokedexEntry": "Does not like to fight. It hides in tall grass and so on, foraging for food such as small bugs."
     },
     {
         "#": 17,
@@ -286,7 +302,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 113,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_017.gif"
+        "Sprite": "GIFs/ani_bw_017.gif",
+        "PokedexEntry": "Very protective of its sprawling territorial area, this POKéMON will fiercely peck at any intruder."
     },
     {
         "#": 18,
@@ -303,7 +320,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 172,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_018.gif"
+        "Sprite": "GIFs/ani_bw_018.gif",
+        "PokedexEntry": "When hunting, it skims the surface of water at high speed to pick off unwary prey such as MAGIKARP."
     },
     {
         "#": 19,
@@ -320,7 +338,8 @@
         "EvolutionLevel": 20,
         "BaseExperience": 57,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_019_f.gif"
+        "Sprite": "GIFs/ani_bw_019_f.gif",
+        "PokedexEntry": "Bites anything when it attacks. Small and very quick, it is a common sight in many places."
     },
     {
         "#": 20,
@@ -337,7 +356,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 116,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_020_f.gif"
+        "Sprite": "GIFs/ani_bw_020_f.gif",
+        "PokedexEntry": "It uses its whiskers to maintain its balance. It apparently slows down if they are cut off."
     },
     {
         "#": 21,
@@ -354,7 +374,8 @@
         "EvolutionLevel": 20,
         "BaseExperience": 58,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_021.gif"
+        "Sprite": "GIFs/ani_bw_021.gif",
+        "PokedexEntry": "Eats bugs in grassy areas. It has to flap its short wings at high speed to stay airborne."
     },
     {
         "#": 22,
@@ -371,7 +392,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 162,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_022.gif"
+        "Sprite": "GIFs/ani_bw_022.gif",
+        "PokedexEntry": "With its huge and magnificent wings, it can keep aloft without ever having to land for rest."
     },
     {
         "#": 23,
@@ -388,7 +410,8 @@
         "EvolutionLevel": 22,
         "BaseExperience": 62,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_023.gif"
+        "Sprite": "GIFs/ani_bw_023.gif",
+        "PokedexEntry": "Moves silently and stealthily. Eats the eggs of birds, such as PIDGEY and SPEAROW, whole."
     },
     {
         "#": 24,
@@ -405,7 +428,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 147,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_024.gif"
+        "Sprite": "GIFs/ani_bw_024.gif",
+        "PokedexEntry": "The frightening patterns on its belly have been studied. Six variations have been confirmed."
     },
     {
         "#": 25,
@@ -422,7 +446,8 @@
         "EvolutionLevel": 25,
         "BaseExperience": 82,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_025_m.gif"
+        "Sprite": "GIFs/ani_bw_025_m.gif",
+        "PokedexEntry": "When several of these POKéMON gather, their electricity could build and cause lightning storms."
     },
     {
         "#": 26,
@@ -439,7 +464,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 122,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_026_m.gif"
+        "Sprite": "GIFs/ani_bw_026_m.gif",
+        "PokedexEntry": "Its electric charges can reach even 100,000 volts. Careless contact can cause even an Indian elephant to faint."
     },
     {
         "#": 27,
@@ -456,7 +482,8 @@
         "EvolutionLevel": 22,
         "BaseExperience": 93,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_027.gif"
+        "Sprite": "GIFs/ani_bw_027.gif",
+        "PokedexEntry": "Burrows deep underground in arid locations far from water. It only emerges to hunt for food."
     },
     {
         "#": 28,
@@ -473,7 +500,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 163,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_028.gif"
+        "Sprite": "GIFs/ani_bw_028.gif",
+        "PokedexEntry": "Curls up into a spiny ball when threatened. It can roll while curled up to attack or escape."
     },
     {
         "#": 29,
@@ -490,7 +518,8 @@
         "EvolutionLevel": 16,
         "BaseExperience": 59,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_029.gif"
+        "Sprite": "GIFs/ani_bw_029.gif",
+        "PokedexEntry": "Although small, its venomous barbs render this POKéMON dangerous. The female has smaller horns."
     },
     {
         "#": 30,
@@ -507,7 +536,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 117,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_030.gif"
+        "Sprite": "GIFs/ani_bw_030.gif",
+        "PokedexEntry": "The female's horn develops slowly. Prefers physical attacks such as clawing and biting."
     },
     {
         "#": 31,
@@ -524,7 +554,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 194,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_031.gif"
+        "Sprite": "GIFs/ani_bw_031.gif",
+        "PokedexEntry": "Its body is covered with needle-like scales. It never shows signs of shrinking from any attack."
     },
     {
         "#": 32,
@@ -541,7 +572,8 @@
         "EvolutionLevel": 16,
         "BaseExperience": 60,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_032.gif"
+        "Sprite": "GIFs/ani_bw_032.gif",
+        "PokedexEntry": "Its large ears are flapped like wings when it is listening to distant sounds. It extends toxic barbs when angered."
     },
     {
         "#": 33,
@@ -558,7 +590,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 118,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_033.gif"
+        "Sprite": "GIFs/ani_bw_033.gif",
+        "PokedexEntry": "It is easily angered. By swinging its well-developed horn, it can punch holes in boulders."
     },
     {
         "#": 34,
@@ -575,7 +608,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 195,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_034.gif"
+        "Sprite": "GIFs/ani_bw_034.gif",
+        "PokedexEntry": "It swings its big tail around during battle. If its foe flinches, it will charge with its sturdy body."
     },
     {
         "#": 35,
@@ -592,7 +626,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 68,
         "ExperienceGrowth": "Fast",
-        "Sprite": "GIFs/ani_bw_035.gif"
+        "Sprite": "GIFs/ani_bw_035.gif",
+        "PokedexEntry": "Its magical and cute appeal has many admirers. It is rare and found only in certain areas."
     },
     {
         "#": 36,
@@ -609,7 +644,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 129,
         "ExperienceGrowth": "Fast",
-        "Sprite": "GIFs/ani_bw_036.gif"
+        "Sprite": "GIFs/ani_bw_036.gif",
+        "PokedexEntry": "A timid fairy POKéMON that is rarely seen. It will run and hide the moment it senses people."
     },
     {
         "#": 37,
@@ -626,7 +662,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 63,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_037.gif"
+        "Sprite": "GIFs/ani_bw_037.gif",
+        "PokedexEntry": "At the time of birth, it has just one tail. The tail splits from its tip as it grows older."
     },
     {
         "#": 38,
@@ -643,7 +680,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 178,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_038.gif"
+        "Sprite": "GIFs/ani_bw_038.gif",
+        "PokedexEntry": "Very smart and very vengeful. Grabbing one of its many tails could result in a 1000-year curse."
     },
     {
         "#": 39,
@@ -660,7 +698,8 @@
         "EvolutionLevel": 25,
         "BaseExperience": 76,
         "ExperienceGrowth": "Fast",
-        "Sprite": "GIFs/ani_bw_039.gif"
+        "Sprite": "GIFs/ani_bw_039.gif",
+        "PokedexEntry": "When its huge eyes light up, it sings a mysteriously soothing melody that lulls its enemies to sleep."
     },
     {
         "#": 40,
@@ -677,7 +716,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 109,
         "ExperienceGrowth": "Fast",
-        "Sprite": "GIFs/ani_bw_040.gif"
+        "Sprite": "GIFs/ani_bw_040.gif",
+        "PokedexEntry": "Its fur is extremely fine, dense, and supple. The exquisitely pleasant fur conveys an image of luxury."
     },
     {
         "#": 41,
@@ -694,7 +734,8 @@
         "EvolutionLevel": 22,
         "BaseExperience": 54,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_041_f.gif"
+        "Sprite": "GIFs/ani_bw_041_f.gif",
+        "PokedexEntry": "Forms colonies in perpetually dark places. Uses ultrasonic waves to identify and approach targets."
     },
     {
         "#": 42,
@@ -711,7 +752,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 171,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_042_f.gif"
+        "Sprite": "GIFs/ani_bw_042_f.gif",
+        "PokedexEntry": "Once it strikes, it will not stop draining energy from the victim even if it gets too heavy to fly."
     },
     {
         "#": 43,
@@ -728,7 +770,8 @@
         "EvolutionLevel": 21,
         "BaseExperience": 78,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_043.gif"
+        "Sprite": "GIFs/ani_bw_043.gif",
+        "PokedexEntry": "During the day, it stays in the cold underground to avoid the sun. It grows by bathing in moonlight."
     },
     {
         "#": 44,
@@ -745,7 +788,8 @@
         "EvolutionLevel": 32,
         "BaseExperience": 132,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_044_m.gif"
+        "Sprite": "GIFs/ani_bw_044_m.gif",
+        "PokedexEntry": "The fluid that oozes from its mouth isn't drool. It is a nectar that is used to attract prey."
     },
     {
         "#": 45,
@@ -762,7 +806,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 184,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_045_m.gif"
+        "Sprite": "GIFs/ani_bw_045_m.gif",
+        "PokedexEntry": "Its petals are the largest in the world. It fiendishly scatters allergy-causing pollen from its petals."
     },
     {
         "#": 46,
@@ -779,7 +824,8 @@
         "EvolutionLevel": 24,
         "BaseExperience": 70,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_046.gif"
+        "Sprite": "GIFs/ani_bw_046.gif",
+        "PokedexEntry": "Burrows under the ground to gnaw on tree roots. The mushrooms on its back absorb most of the nutrition."
     },
     {
         "#": 47,
@@ -796,7 +842,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 128,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_047.gif"
+        "Sprite": "GIFs/ani_bw_047.gif",
+        "PokedexEntry": "A host-parasite pair in which the parasite mushroom has taken over the host bug. Prefers damp places."
     },
     {
         "#": 48,
@@ -813,7 +860,8 @@
         "EvolutionLevel": 31,
         "BaseExperience": 75,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_048.gif"
+        "Sprite": "GIFs/ani_bw_048.gif",
+        "PokedexEntry": "Lives in the shadows of tall trees where it eats insects. It is attracted by light at night."
     },
     {
         "#": 49,
@@ -830,7 +878,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 138,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_049.gif"
+        "Sprite": "GIFs/ani_bw_049.gif",
+        "PokedexEntry": "The powder on its wings is poisonous. It scatters the powder with every flap, causing paralysis."
     },
     {
         "#": 50,
@@ -847,7 +896,8 @@
         "EvolutionLevel": 26,
         "BaseExperience": 81,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_050.gif"
+        "Sprite": "GIFs/ani_bw_050.gif",
+        "PokedexEntry": "Lives about one yard underground where it feeds on plant roots. It sometimes appears above ground."
     },
     {
         "#": 51,
@@ -864,7 +914,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 153,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_051.gif"
+        "Sprite": "GIFs/ani_bw_051.gif",
+        "PokedexEntry": "A team of DIGLETT triplets. It triggers huge earthquakes by burrowing 60 miles underground."
     },
     {
         "#": 52,
@@ -881,7 +932,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 69,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_052.gif"
+        "Sprite": "GIFs/ani_bw_052.gif",
+        "PokedexEntry": "Adores circular objects. Wanders the streets on a nightly basis to look for dropped loose change."
     },
     {
         "#": 53,
@@ -898,7 +950,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 148,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_053.gif"
+        "Sprite": "GIFs/ani_bw_053.gif",
+        "PokedexEntry": "Although its fur has many admirers, it is tough to raise as a pet because of its fickle meanness."
     },
     {
         "#": 54,
@@ -915,7 +968,8 @@
         "EvolutionLevel": 33,
         "BaseExperience": 80,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_054.gif"
+        "Sprite": "GIFs/ani_bw_054.gif",
+        "PokedexEntry": "While lulling its enemies with its vacant look, this wily POKéMON will use psychokinetic powers."
     },
     {
         "#": 55,
@@ -932,7 +986,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 174,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_055.gif"
+        "Sprite": "GIFs/ani_bw_055.gif",
+        "PokedexEntry": "Often seen swimming elegantly by lake shores. It is often mistaken for the Japanese monster Kappa."
     },
     {
         "#": 56,
@@ -949,7 +1004,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 74,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_056.gif"
+        "Sprite": "GIFs/ani_bw_056.gif",
+        "PokedexEntry": "Extremely quick to anger. It could be docile one moment, then thrashing away the next instant."
     },
     {
         "#": 57,
@@ -966,7 +1022,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 149,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_057.gif"
+        "Sprite": "GIFs/ani_bw_057.gif",
+        "PokedexEntry": "It stops being angry only when nobody else is around. To view this moment is very difficult."
     },
     {
         "#": 58,
@@ -983,7 +1040,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 91,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_058.gif"
+        "Sprite": "GIFs/ani_bw_058.gif",
+        "PokedexEntry": "Very friendly and faithful to people. It will try to repel enemies by barking and biting."
     },
     {
         "#": 59,
@@ -1000,7 +1058,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 213,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_059.gif"
+        "Sprite": "GIFs/ani_bw_059.gif",
+        "PokedexEntry": "A POKéMON that has been admired since the past for its beauty. It runs agilely as if on wings."
     },
     {
         "#": 60,
@@ -1017,7 +1076,8 @@
         "EvolutionLevel": 25,
         "BaseExperience": 77,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_060.gif"
+        "Sprite": "GIFs/ani_bw_060.gif",
+        "PokedexEntry": "Its newly grown legs prevent it from running. It appears to prefer swimming than trying to stand."
     },
     {
         "#": 61,
@@ -1034,7 +1094,8 @@
         "EvolutionLevel": 34,
         "BaseExperience": 131,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_061.gif"
+        "Sprite": "GIFs/ani_bw_061.gif",
+        "PokedexEntry": "Its body surface is always wet and slick with an oily fluid. Because of this, it can easily slip away from enemies' grasp."
     },
     {
         "#": 62,
@@ -1051,7 +1112,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 185,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_062.gif"
+        "Sprite": "GIFs/ani_bw_062.gif",
+        "PokedexEntry": "An adept swimmer at both the front crawl and breast stroke. Easily overtakes the best human swimmers."
     },
     {
         "#": 63,
@@ -1068,7 +1130,8 @@
         "EvolutionLevel": 20,
         "BaseExperience": 73,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_063.gif"
+        "Sprite": "GIFs/ani_bw_063.gif",
+        "PokedexEntry": "Using its ability to read minds, it will identify impending danger and TELEPORT to safety."
     },
     {
         "#": 64,
@@ -1085,7 +1148,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 145,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_064_f.gif"
+        "Sprite": "GIFs/ani_bw_064_f.gif",
+        "PokedexEntry": "It emits special alpha waves from its body that induce headaches just by being close by."
     },
     {
         "#": 65,
@@ -1102,7 +1166,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 186,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_065_m.gif"
+        "Sprite": "GIFs/ani_bw_065_m.gif",
+        "PokedexEntry": "Its brain can outperform a supercomputer. Its intelligence quotient is said to be 5,000."
     },
     {
         "#": 66,
@@ -1119,7 +1184,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 88,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_066.gif"
+        "Sprite": "GIFs/ani_bw_066.gif",
+        "PokedexEntry": "Loves to build its muscles. It trains in all styles of martial arts to become even stronger."
     },
     {
         "#": 67,
@@ -1136,7 +1202,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 146,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_067.gif"
+        "Sprite": "GIFs/ani_bw_067.gif",
+        "PokedexEntry": "Its muscular body is so powerful, it must wear a power-save belt to be able to regulate its motions."
     },
     {
         "#": 68,
@@ -1153,7 +1220,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 193,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_0068.gif"
+        "Sprite": "GIFs/ani_bw_068.gif",
+        "PokedexEntry": "Using its heavy muscles, it throws powerful punches that can send the victim clear over the horizon."
     },
     {
         "#": 69,
@@ -1170,7 +1238,8 @@
         "EvolutionLevel": 21,
         "BaseExperience": 84,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_069.gif"
+        "Sprite": "GIFs/ani_bw_069.gif",
+        "PokedexEntry": "A carnivorous POKéMON that traps and eats bugs. It uses its root feet to soak up needed moisture."
     },
     {
         "#": 70,
@@ -1187,7 +1256,8 @@
         "EvolutionLevel": 32,
         "BaseExperience": 151,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_070.gif"
+        "Sprite": "GIFs/ani_bw_070.gif",
+        "PokedexEntry": "It spits out poison powder to immobilize the enemy and then finishes it with a spray of acid."
     },
     {
         "#": 71,
@@ -1204,7 +1274,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 191,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_071.gif"
+        "Sprite": "GIFs/ani_bw_071.gif",
+        "PokedexEntry": "Said to live in huge colonies deep in jungles, although no one has ever returned from there."
     },
     {
         "#": 72,
@@ -1221,7 +1292,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 105,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_072.gif"
+        "Sprite": "GIFs/ani_bw_072.gif",
+        "PokedexEntry": "Drifts in shallow seas. Anglers who hook them by accident are often punished by its stinging acid."
     },
     {
         "#": 73,
@@ -1238,7 +1310,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 205,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_073.gif"
+        "Sprite": "GIFs/ani_bw_073.gif",
+        "PokedexEntry": "The tentacles are normally kept short. On hunts, they are extended to ensnare and immobilize prey."
     },
     {
         "#": 74,
@@ -1255,7 +1328,8 @@
         "EvolutionLevel": 25,
         "BaseExperience": 86,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_074.gif"
+        "Sprite": "GIFs/ani_bw_074.gif",
+        "PokedexEntry": "Found in fields and mountains. Mistaking them for boulders, people often step or trip on them."
     },
     {
         "#": 75,
@@ -1272,7 +1346,8 @@
         "EvolutionLevel": 34,
         "BaseExperience": 134,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_075.gif"
+        "Sprite": "GIFs/ani_bw_075.gif",
+        "PokedexEntry": "Rolls down slopes to move. It rolls over any obstacle without slowing or changing its direction."
     },
     {
         "#": 76,
@@ -1289,7 +1364,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 177,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_076.gif"
+        "Sprite": "GIFs/ani_bw_076.gif",
+        "PokedexEntry": "Its rock-like body is so durable, even high-powered dynamite blasts fail to scratch its rugged hide."
     },
     {
         "#": 77,
@@ -1306,7 +1382,8 @@
         "EvolutionLevel": 40,
         "BaseExperience": 152,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_077.gif"
+        "Sprite": "GIFs/ani_bw_077.gif",
+        "PokedexEntry": "Its hooves are 10 times harder than diamonds. It can trample anything completely flat in little time."
     },
     {
         "#": 78,
@@ -1323,7 +1400,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 192,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_078.gif"
+        "Sprite": "GIFs/ani_bw_078.gif",
+        "PokedexEntry": "Just loves to run. If it sees something faster than itself, it will give chase at top speed."
     },
     {
         "#": 79,
@@ -1340,7 +1418,8 @@
         "EvolutionLevel": 37,
         "BaseExperience": 99,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_079.gif"
+        "Sprite": "GIFs/ani_bw_079.gif",
+        "PokedexEntry": "Incredibly slow and dopey. It takes 5 seconds for it to feel pain when under attack."
     },
     {
         "#": 80,
@@ -1357,7 +1436,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 164,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_080.gif"
+        "Sprite": "GIFs/ani_bw_080.gif",
+        "PokedexEntry": "An attached SHELLDER won't let go because of the tasty flavor that oozes out of its tail."
     },
     {
         "#": 81,
@@ -1374,7 +1454,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 89,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_081.gif"
+        "Sprite": "GIFs/ani_bw_081.gif",
+        "PokedexEntry": "Uses anti-gravity to stay suspended. Appears without warning and uses THUNDER WAVE and similar moves."
     },
     {
         "#": 82,
@@ -1391,7 +1472,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 169,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_082.gif"
+        "Sprite": "GIFs/ani_bw_082.gif",
+        "PokedexEntry": "Generates strange radio signals. A cluster of MAGNEMITE, it discharges powerful magnetic waves at high voltage."
     },
     {
         "#": 83,
@@ -1408,7 +1490,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 94,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_083.gif"
+        "Sprite": "GIFs/ani_bw_083.gif",
+        "PokedexEntry": "The plant stalk it holds is its weapon. The stalk is used like a sword to cut all sorts of things."
     },
     {
         "#": 84,
@@ -1425,7 +1508,8 @@
         "EvolutionLevel": 31,
         "BaseExperience": 96,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_084_m.gif"
+        "Sprite": "GIFs/ani_bw_084_m.gif",
+        "PokedexEntry": "A bird that makes up for its poor flying with its fast foot speed. Leaves giant footprints."
     },
     {
         "#": 85,
@@ -1442,7 +1526,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 158,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_085_m.gif"
+        "Sprite": "GIFs/ani_bw_085_m.gif",
+        "PokedexEntry": "Uses its three brains to execute complex plans. While two heads sleep, one head stays awake."
     },
     {
         "#": 86,
@@ -1459,7 +1544,8 @@
         "EvolutionLevel": 34,
         "BaseExperience": 100,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_086.gif"
+        "Sprite": "GIFs/ani_bw_086.gif",
+        "PokedexEntry": "The protruding horn on its head is very hard. It is used for bashing through thick ice."
     },
     {
         "#": 87,
@@ -1476,7 +1562,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 176,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_087.gif"
+        "Sprite": "GIFs/ani_bw_087.gif",
+        "PokedexEntry": "Stores thermal energy in its body. Swims at a steady 8 knots even in intensely cold waters."
     },
     {
         "#": 88,
@@ -1493,7 +1580,8 @@
         "EvolutionLevel": 38,
         "BaseExperience": 90,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_088.gif"
+        "Sprite": "GIFs/ani_bw_088.gif",
+        "PokedexEntry": "Appears in filthy areas. Thrives by sucking up polluted sludge that is pumped out of factories."
     },
     {
         "#": 89,
@@ -1510,7 +1598,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 157,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_089.gif"
+        "Sprite": "GIFs/ani_bw_089.gif",
+        "PokedexEntry": "Thickly covered with a filthy, vile sludge. It is so toxic, even its footprints contain poison."
     },
     {
         "#": 90,
@@ -1527,7 +1616,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 97,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_090.gif"
+        "Sprite": "GIFs/ani_bw_090.gif",
+        "PokedexEntry": "Its hard shell repels any kind of attack. It is vulnerable only when its shell is open."
     },
     {
         "#": 91,
@@ -1544,7 +1634,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 203,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_091.gif"
+        "Sprite": "GIFs/ani_bw_091.gif",
+        "PokedexEntry": "When attacked, it launches its horns in quick volleys. Its innards have never been seen."
     },
     {
         "#": 92,
@@ -1561,7 +1652,8 @@
         "EvolutionLevel": 25,
         "BaseExperience": 95,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_092.gif"
+        "Sprite": "GIFs/ani_bw_092.gif",
+        "PokedexEntry": "Almost invisible, this gaseous POKéMON cloaks the target and puts it to sleep without notice."
     },
     {
         "#": 93,
@@ -1578,7 +1670,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 126,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_093.gif"
+        "Sprite": "GIFs/ani_bw_093.gif",
+        "PokedexEntry": "If you get the feeling of being watched in darkness when nobody is around, HAUNTER is there."
     },
     {
         "#": 94,
@@ -1595,7 +1688,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 190,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_094.gif"
+        "Sprite": "GIFs/ani_bw_094.gif",
+        "PokedexEntry": "On the night of a full moon, if shadows move on their own and laugh, it must be GENGAR's doing."
     },
     {
         "#": 95,
@@ -1612,7 +1706,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 108,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_095.gif"
+        "Sprite": "GIFs/ani_bw_095.gif",
+        "PokedexEntry": "As it grows, the stone portions of its body harden to become similar to a diamond, but colored black."
     },
     {
         "#": 96,
@@ -1629,7 +1724,8 @@
         "EvolutionLevel": 26,
         "BaseExperience": 102,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_096.gif"
+        "Sprite": "GIFs/ani_bw_096.gif",
+        "PokedexEntry": "Puts enemies to sleep then eats their dreams. Occasionally gets sick from eating bad dreams."
     },
     {
         "#": 97,
@@ -1646,7 +1742,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 165,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_097_f.gif"
+        "Sprite": "GIFs/ani_bw_097_f.gif",
+        "PokedexEntry": "When it locks eyes with an enemy, it will use a mix of PSI moves such as HYPNOSIS and CONFUSION."
     },
     {
         "#": 98,
@@ -1663,7 +1760,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 115,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_098.gif"
+        "Sprite": "GIFs/ani_bw_098.gif",
+        "PokedexEntry": "Its pincers are superb weapons. They sometimes break off during battle, but they grow back fast."
     },
     {
         "#": 99,
@@ -1680,7 +1778,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 206,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_099.gif"
+        "Sprite": "GIFs/ani_bw_099.gif",
+        "PokedexEntry": "The large pincer has 10,000-horsepower strength. However, it is so heavy, it is difficult to aim."
     },
     {
         "#": 100,
@@ -1697,7 +1796,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 103,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_100.gif"
+        "Sprite": "GIFs/ani_bw_100.gif",
+        "PokedexEntry": "Usually found in power plants. Easily mistaken for a POKé BALL, it has zapped many people."
     },
     {
         "#": 101,
@@ -1714,7 +1814,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 150,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_101.gif"
+        "Sprite": "GIFs/ani_bw_101.gif",
+        "PokedexEntry": "It stores electric energy under very high pressure. It often explodes with little or no provocation."
     },
     {
         "#": 102,
@@ -1731,7 +1832,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 98,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_102.gif"
+        "Sprite": "GIFs/ani_bw_102.gif",
+        "PokedexEntry": "Even though it appears to be eggs of some sort, it was discovered to be a life-form more like plant seeds."
     },
     {
         "#": 103,
@@ -1748,7 +1850,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 212,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_103.gif"
+        "Sprite": "GIFs/ani_bw_103.gif",
+        "PokedexEntry": "Its cries are very noisy. This is because each of the three heads thinks independently."
     },
     {
         "#": 104,
@@ -1765,7 +1868,8 @@
         "EvolutionLevel": 28,
         "BaseExperience": 87,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_104.gif"
+        "Sprite": "GIFs/ani_bw_104.gif",
+        "PokedexEntry": "Because it never removes its skull helmet, no one has ever seen this POKéMON's real face."
     },
     {
         "#": 105,
@@ -1782,7 +1886,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 124,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_105.gif"
+        "Sprite": "GIFs/ani_bw_105.gif",
+        "PokedexEntry": "The bone it holds is its key weapon. It throws the bone skillfully like a boomerang to KO targets."
     },
     {
         "#": 106,
@@ -1799,7 +1904,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 139,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_106.gif"
+        "Sprite": "GIFs/ani_bw_106.gif",
+        "PokedexEntry": "Its legs freely stretch and contract. Using these springlike limbs, it bowls over foes with devastating kicks."
     },
     {
         "#": 107,
@@ -1816,7 +1922,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 140,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_107.gif"
+        "Sprite": "GIFs/ani_bw_107.gif",
+        "PokedexEntry": "While apparently doing nothing, it fires punches in lightning-fast volleys that are impossible to see."
     },
     {
         "#": 108,
@@ -1833,7 +1940,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 127,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_108.gif"
+        "Sprite": "GIFs/ani_bw_108.gif",
+        "PokedexEntry": "Its tongue is twice the length of its body. It can be moved like an arm for grabbing food and attacking."
     },
     {
         "#": 109,
@@ -1850,7 +1958,8 @@
         "EvolutionLevel": 35,
         "BaseExperience": 114,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_109.gif"
+        "Sprite": "GIFs/ani_bw_109.gif",
+        "PokedexEntry": "Because it stores several kinds of toxic gases in its body, it is prone to exploding without warning."
     },
     {
         "#": 110,
@@ -1867,7 +1976,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 173,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_110.gif"
+        "Sprite": "GIFs/ani_bw_110.gif",
+        "PokedexEntry": "Where two kinds of poison gases meet, two KOFFING can fuse into a WEEZING over many years."
     },
     {
         "#": 111,
@@ -1884,7 +1994,8 @@
         "EvolutionLevel": 42,
         "BaseExperience": 135,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_111.gif"
+        "Sprite": "GIFs/ani_bw_111_m.gif",
+        "PokedexEntry": "Its massive bones are 1000 times harder than human bones. It can easily knock a trailer flying."
     },
     {
         "#": 112,
@@ -1901,7 +2012,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 204,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_112.gif"
+        "Sprite": "GIFs/ani_bw_112_m.gif",
+        "PokedexEntry": "Its horn, which rotates like a drill, destroys tall buildings with one strike. It stands on two legs."
     },
     {
         "#": 113,
@@ -1918,7 +2030,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 255,
         "ExperienceGrowth": "Fast",
-        "Sprite": "GIFs/ani_bw_113.gif"
+        "Sprite": "GIFs/ani_bw_113.gif",
+        "PokedexEntry": "It lays several eggs a day and won't share them with those who have evil in their hearts."
     },
     {
         "#": 114,
@@ -1935,7 +2048,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 166,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_114.gif"
+        "Sprite": "GIFs/ani_bw_114.gif",
+        "PokedexEntry": "Its identity is obscured by masses of thick, blue vines. The vines are said to never stop growing."
     },
     {
         "#": 115,
@@ -1952,7 +2066,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 175,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_115.gif"
+        "Sprite": "GIFs/ani_bw_115.gif",
+        "PokedexEntry": "The infant rarely ventures out of its mother's protective pouch until it is 3 years old."
     },
     {
         "#": 116,
@@ -1969,7 +2084,8 @@
         "EvolutionLevel": 32,
         "BaseExperience": 83,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_116.gif"
+        "Sprite": "GIFs/ani_bw_116.gif",
+        "PokedexEntry": "If it senses any danger, it will vigorously spray water or a special type of ink from its mouth."
     },
     {
         "#": 117,
@@ -1986,7 +2102,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 155,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_117.gif"
+        "Sprite": "GIFs/ani_bw_117.gif",
+        "PokedexEntry": "The male raises the young. If it is approached, it uses its toxic spikes to fend off the intruder."
     },
     {
         "#": 118,
@@ -2003,7 +2120,8 @@
         "EvolutionLevel": 33,
         "BaseExperience": 111,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_118_m.gif"
+        "Sprite": "GIFs/ani_bw_118_m.gif",
+        "PokedexEntry": "Its tail fin billows like an elegant ballroom dress, giving it the nickname of the Water Queen."
     },
     {
         "#": 119,
@@ -2020,7 +2138,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 170,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_119_m.gif"
+        "Sprite": "GIFs/ani_bw_119_m.gif",
+        "PokedexEntry": "In the autumn spawning season, they can be seen swimming powerfully up rivers and creeks."
     },
     {
         "#": 120,
@@ -2037,7 +2156,8 @@
         "EvolutionLevel": 36,
         "BaseExperience": 106,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_120.gif"
+        "Sprite": "GIFs/ani_bw_120.gif",
+        "PokedexEntry": "An enigmatic POKéMON that can effortlessly regenerate any appendage it loses in battle."
     },
     {
         "#": 121,
@@ -2054,7 +2174,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 207,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_121.gif"
+        "Sprite": "GIFs/ani_bw_121.gif",
+        "PokedexEntry": "Its core shines in many colors and sends radio signals into the night sky."
     },
     {
         "#": 122,
@@ -2071,7 +2192,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 136,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_122.gif"
+        "Sprite": "GIFs/ani_bw_122.gif",
+        "PokedexEntry": "A skilled mime from birth, it gains the ability to create invisible objects as it matures."
     },
     {
         "#": 123,
@@ -2088,7 +2210,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 187,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_123_m.gif"
+        "Sprite": "GIFs/ani_bw_123_m.gif",
+        "PokedexEntry": "With ninja-like agility and speed, it can create the illusion that there is more than one."
     },
     {
         "#": 124,
@@ -2105,7 +2228,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 137,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_124.gif"
+        "Sprite": "GIFs/ani_bw_124.gif",
+        "PokedexEntry": "It speaks using a language that sounds human. Research is under way to determine what is being said."
     },
     {
         "#": 125,
@@ -2122,7 +2246,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 156,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_125.gif"
+        "Sprite": "GIFs/ani_bw_125.gif",
+        "PokedexEntry": "Normally found near power plants, they can wander away and cause major blackouts in cities."
     },
     {
         "#": 126,
@@ -2139,7 +2264,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 167,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_126.gif"
+        "Sprite": "GIFs/ani_bw_126.gif",
+        "PokedexEntry": "Found near the mouth of a volcano. Its body is covered by flames that shimmer like the sun."
     },
     {
         "#": 127,
@@ -2156,7 +2282,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 200,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_127.gif"
+        "Sprite": "GIFs/ani_bw_127.gif",
+        "PokedexEntry": "If it fails to crush the foe in its pincers, it will swing it around and toss it hard."
     },
     {
         "#": 128,
@@ -2173,7 +2300,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 211,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_128.gif"
+        "Sprite": "GIFs/ani_bw_128.gif",
+        "PokedexEntry": "When it targets an enemy, it charges furiously while whipping its body with its long tails."
     },
     {
         "#": 129,
@@ -2190,7 +2318,8 @@
         "EvolutionLevel": 20,
         "BaseExperience": 20,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_129_m.gif"
+        "Sprite": "GIFs/ani_bw_129_m.gif",
+        "PokedexEntry": "In the distant past, it was somewhat stronger than the horribly weak descendants that exist today."
     },
     {
         "#": 130,
@@ -2207,7 +2336,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 214,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_130_m.gif"
+        "Sprite": "GIFs/ani_bw_130_m.gif",
+        "PokedexEntry": "It has an extremely aggressive nature. The HYPER BEAM it shoots from its mouth totally incinerates all targets."
     },
     {
         "#": 131,
@@ -2224,7 +2354,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 219,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_131.gif"
+        "Sprite": "GIFs/ani_bw_131.gif",
+        "PokedexEntry": "A POKéMON that has been overhunted almost to extinction. It can ferry people across the water."
     },
     {
         "#": 132,
@@ -2241,7 +2372,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 61,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_132.gif"
+        "Sprite": "GIFs/ani_bw_132.gif",
+        "PokedexEntry": "Capable of copying an enemy's genetic code to instantly transform itself into a duplicate of the enemy."
     },
     {
         "#": 133,
@@ -2258,7 +2390,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 92,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_133.gif"
+        "Sprite": "GIFs/ani_bw_133.gif",
+        "PokedexEntry": "Its genetic code is irregular. It may mutate if it is exposed to radiation from element STONEs."
     },
     {
         "#": 134,
@@ -2275,7 +2408,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 196,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_134.gif"
+        "Sprite": "GIFs/ani_bw_134.gif",
+        "PokedexEntry": "Lives close to water. Its long tail is ridged with a fin which is often mistaken for a mermaid's."
     },
     {
         "#": 135,
@@ -2292,7 +2426,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 197,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_135.gif"
+        "Sprite": "GIFs/ani_bw_135.gif",
+        "PokedexEntry": "It accumulates negative ions in the atmosphere to blast out 10000-volt lightning bolts."
     },
     {
         "#": 136,
@@ -2309,7 +2444,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 198,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_136.gif"
+        "Sprite": "GIFs/ani_bw_136.gif",
+        "PokedexEntry": "It has a flame sac in its body. Its body temperature tops 1,650 degrees Fahrenheit before battle."
     },
     {
         "#": 137,
@@ -2326,7 +2462,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 130,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_137.gif"
+        "Sprite": "GIFs/ani_bw_137.gif",
+        "PokedexEntry": "A man-made POKéMON that came about as a result of research. It is programmed with only basic motions."
     },
     {
         "#": 138,
@@ -2343,7 +2480,8 @@
         "EvolutionLevel": 40,
         "BaseExperience": 120,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_138.gif"
+        "Sprite": "GIFs/ani_bw_138.gif",
+        "PokedexEntry": "An ancient POKéMON that was recovered from a fossil. It swims by cleverly twisting its 10 tentacles about."
     },
     {
         "#": 139,
@@ -2360,7 +2498,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 199,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_139.gif"
+        "Sprite": "GIFs/ani_bw_139.gif",
+        "PokedexEntry": "Its tentacles are highly developed as if they are hands and feet. As soon as it ensnares prey, it bites."
     },
     {
         "#": 140,
@@ -2377,7 +2516,8 @@
         "EvolutionLevel": 40,
         "BaseExperience": 119,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_140.gif"
+        "Sprite": "GIFs/ani_bw_140.gif",
+        "PokedexEntry": "A POKéMON that was recovered from a fossil. It uses the eyes on its back while hiding on the sea floor."
     },
     {
         "#": 141,
@@ -2394,7 +2534,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 201,
         "ExperienceGrowth": "MFast",
-        "Sprite": "GIFs/ani_bw_141.gif"
+        "Sprite": "GIFs/ani_bw_141.gif",
+        "PokedexEntry": "Its sleek shape is perfect for swimming. It slashes prey with its claws and drains the body fluids."
     },
     {
         "#": 142,
@@ -2411,7 +2552,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 202,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_142.gif"
+        "Sprite": "GIFs/ani_bw_142.gif",
+        "PokedexEntry": "A ferocious, prehistoric POKéMON that goes for the enemy's throat with its serrated saw-like fangs."
     },
     {
         "#": 143,
@@ -2428,7 +2570,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 154,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_143.gif"
+        "Sprite": "GIFs/ani_bw_143.gif",
+        "PokedexEntry": "Very lazy. Just eats and sleeps. As its rotund bulk builds, it becomes steadily more slothful."
     },
     {
         "#": 144,
@@ -2445,7 +2588,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 215,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_144.gif"
+        "Sprite": "GIFs/ani_bw_144.gif",
+        "PokedexEntry": "A legendary bird POKéMON that is said to appear to doomed people who are lost in icy mountains."
     },
     {
         "#": 145,
@@ -2462,7 +2606,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 216,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_145.gif"
+        "Sprite": "GIFs/ani_bw_145.gif",
+        "PokedexEntry": "A legendary bird POKéMON that is said to appear from clouds while wielding enormous lightning bolts."
     },
     {
         "#": 146,
@@ -2479,7 +2624,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 217,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_146.gif"
+        "Sprite": "GIFs/ani_bw_146.gif",
+        "PokedexEntry": "A legendary bird POKéMON that is said to bring early spring to the wintry lands it visits."
     },
     {
         "#": 147,
@@ -2496,7 +2642,8 @@
         "EvolutionLevel": 30,
         "BaseExperience": 67,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_147.gif"
+        "Sprite": "GIFs/ani_bw_147.gif",
+        "PokedexEntry": "Even the young are known to shed their skins once they grow too large. It grows larger by repeatedly shedding skin."
     },
     {
         "#": 148,
@@ -2513,7 +2660,8 @@
         "EvolutionLevel": 55,
         "BaseExperience": 144,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_148.gif"
+        "Sprite": "GIFs/ani_bw_148.gif",
+        "PokedexEntry": "A mystical POKéMON that exudes a gentle aura. It is said to have the ability to change the weather."
     },
     {
         "#": 149,
@@ -2530,7 +2678,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 218,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_149.gif"
+        "Sprite": "GIFs/ani_bw_149.gif",
+        "PokedexEntry": "An extremely rarely seen marine POKéMON. Its intelligence is said to match that of humans."
     },
     {
         "#": 150,
@@ -2547,7 +2696,8 @@
         "EvolutionLevel": null,
         "BaseExperience": 220,
         "ExperienceGrowth": "Slow",
-        "Sprite": "GIFs/ani_bw_150.gif"
+        "Sprite": "GIFs/ani_bw_150.gif",
+        "PokedexEntry": "A POKéMON whose genetic code was repeatedly recombined for research. It turned vicious as a result."
     },
     {
         "#": 151,
@@ -2564,6 +2714,7 @@
         "EvolutionLevel": null,
         "BaseExperience": 154,
         "ExperienceGrowth": "MSlow",
-        "Sprite": "GIFs/ani_bw_151.gif"
+        "Sprite": "GIFs/ani_bw_151.gif",
+        "PokedexEntry": "So rare that it is still said to be a mirage by many experts. Only a few people have seen it worldwide."
     }
 ]

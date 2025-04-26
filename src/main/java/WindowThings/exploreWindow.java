@@ -16,6 +16,8 @@ import Overworld.Towns.Pallet;
 import Overworld.Towns.Pewter;
 import PlayerRelated.PCWindow;
 import PokemonLogic.Pokemon;
+import javafx.animation.FadeTransition;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
@@ -70,6 +72,16 @@ public class exploreWindow {
             "-fx-scale-y: 0.98; " +
             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
 
+    // Direction enum for animation
+    private enum Direction {
+        NORTH, SOUTH, EAST, WEST, NONE
+    }
+
+    // Animation type enum
+    private enum AnimationType {
+        DIRECTIONAL, FADE, NONE
+    }
+
     // Font cache
     private static Font pokemonFont = null;
     // Image cache
@@ -82,8 +94,12 @@ public class exploreWindow {
     private boolean exitingPokemonCenter = false;
     private Label mapNameLabel;
     private SequentialTransition currentAnimation;
+    private HBox currentButtonBar;
 
     public static Town playerCurrentTown;
+
+    // Store ViridianForest instance for saving/loading game state
+    public static ViridianForest viridianForest;
 
     public exploreWindow(Town currentTown) {
         this.currentTown = currentTown;
@@ -139,7 +155,11 @@ public class exploreWindow {
 
     private void setupMainLayout() {
         mainLayout = new BorderPane();
+        mainLayout.setStyle("-fx-background-color: black;"); // Set the main layout background to black
+        
         StackPane imageContainer = new StackPane();
+        imageContainer.setStyle("-fx-background-color: black;"); // Set the image container background to black
+        
         townImageView = new ImageView();
         imageContainer.getChildren().add(townImageView);
         mainLayout.setCenter(imageContainer);
@@ -253,12 +273,346 @@ public class exploreWindow {
         currentAnimation.play();
     }
 
+    /**
+     * Animates a transition between two town images based on the direction of
+     * movement
+     */
+    private void animateDirectionalTransition(Town newTown, Direction direction) {
+        try {
+            // Create new ImageView for the next town
+            ImageView nextTownView = new ImageView();
+            Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
+            nextTownView.setImage(newImage);
+
+            double aspectRatio = newImage.getWidth() / newImage.getHeight();
+            double scaledWidth = FIXED_HEIGHT * aspectRatio;
+
+            nextTownView.setFitHeight(FIXED_HEIGHT);
+            nextTownView.setFitWidth(scaledWidth);
+            nextTownView.setPreserveRatio(true);
+
+            // Position the new image view based on the direction
+            switch (direction) {
+                case NORTH:
+                    nextTownView.setTranslateY(-FIXED_HEIGHT);
+                    break;
+                case SOUTH:
+                    nextTownView.setTranslateY(FIXED_HEIGHT);
+                    break;
+                case EAST:
+                    nextTownView.setTranslateX(scaledWidth);
+                    break;
+                case WEST:
+                    nextTownView.setTranslateX(-scaledWidth);
+                    break;
+                default:
+                    // No specific direction, just replace the image
+                    townImageView.setImage(newImage);
+                    return;
+            }
+
+            // Add the new view to the stack pane
+            StackPane imageContainer = (StackPane) mainLayout.getCenter();
+            imageContainer.getChildren().add(nextTownView);
+
+            // Create animations
+            double duration = 600; // animation duration in milliseconds
+
+            // Animation for current town to slide out
+            TranslateTransition slideOutCurrent = new TranslateTransition(Duration.millis(duration), townImageView);
+            switch (direction) {
+                case NORTH:
+                    slideOutCurrent.setToY(FIXED_HEIGHT);
+                    break;
+                case SOUTH:
+                    slideOutCurrent.setToY(-FIXED_HEIGHT);
+                    break;
+                case EAST:
+                    slideOutCurrent.setToX(-scaledWidth);
+                    break;
+                case WEST:
+                    slideOutCurrent.setToX(scaledWidth);
+                    break;
+                default:
+                    break;
+            }
+
+            // Animation for new town to slide in
+            TranslateTransition slideInNext = new TranslateTransition(Duration.millis(duration), nextTownView);
+            slideInNext.setToX(0);
+            slideInNext.setToY(0);
+
+            // Play animations simultaneously
+            slideOutCurrent.play();
+            slideInNext.play();
+
+            // Clean up after animation completes and trigger map name animation
+            slideInNext.setOnFinished(e -> {
+                townImageView.setImage(newImage);
+                townImageView.setTranslateX(0);
+                townImageView.setTranslateY(0);
+                imageContainer.getChildren().remove(nextTownView);
+                // Trigger map name animation *after* the transition is complete
+                animateMapName(newTown.getName());
+                // Update buttons after transition
+                updateButtonsForTown();
+            });
+        } catch (Exception e) {
+            System.out.println("Error during animation: " + e.getMessage());
+            e.printStackTrace();
+            // Fallback to direct image update if animation fails
+            try {
+                townImageView.setImage(getOrLoadImage("/Maps/" + newTown.getImageFile()));
+                animateMapName(newTown.getName()); // Still try to animate name
+                updateButtonsForTown(); // Update buttons on fallback
+            } catch (Exception ex) {
+                System.out.println("Error updating town image: " + ex.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Determines if a location is considered a building (indoor location)
+     */
+    private boolean isBuilding(Town town) {
+        return town instanceof Overworld.Buildings.PokemonCenterBuilding ||
+                town instanceof Overworld.Buildings.OaksLab ||
+                town instanceof Overworld.Buildings.PlayerHome ||
+                town instanceof Overworld.Buildings.PewterGym;
+    }
+
+    /**
+     * Performs a fade transition between the current town and the new town
+     */
+    private void animateFadeTransition(Town newTown) {
+        try {
+            // 1. Load new image
+            Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
+            if (newImage == null) {
+                throw new Exception("Failed to load image for " + newTown.getName());
+            }
+
+            // 2. Prepare Fade Out
+            FadeTransition imageFadeOut = new FadeTransition(Duration.millis(400), townImageView);
+            imageFadeOut.setFromValue(1.0);
+            imageFadeOut.setToValue(0.0);
+
+            FadeTransition buttonFadeOut = new FadeTransition(Duration.millis(300));
+            if (currentButtonBar != null && currentButtonBar.getOpacity() > 0) {
+                buttonFadeOut.setNode(currentButtonBar);
+                buttonFadeOut.setFromValue(currentButtonBar.getOpacity());
+                buttonFadeOut.setToValue(0.0);
+            } else {
+                // No buttons or already invisible, make fade-out instant
+                buttonFadeOut.setDuration(Duration.millis(1));
+            }
+
+            ParallelTransition fadeOutParallel = new ParallelTransition(imageFadeOut, buttonFadeOut);
+
+            // 3. Prepare Fade In (Nodes will be set later)
+            FadeTransition imageFadeIn = new FadeTransition(Duration.millis(400), townImageView);
+            imageFadeIn.setFromValue(0.0);
+            imageFadeIn.setToValue(1.0);
+
+            FadeTransition buttonFadeIn = new FadeTransition(Duration.millis(400));
+            buttonFadeIn.setFromValue(0.0);
+            buttonFadeIn.setToValue(1.0);
+            // buttonFadeIn node will be set after new buttons are created
+
+            ParallelTransition fadeInParallel = new ParallelTransition(imageFadeIn, buttonFadeIn);
+
+            // 4. Intermediate Action (Change content while invisible)
+            // Use a PauseTransition with an onFinished handler to perform actions
+            PauseTransition changeContentAction = new PauseTransition(Duration.millis(1));
+            changeContentAction.setOnFinished(e -> {
+                // Change image
+                townImageView.setImage(newImage);
+
+                // Remove old buttons container from layout
+                if (mainLayout.getBottom() != null) {
+                    mainLayout.setBottom(null);
+                }
+
+                // Create new buttons (they are created with opacity 0 by addButtonsToLayout)
+                createButtonsForCurrentTown(); // This sets currentButtonBar and adds it to layout
+
+                // Set the target for the button fade-in animation
+                if (currentButtonBar != null) {
+                    buttonFadeIn.setNode(currentButtonBar);
+                } else {
+                    // If no buttons, make the button fade-in part instant/noop
+                    buttonFadeIn.setDuration(Duration.millis(1));
+                }
+            });
+
+            // 5. Create Sequence
+            SequentialTransition fadeSequence = new SequentialTransition(
+                    fadeOutParallel,
+                    changeContentAction,
+                    fadeInParallel);
+
+            // 6. Set final action
+            fadeSequence.setOnFinished(e -> {
+                // Ensure final state is correct (opacity 1) in case animation is
+                // skipped/interrupted
+                townImageView.setOpacity(1.0);
+                if (currentButtonBar != null) {
+                    currentButtonBar.setOpacity(1.0);
+                }
+                // Trigger map name animation *after* the fade-in is complete
+                animateMapName(newTown.getName());
+            });
+
+            // 7. Play
+            fadeSequence.play();
+
+        } catch (Exception e) {
+            System.out.println("Error during fade animation: " + e.getMessage());
+            e.printStackTrace();
+
+            // Fallback to direct update if animation fails
+            try {
+                townImageView.setImage(getOrLoadImage("/Maps/" + newTown.getImageFile()));
+                mainLayout.setBottom(null); // Clear old buttons
+                createButtonsForCurrentTown(); // Create new buttons
+                // Manually make buttons visible in fallback
+                if (currentButtonBar != null) {
+                    currentButtonBar.setOpacity(1.0);
+                }
+                animateMapName(newTown.getName()); // Still try to animate name
+            } catch (Exception ex) {
+                System.out.println("Error updating town image during fallback: " + ex.getMessage());
+            }
+        }
+    }
+
+    // Original updateTown method as a convenience method with no animation
+    public void updateTown(Town newTown) {
+        updateTown(newTown, Direction.NONE);
+    }
+
+    // Enhanced updateTown method with direction parameter
+    public void updateTown(Town newTown, Direction direction) {
+        updateTown(newTown, direction, determineAnimationType(newTown));
+    }
+
+    // Helper method to determine the appropriate animation type
+    private AnimationType determineAnimationType(Town newTown) {
+        // If either current or new location is a building, use fade
+        if (currentTown != null && (isBuilding(currentTown) || isBuilding(newTown))) {
+            return AnimationType.FADE;
+        }
+
+        // Otherwise use directional if a direction is provided
+        return AnimationType.DIRECTIONAL;
+    }
+
+    // Full updateTown method with all parameters
+    public void updateTown(Town newTown, Direction direction, AnimationType animationType) {
+        // If we're closing this window due to navigation to another town,
+        // we should unregister it when appropriate
+        if (newTown == null) {
+            mainWindow.unregisterWindow(stage);
+            stage.close();
+            return;
+        }
+
+        this.currentTown = newTown;
+        playerCurrentTown = newTown;
+
+        stage.setTitle(newTown.getName());
+
+        // Choose animation based on type
+        switch (animationType) {
+            case DIRECTIONAL:
+                if (direction != Direction.NONE) {
+                    animateDirectionalTransition(newTown, direction);
+                }
+                break;
+
+            case FADE:
+                animateFadeTransition(newTown);
+                break;
+
+            case NONE:
+            default:
+                try {
+                    townImageView.setImage(getOrLoadImage("/Maps/" + newTown.getImageFile()));
+                    animateMapName(newTown.getName()); // Trigger the map name animation
+                    updateButtonsForTown(); // Update buttons for no animation case
+                } catch (Exception e) {
+                    System.out.println("Error updating town image: " + e.getMessage());
+                }
+                break;
+        }
+
+        try {
+            // Update stage size
+            Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
+            double aspectRatio = newImage.getWidth() / newImage.getHeight();
+            double scaledWidth = FIXED_HEIGHT * aspectRatio;
+
+            // Configure the image view
+            townImageView.setFitHeight(FIXED_HEIGHT);
+            townImageView.setFitWidth(scaledWidth);
+            townImageView.setPreserveRatio(true);
+
+            // Update stage size
+            stage.setWidth(scaledWidth);
+            stage.setHeight(FIXED_HEIGHT + BUTTON_AREA_HEIGHT);
+            stage.sizeToScene();
+        } catch (Exception e) {
+            System.out.println("Error updating window size: " + e.getMessage());
+        }
+
+        // Set flag to true when coming from Oak's Lab to Pallet Town
+        boolean fromExternalLocation = false;
+        if (newTown instanceof Pallet && currentTown instanceof Overworld.Buildings.OaksLab) {
+            fromExternalLocation = true;
+        }
+
+        // Pass the fromExternalLocation flag to the enter method
+        newTown.enter(PokeText_Adventure.player, fromExternalLocation || exitingPokemonCenter);
+        exitingPokemonCenter = false;
+    }
+
     // Method to update buttons based on current town
     private void updateButtonsForTown() {
-        // Clear any existing buttons
-        mainLayout.setBottom(null);
+        // This method is called for directional transitions (after slide) and
+        // no-animation updates.
+        // It needs to fade out old buttons (if any) and fade in new ones.
 
-        // Use a location-based approach to determine which buttons to show
+        Runnable createAndFadeInButtons = () -> {
+            mainLayout.setBottom(null); // Clear previous buttons container first
+            createButtonsForCurrentTown(); // Creates buttons with opacity 0 and adds to layout
+
+            // Now, fade in the newly created buttons
+            if (currentButtonBar != null) {
+                FadeTransition fadeIn = new FadeTransition(Duration.millis(300), currentButtonBar);
+                fadeIn.setFromValue(0.0);
+                fadeIn.setToValue(1.0);
+                fadeIn.play();
+            }
+        };
+
+        // Animate button area fade-out before clearing, only if buttons exist and are
+        // visible
+        if (currentButtonBar != null && currentButtonBar.getOpacity() > 0) {
+            FadeTransition fadeOut = new FadeTransition(Duration.millis(300), currentButtonBar);
+            fadeOut.setFromValue(currentButtonBar.getOpacity()); // Fade from current opacity
+            fadeOut.setToValue(0.0);
+            fadeOut.setOnFinished(e -> {
+                createAndFadeInButtons.run(); // Create and fade in new buttons after fade-out
+            });
+            fadeOut.play();
+        } else {
+            // If no buttons or already faded out, just create and fade in new ones directly
+            createAndFadeInButtons.run();
+        }
+    }
+
+    // Helper method to create appropriate buttons based on current location
+    private void createButtonsForCurrentTown() {
         if (currentTown instanceof Overworld.Buildings.PlayerHome) {
             createPlayerHomeButtons();
         } else if (currentTown instanceof Pallet) {
@@ -307,7 +661,7 @@ public class exploreWindow {
 
         Button returnButton = createDirectionalButton("down", "Go To Pallet", e -> {
             Pallet palletTown = (Pallet) ((Overworld.Buildings.PlayerHome) currentTown).getParentTown();
-            updateTown(palletTown);
+            updateTown(palletTown, Direction.NONE, AnimationType.FADE);
         });
 
         addButtonsToLayout(healButton, pcButton, returnButton);
@@ -319,15 +673,14 @@ public class exploreWindow {
         Button goHomeButton = createTextButton("Go Home", e -> {
             PokemonCenter pokemonCenter = currentTown.getPokemonCenter();
             if (pokemonCenter instanceof Town towns) {
-                updateTown(towns);
+                updateTown(towns, Direction.NONE, AnimationType.FADE);
             }
         });
         goHomeButton.setTooltip(new Tooltip("Return to your house"));
 
         Button oaksLabButton = createTextButton("Oak's Lab", e -> {
             OaksLab oaksLab = pallet.getOaksLab();
-            updateTown(oaksLab);
-            WindowThings.mainWindow.appendToOutput("You head to Professor Oak's Laboratory.");
+            updateTown(oaksLab, Direction.NONE, AnimationType.FADE);
         });
         oaksLabButton.setTooltip(new Tooltip("Visit Professor Oak's Laboratory"));
 
@@ -341,7 +694,7 @@ public class exploreWindow {
             } else {
                 // Player has at least one Pokémon, allow them to proceed
                 Route route1 = pallet.getRoute1();
-                updateTown(route1);
+                updateTown(route1, Direction.NORTH);
             }
         });
 
@@ -352,11 +705,11 @@ public class exploreWindow {
         Route route1 = (Route) currentTown;
 
         Button toViridianButton = createDirectionalButton("up", "To Viridian City", e -> {
-            updateTown(route1.getDestination2());
+            updateTown(route1.getDestination2(), Direction.NORTH);
         });
 
         Button toPalletButton = createDirectionalButton("down", "To Pallet Town", e -> {
-            updateTown(route1.getDestination1());
+            updateTown(route1.getDestination1(), Direction.SOUTH);
         });
 
         Button encounterButton = createEncounterButton();
@@ -368,19 +721,18 @@ public class exploreWindow {
         Button pokeCenterButton = createButtonWithIcon("/Icons/Center.png", "Pokémon Center", e -> {
             PokemonCenter pokemonCenter = currentTown.getPokemonCenter();
             if (pokemonCenter instanceof Town pokemonCenterTown) {
-                updateTown(pokemonCenterTown);
-                WindowThings.mainWindow.appendToOutput("You enter the " + pokemonCenter.getName() + ".");
+                updateTown(pokemonCenterTown, Direction.NONE, AnimationType.FADE);
             }
         });
 
         Button toRoute1Button = createDirectionalButton("down", "To Route 1", e -> {
             Pallet pallet = new Pallet();
-            updateTown(pallet.getRoute1());
+            updateTown(pallet.getRoute1(), Direction.SOUTH);
         });
 
         Button toRoute22Button = createDirectionalButton("left", "To Route 22", e -> {
             if (currentTown instanceof Overworld.Towns.Viridian viridian) {
-                updateTown(viridian.getRoute22());
+                updateTown(viridian.getRoute22(), Direction.WEST);
             }
         });
 
@@ -390,13 +742,12 @@ public class exploreWindow {
                 // Check if player has delivered Oak's Parcel
                 if (PokeText_Adventure.player.hasDeliveredOaksParcel()) {
                     // Allow passage to Route 2
-                    updateTown(viridian.getRoute2South());
-                    WindowThings.mainWindow.appendToOutput("You head north toward Route 2.");
+                    updateTown(viridian.getRoute2South(), Direction.NORTH);
                 } else {
                     // Implement the "sleeping man" roadblock
                     WindowThings.mainWindow.appendToOutput("A man is sprawled on the ground, blocking the path north.");
                     WindowThings.mainWindow.appendToOutput(
-                            "Man: *Snore*... Hmmm... Can't... go through... I haven't had my coffee yet...");
+                            "Man: ZZZZZ... Hmmm... Can't... go through... I haven't had my coffee yet...", "grey");
                 }
             }
         });
@@ -408,7 +759,7 @@ public class exploreWindow {
         Route route22 = (Route) currentTown;
 
         Button toViridianButton = createDirectionalButton("right", "To Viridian City", e -> {
-            updateTown(route22.getDestination1());
+            updateTown(route22.getDestination1(), Direction.EAST);
         });
 
         Button toIndigoPlateauButton = createDirectionalButton("left", "To Indigo Plateau", e -> {
@@ -431,13 +782,14 @@ public class exploreWindow {
 
     private void createRoute2SouthButtons() {
         Button toViridianButton = createDirectionalButton("down", "To Viridian City", e -> {
-            updateTown(((Route) currentTown).getDestination1());
+            updateTown(((Route) currentTown).getDestination1(), Direction.SOUTH);
         });
 
         Button toForestButton = createDirectionalButton("up", "To Viridian Forest", e -> {
             if (currentTown instanceof Route2South route2South) {
-                updateTown(route2South.getViridianForest());
-                WindowThings.mainWindow.appendToOutput("You enter the dense Viridian Forest.");
+                ViridianForest forest = route2South.getViridianForest();
+                viridianForest = forest; // Store reference to the forest
+                updateTown(forest, Direction.NORTH);
             }
         });
 
@@ -448,7 +800,7 @@ public class exploreWindow {
 
     private void createViridianForestButtons() {
         Button toRoute2SouthButton = createDirectionalButton("down", "To Route 2 (South)", e -> {
-            updateTown(((Route) currentTown).getDestination1());
+            updateTown(((Route) currentTown).getDestination1(), Direction.SOUTH);
             WindowThings.mainWindow.appendToOutput("You exit the forest to the south.");
         });
 
@@ -459,7 +811,7 @@ public class exploreWindow {
         Button toRoute2NorthButton = createDirectionalButton("up", "To Route 2 (North)", e -> {
             if (forest.areAllTrainersDefeated()) {
                 if (currentTown instanceof ViridianForest viridianForest) {
-                    updateTown(viridianForest.getRoute2North());
+                    updateTown(viridianForest.getRoute2North(), Direction.NORTH);
                     WindowThings.mainWindow.appendToOutput("You exit the forest to the north.");
                 }
             } else {
@@ -491,13 +843,13 @@ public class exploreWindow {
 
     private void createRoute2NorthButtons() {
         Button toForestButton = createDirectionalButton("down", "To Viridian Forest", e -> {
-            updateTown(((Route) currentTown).getDestination1());
+            updateTown(((Route) currentTown).getDestination1(), Direction.SOUTH);
             WindowThings.mainWindow.appendToOutput("You enter the dense Viridian Forest.");
         });
 
         Button toPewterCityButton = createDirectionalButton("up", "To Pewter City", e -> {
             if (currentTown instanceof Route2North route2North) {
-                updateTown(route2North.getPewterCity());
+                updateTown(route2North.getPewterCity(), Direction.NORTH);
                 WindowThings.mainWindow.appendToOutput("You enter Pewter City, the City of Stone.");
             }
         });
@@ -511,21 +863,20 @@ public class exploreWindow {
         Button pokeCenterButton = createButtonWithIcon("/Icons/Center.png", "Pokémon Center", e -> {
             PokemonCenter pokemonCenter = currentTown.getPokemonCenter();
             if (pokemonCenter instanceof Town pokemonCenterTown) {
-                updateTown(pokemonCenterTown);
-                WindowThings.mainWindow.appendToOutput("You enter the " + pokemonCenter.getName() + ".");
+                updateTown(pokemonCenterTown, Direction.NONE, AnimationType.FADE);
             }
         });
 
         Button toRoute2Button = createDirectionalButton("down", "To Route 2", e -> {
             if (currentTown instanceof Pewter pewter) {
-                updateTown(pewter.getRoute2North());
+                updateTown(pewter.getRoute2North(), Direction.SOUTH);
                 WindowThings.mainWindow.appendToOutput("You head south toward Route 2.");
             }
         });
 
         Button toGymButton = createButtonWithIcon("/Icons/BoulderBadge.png", "To Pewter Gym", e -> {
             if (currentTown instanceof Pewter pewter) {
-                updateTown(pewter.getPewterGym());
+                updateTown(pewter.getPewterGym(), Direction.NONE, AnimationType.FADE);
                 WindowThings.mainWindow.appendToOutput("You enter the Pewter Gym, ready to face the challenge within.");
             }
         });
@@ -534,14 +885,31 @@ public class exploreWindow {
     }
 
     private void createPewterGymButtons() {
+        Overworld.Buildings.PewterGym pewterGym = (Overworld.Buildings.PewterGym) currentTown;
+
         Button exitButton = createDirectionalButton("down", "Exit Gym", e -> {
-            if (currentTown instanceof Overworld.Buildings.PewterGym pewterGym) {
-                updateTown(pewterGym.getParentTown());
-                WindowThings.mainWindow.appendToOutput("You exit the Pewter Gym and return to Pewter City.");
-            }
+            updateTown(pewterGym.getParentTown(), Direction.NONE, AnimationType.FADE);
         });
 
-        addButtonsToLayout(exitButton);
+        // Add button for challenging trainers
+        Button challengeButton = createTextButton("Challenge Trainer", e -> {
+            if (pewterGym.getNextTrainer() != null) {
+                pewterGym.startTrainerBattle(PokeText_Adventure.player);
+            } else {
+                WindowThings.mainWindow.appendToOutput("You've already defeated all the trainers in this gym!");
+            }
+        });
+        challengeButton.setTooltip(new Tooltip("Challenge the next trainer in the gym"));
+
+        // If player has already earned the badge or there are no more trainers to
+        // battle,
+        // update the button text and disable it
+        if (pewterGym.getNextTrainer() == null) {
+            challengeButton.setText("No More Trainers");
+            challengeButton.setDisable(true);
+        }
+
+        addButtonsToLayout(exitButton, challengeButton);
     }
 
     private void createPokemonCenterButtons() {
@@ -561,7 +929,7 @@ public class exploreWindow {
         Button returnButton = createDirectionalButton("down", "Exit", e -> {
             Town parentTown = pokemonCenterBuilding.getParentTown();
             exitingPokemonCenter = true;
-            updateTown(parentTown);
+            updateTown(parentTown, Direction.NONE, AnimationType.FADE);
             WindowThings.mainWindow.appendToOutput("You exit the Pokémon Center.");
         });
 
@@ -571,15 +939,14 @@ public class exploreWindow {
     private void createOaksLabButtons() {
         Button exitButton = createDirectionalButton("down", "Exit Lab", e -> {
             if (currentTown instanceof Overworld.Buildings.OaksLab oaksLab) {
-                updateTown(oaksLab.getParentTown());
-                WindowThings.mainWindow
-                        .appendToOutput("You leave Professor Oak's Laboratory and return to Pallet Town.");
+                updateTown(oaksLab.getParentTown(), Direction.NONE, AnimationType.FADE);
             }
         });
 
         Button talkButton = createTextButton("Talk to Oak", e -> {
             if (PokeText_Adventure.player.getParty().isEmpty()) {
-                WindowThings.mainWindow.appendToOutput("Professor Oak: You should choose your starter Pokémon first!");
+                WindowThings.mainWindow.appendToOutput("Professor Oak: You should choose your starter Pokémon first!",
+                        "blue");
 
                 // Show starter selection if player still doesn't have a Pokémon
                 javafx.application.Platform.runLater(() -> {
@@ -591,18 +958,21 @@ public class exploreWindow {
                 // Player has the parcel to deliver
                 WindowThings.mainWindow.appendToOutput("You hand OAK'S PARCEL to Professor Oak.");
                 WindowThings.mainWindow
-                        .appendToOutput("Professor Oak: Oh, this is the custom Poké Ball I ordered! Thank you!");
-                WindowThings.mainWindow.appendToOutput("Professor Oak: By the way, how is your Pokédex coming along?");
+                        .appendToOutput("Professor Oak: Oh, this is the custom Poké Ball I ordered! Thank you!",
+                                "blue");
+                WindowThings.mainWindow.appendToOutput("Professor Oak: By the way, how is your Pokédex coming along?",
+                        "blue");
                 WindowThings.mainWindow.appendToOutput(
-                        "Professor Oak: There are many Pokémon in the Viridian Forest north of Viridian City.");
-                WindowThings.mainWindow.appendToOutput("Professor Oak: You should go explore there next!");
+                        "Professor Oak: There are many Pokémon in the Viridian Forest north of Viridian City.", "blue");
+                WindowThings.mainWindow.appendToOutput("Professor Oak: You should go explore there next!", "blue");
 
                 // Mark the parcel as delivered
                 PokeText_Adventure.player.setHasOaksParcel(false);
                 PokeText_Adventure.player.setDeliveredOaksParcel(true);
             } else {
                 WindowThings.mainWindow
-                        .appendToOutput("Professor Oak: How is your journey going? Have you caught any new Pokémon?");
+                        .appendToOutput("Professor Oak: How is your journey going? Have you caught any new Pokémon?",
+                                "blue");
             }
         });
 
@@ -695,59 +1065,25 @@ public class exploreWindow {
         HBox buttonBar = new HBox(10);
         buttonBar.getChildren().addAll(buttons);
         buttonBar.setAlignment(Pos.CENTER);
+        // Set opacity to 0 initially. The calling animation (like
+        // animateFadeTransition)
+        // or the updateButtonsForTown method will handle fading it in.
+        buttonBar.setOpacity(0.0);
 
         StackPane buttonContainer = new StackPane(buttonBar);
         buttonContainer.setPadding(new Insets(10));
         buttonContainer.setStyle("-fx-background-color: transparent;");
-        mainLayout.setBottom(buttonContainer);
+
+        currentButtonBar = buttonBar; // Track the current button bar
+        mainLayout.setBottom(buttonContainer); // Add the container (with invisible buttons) to the layout
+
+        // Removed the automatic fade-in from here. It's now handled by the caller.
     }
 
     // Keep this method for compatibility with existing code
     public void show() {
         if (!stage.isShowing()) {
             stage.show();
-        }
-    }
-
-    public void updateTown(Town newTown) {
-        // If we're closing this window due to navigation to another town,
-        // we should unregister it when appropriate
-        if (newTown == null) {
-            mainWindow.unregisterWindow(stage);
-            stage.close();
-            return;
-        }
-
-        this.currentTown = newTown;
-        playerCurrentTown = newTown;
-
-        stage.setTitle(newTown.getName());
-        try {
-            Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
-            townImageView.setImage(newImage);
-
-            double aspectRatio = newImage.getWidth() / newImage.getHeight();
-            double scaledWidth = FIXED_HEIGHT * aspectRatio;
-
-            // Configure the image view
-            townImageView.setFitHeight(FIXED_HEIGHT);
-            townImageView.setFitWidth(scaledWidth);
-            townImageView.setPreserveRatio(true);
-
-            // Update stage size
-            stage.setWidth(scaledWidth);
-            stage.setHeight(FIXED_HEIGHT + BUTTON_AREA_HEIGHT);
-            stage.sizeToScene();
-
-            // Pass the exiting flag to the enter method
-            newTown.enter(PokeText_Adventure.player, exitingPokemonCenter);
-            exitingPokemonCenter = false;
-
-            // Trigger the map name animation
-            animateMapName(newTown.getName());
-            updateButtonsForTown();
-        } catch (Exception e) {
-            System.out.println("Error updating town image: " + e.getMessage());
         }
     }
 
