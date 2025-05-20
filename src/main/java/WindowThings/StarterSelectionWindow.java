@@ -104,9 +104,9 @@ public class StarterSelectionWindow {
         mainLayout.setTop(topSection);
 
         // Pokemon choices section
-        HBox pokemonChoices = new HBox(15); // Reduced horizontal spacing
+        HBox pokemonChoices = new HBox(15);
         pokemonChoices.setAlignment(Pos.CENTER);
-        pokemonChoices.setPadding(new Insets(10)); // Reduced padding
+        pokemonChoices.setPadding(new Insets(10));
 
         for (int i = 0; i < 3; i++) {
             final int index = i;
@@ -118,17 +118,17 @@ public class StarterSelectionWindow {
         mainLayout.setCenter(pokemonChoices);
 
         // Increase window size to show descriptions better
-        Scene scene = new Scene(mainLayout, 950, 580); // Slightly taller window
+        Scene scene = new Scene(mainLayout, 950, 580);
         stage.setScene(scene);
     }
 
     private VBox createPokemonCard(String name, String type, int dexNum,
             javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        VBox card = new VBox(5); // Reduced vertical spacing between elements
+        VBox card = new VBox(5);
         card.setAlignment(Pos.CENTER);
         card.setPadding(new Insets(10));
-        card.setMinWidth(260); // Slightly wider cards
-        card.setMinHeight(340); // Set minimum height
+        card.setMinWidth(260);
+        card.setMinHeight(340);
         card.setStyle("-fx-background-color: white; " +
                 "-fx-background-radius: 15; " +
                 "-fx-border-color: #000000; " +
@@ -138,9 +138,9 @@ public class StarterSelectionWindow {
         // Pokemon name
         Label nameLabel = new Label(name);
         nameLabel.setFont(pokemonFont);
-        nameLabel.setPadding(new Insets(3, 0, 0, 0)); // Minimal top padding
+        nameLabel.setPadding(new Insets(3, 0, 0, 0));
 
-        // Pokemon image with correct path format
+        // Pokemon image
         ImageView pokemonImage = new ImageView();
         try {
             // Using the correct GIF path with leading zeros for Pokemon number
@@ -148,8 +148,8 @@ public class StarterSelectionWindow {
             Image image = getOrLoadImage(imagePath);
             if (image != null) {
                 pokemonImage.setImage(image);
-                pokemonImage.setFitHeight(85); // Slightly smaller
-                pokemonImage.setFitWidth(85); // Slightly smaller
+                pokemonImage.setFitHeight(85);
+                pokemonImage.setFitWidth(85);
                 pokemonImage.setPreserveRatio(true);
             }
         } catch (Exception e) {
@@ -159,17 +159,17 @@ public class StarterSelectionWindow {
         // Type label
         Label typeLabel = new Label("Type: " + type);
         typeLabel.setFont(pokemonFontSmall);
-        typeLabel.setPadding(new Insets(0)); // No padding
+        typeLabel.setPadding(new Insets(0));
 
         // Description label with improved display
         Label descLabel = new Label(starterDescriptions[dexNum - 1]);
         descLabel.setFont(pokemonFontSmall);
         descLabel.setWrapText(true);
         descLabel.setTextAlignment(TextAlignment.CENTER);
-        descLabel.setPrefHeight(100); // Much taller description area
-        descLabel.setPrefWidth(230); // Slightly wider
+        descLabel.setPrefHeight(100);
+        descLabel.setPrefWidth(230);
         descLabel.setPadding(new Insets(5));
-        VBox.setMargin(descLabel, new Insets(10, 0, 10, 0)); // Add vertical margin
+        VBox.setMargin(descLabel, new Insets(10, 0, 10, 0));
 
         // Choose button
         Button chooseButton = new Button("I Choose You!");
@@ -204,7 +204,7 @@ public class StarterSelectionWindow {
 
         // Add spacer
         Region spacer = new Region();
-        spacer.setPrefHeight(5); // Small space at bottom
+        spacer.setPrefHeight(5);
 
         card.getChildren().addAll(nameLabel, pokemonImage, typeLabel, descLabel, chooseButton, spacer);
         return card;
@@ -256,7 +256,6 @@ public class StarterSelectionWindow {
 
             // Add to player's party with a callback that will run after nickname is set
             player.addPokemonToParty(starter, () -> {
-                // This code will run after the nickname dialog is closed
 
                 // Set as current Pokemon
                 player.setCurrentPokemon(finalStarter);
@@ -296,7 +295,7 @@ public class StarterSelectionWindow {
                 rivalStarter = new trainerPokemon("Bulbasaur", 5, "Tackle", "Growl");
             }
 
-            // Show Gary choosing his Pokemon and challenging the player - now with colors!
+            // Show Gary choosing his Pokemon and challenging the player
             WindowThings.mainWindow.appendToOutput("Gary: Hah! I'll take this one then!", "green");
             WindowThings.mainWindow.appendToOutput("Gary picks " + rivalStarter.getName() + "!", "green");
             WindowThings.mainWindow.appendToOutput(
@@ -322,7 +321,8 @@ public class StarterSelectionWindow {
 
             // Create the trainer battle with Gary, but pass empty dialogue string
             // to avoid the default display mechanism
-            Battle battleWindow = new Battle(player, new Trainer("Gary", 80, rivalStarter), "");
+            // Use "field" background for the battle in Oak's Lab
+            Battle battleWindow = new Battle(player, new Trainer("Gary", 80, rivalStarter), "", "field");
 
             // Use post-battle action to display colored dialogue
             battleWindow.setPostBattleAction(() -> {

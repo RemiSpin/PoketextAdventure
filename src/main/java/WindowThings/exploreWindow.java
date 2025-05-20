@@ -14,7 +14,6 @@ import Overworld.Routes.ViridianForest;
 import Overworld.Town;
 import Overworld.Towns.Pallet;
 import Overworld.Towns.Pewter;
-import PlayerRelated.PCWindow;
 import PokemonLogic.Pokemon;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -71,6 +70,13 @@ public class exploreWindow {
             "-fx-scale-x: 0.98; " +
             "-fx-scale-y: 0.98; " +
             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
+    private static final String BUTTON_STYLE_DISABLED = "-fx-background-color: #d3d3d3; " +
+            "-fx-background-radius: 5; " +
+            "-fx-padding: 6 12 6 12; " +
+            "-fx-text-fill: grey; " +
+            "-fx-border-color: #000000; " +
+            "-fx-border-radius: 5; " +
+            "-fx-border-width: 2px;";
 
     // Direction enum for animation
     private enum Direction {
@@ -95,6 +101,7 @@ public class exploreWindow {
     private Label mapNameLabel;
     private SequentialTransition currentAnimation;
     private HBox currentButtonBar;
+    private boolean isAnimating = false;
 
     public static Town playerCurrentTown;
 
@@ -149,17 +156,15 @@ public class exploreWindow {
 
         // Register with main window
         mainWindow.registerWindow(stage);
-
-        // We can't set userData here because scene doesn't exist yet
     }
 
     private void setupMainLayout() {
         mainLayout = new BorderPane();
         mainLayout.setStyle("-fx-background-color: black;"); // Set the main layout background to black
-        
+
         StackPane imageContainer = new StackPane();
         imageContainer.setStyle("-fx-background-color: black;"); // Set the image container background to black
-        
+
         townImageView = new ImageView();
         imageContainer.getChildren().add(townImageView);
         mainLayout.setCenter(imageContainer);
@@ -250,6 +255,9 @@ public class exploreWindow {
         // Set the text to the current map name
         mapNameLabel.setText(mapName);
 
+        // Set the animating flag
+        isAnimating = true;
+
         // Create slide-in animation
         TranslateTransition slideIn = new TranslateTransition(Duration.millis(600), mapNameLabel);
         slideIn.setFromY(-100); // Start from above the visible area
@@ -267,7 +275,11 @@ public class exploreWindow {
         currentAnimation = new SequentialTransition(slideIn, pause, slideOut);
 
         // Make sure to reset label when animation completes
-        currentAnimation.setOnFinished(event -> mapNameLabel.setTranslateY(-100));
+        currentAnimation.setOnFinished(event -> {
+            mapNameLabel.setTranslateY(-100);
+            isAnimating = false; // Clear the animating flag when done
+            updateButtonStates(); // Update button styles after animation
+        });
 
         // Play the animation
         currentAnimation.play();
@@ -279,6 +291,9 @@ public class exploreWindow {
      */
     private void animateDirectionalTransition(Town newTown, Direction direction) {
         try {
+            // Set the animation flag to prevent button clicks
+            isAnimating = true;
+            updateButtonStates(); // Update button styles
             // Create new ImageView for the next town
             ImageView nextTownView = new ImageView();
             Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
@@ -308,6 +323,8 @@ public class exploreWindow {
                 default:
                     // No specific direction, just replace the image
                     townImageView.setImage(newImage);
+                    isAnimating = false; // Clear flag since we're not actually animating
+                    updateButtonStates(); // Update button styles
                     return;
             }
 
@@ -360,6 +377,10 @@ public class exploreWindow {
         } catch (Exception e) {
             System.out.println("Error during animation: " + e.getMessage());
             e.printStackTrace();
+
+            // Make sure to clear the animation flag in case of error
+            isAnimating = false;
+
             // Fallback to direct image update if animation fails
             try {
                 townImageView.setImage(getOrLoadImage("/Maps/" + newTown.getImageFile()));
@@ -386,9 +407,14 @@ public class exploreWindow {
      */
     private void animateFadeTransition(Town newTown) {
         try {
+            // Set the animation flag to prevent button clicks
+            isAnimating = true;
+            updateButtonStates(); // Update button styles
             // 1. Load new image
             Image newImage = getOrLoadImage("/Maps/" + newTown.getImageFile());
             if (newImage == null) {
+                isAnimating = false; // Clear flag if we're exiting early
+                updateButtonStates(); // Update button styles
                 throw new Exception("Failed to load image for " + newTown.getName());
             }
 
@@ -409,7 +435,7 @@ public class exploreWindow {
 
             ParallelTransition fadeOutParallel = new ParallelTransition(imageFadeOut, buttonFadeOut);
 
-            // 3. Prepare Fade In (Nodes will be set later)
+            // 3. Prepare Fade In
             FadeTransition imageFadeIn = new FadeTransition(Duration.millis(400), townImageView);
             imageFadeIn.setFromValue(0.0);
             imageFadeIn.setToValue(1.0);
@@ -469,6 +495,10 @@ public class exploreWindow {
         } catch (Exception e) {
             System.out.println("Error during fade animation: " + e.getMessage());
             e.printStackTrace();
+
+            // Make sure to clear the animation flag in case of error
+            isAnimating = false;
+            updateButtonStates();
 
             // Fallback to direct update if animation fails
             try {
@@ -537,11 +567,17 @@ public class exploreWindow {
             case NONE:
             default:
                 try {
+                    // Set the animation flag temporarily to prevent button spam
+                    setTemporaryAnimationLock();
+
                     townImageView.setImage(getOrLoadImage("/Maps/" + newTown.getImageFile()));
                     animateMapName(newTown.getName()); // Trigger the map name animation
                     updateButtonsForTown(); // Update buttons for no animation case
                 } catch (Exception e) {
                     System.out.println("Error updating town image: " + e.getMessage());
+                    // Clear the animation flag in case of error
+                    isAnimating = false;
+                    updateButtonStates();
                 }
                 break;
         }
@@ -578,9 +614,6 @@ public class exploreWindow {
 
     // Method to update buttons based on current town
     private void updateButtonsForTown() {
-        // This method is called for directional transitions (after slide) and
-        // no-animation updates.
-        // It needs to fade out old buttons (if any) and fade in new ones.
 
         Runnable createAndFadeInButtons = () -> {
             mainLayout.setBottom(null); // Clear previous buttons container first
@@ -648,8 +681,6 @@ public class exploreWindow {
         Button healButton = createTextButton("Rest", e -> {
             PokemonCenter pokemonCenter = currentTown.getPokemonCenter();
             pokemonCenter.healPokemon(PokeText_Adventure.player);
-            WindowThings.mainWindow.appendToOutput(
-                    "Mom: Good morning, sleepyhead! I made your favorite breakfast. Your Pokémon look well-rested too! Remember to call sometimes during your journey!");
         });
         healButton.setTooltip(new Tooltip("Rest in your bed to heal your Pokémon"));
 
@@ -901,9 +932,6 @@ public class exploreWindow {
         });
         challengeButton.setTooltip(new Tooltip("Challenge the next trainer in the gym"));
 
-        // If player has already earned the badge or there are no more trainers to
-        // battle,
-        // update the button text and disable it
         if (pewterGym.getNextTrainer() == null) {
             challengeButton.setText("No More Trainers");
             challengeButton.setDisable(true);
@@ -999,10 +1027,16 @@ public class exploreWindow {
                             }
                         }
 
+                        String battleLocation = "field";
+                        if (currentTown != null && currentTown.getName().toLowerCase().contains("forest")) {
+                            battleLocation = "forest";
+                        }
                         new Battle(PokeText_Adventure.player.getCurrentPokemon(),
                                 wildPokemon,
                                 PokeText_Adventure.player,
-                                true);
+                                true,
+                                null,
+                                battleLocation);
                     } catch (Exception ex) {
                         System.out.println("Error starting battle: " + ex.getMessage());
                     }
@@ -1015,7 +1049,17 @@ public class exploreWindow {
 
     private Button createTextButton(String text, javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         Button button = new Button(text);
-        button.setOnAction(action);
+
+        // Wrap the action in a check for animation state
+        button.setOnAction(e -> {
+            if (!isAnimating) {
+                // Set the temporary animation lock to prevent rapid clicking
+                setTemporaryAnimationLock();
+                // Execute the original action
+                action.handle(e);
+            }
+        });
+
         applyButtonStyle(button);
         return button;
     }
@@ -1024,7 +1068,16 @@ public class exploreWindow {
             javafx.event.EventHandler<javafx.event.ActionEvent> action) {
         Button button = new Button();
         button.setTooltip(new Tooltip(tooltip));
-        button.setOnAction(action);
+
+        // Wrap the action in a check for animation state
+        button.setOnAction(e -> {
+            if (!isAnimating) {
+                // Set the temporary animation lock to prevent rapid clicking
+                setTemporaryAnimationLock();
+                // Execute the original action
+                action.handle(e);
+            }
+        });
 
         try {
             Image icon = getOrLoadImage(iconPath);
@@ -1057,7 +1110,6 @@ public class exploreWindow {
 
     private Button createDirectionalButton(String direction, String tooltip,
             javafx.event.EventHandler<javafx.event.ActionEvent> action) {
-        // Direction should be "up", "down", "left", or "right"
         return createButtonWithIcon("/Icons/" + direction + ".png", tooltip, action);
     }
 
@@ -1065,9 +1117,6 @@ public class exploreWindow {
         HBox buttonBar = new HBox(10);
         buttonBar.getChildren().addAll(buttons);
         buttonBar.setAlignment(Pos.CENTER);
-        // Set opacity to 0 initially. The calling animation (like
-        // animateFadeTransition)
-        // or the updateButtonsForTown method will handle fading it in.
         buttonBar.setOpacity(0.0);
 
         StackPane buttonContainer = new StackPane(buttonBar);
@@ -1076,8 +1125,6 @@ public class exploreWindow {
 
         currentButtonBar = buttonBar; // Track the current button bar
         mainLayout.setBottom(buttonContainer); // Add the container (with invisible buttons) to the layout
-
-        // Removed the automatic fade-in from here. It's now handled by the caller.
     }
 
     // Keep this method for compatibility with existing code
@@ -1094,9 +1141,57 @@ public class exploreWindow {
         }
 
         button.setStyle(BUTTON_STYLE_NORMAL);
-        button.setOnMouseEntered(e -> button.setStyle(BUTTON_STYLE_HOVER));
+        button.setOnMouseEntered(e -> {
+            if (!isAnimating) {
+                button.setStyle(BUTTON_STYLE_HOVER);
+            }
+        });
         button.setOnMouseExited(e -> button.setStyle(BUTTON_STYLE_NORMAL));
-        button.setOnMousePressed(e -> button.setStyle(BUTTON_STYLE_PRESSED));
+        button.setOnMousePressed(e -> {
+            if (!isAnimating) {
+                button.setStyle(BUTTON_STYLE_PRESSED);
+            }
+        });
+    }
+
+    /**
+     * Updates the visual state of all buttons based on whether an animation is in
+     * progress
+     */
+    private void updateButtonStates() {
+        if (currentButtonBar == null) {
+            return;
+        }
+
+        for (javafx.scene.Node node : currentButtonBar.getChildren()) {
+            if (node instanceof Button button) {
+                if (isAnimating) {
+                    button.setStyle(BUTTON_STYLE_DISABLED);
+                    button.setCursor(javafx.scene.Cursor.WAIT); // Change cursor to wait during animation
+                } else {
+                    button.setStyle(BUTTON_STYLE_NORMAL);
+                    button.setCursor(javafx.scene.Cursor.HAND); // Reset cursor to hand when not animating
+                }
+            }
+        }
+    }
+
+    /**
+     * Sets a temporary animation lock for a short duration to prevent rapid button
+     * clicks
+     */
+    private void setTemporaryAnimationLock() {
+        // Set the animation flag
+        isAnimating = true;
+        updateButtonStates();
+
+        // Create a delayed action to clear the flag after 1 second
+        PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        delay.setOnFinished(e -> {
+            isAnimating = false;
+            updateButtonStates();
+        });
+        delay.play();
     }
 
     // Add method to properly close the window

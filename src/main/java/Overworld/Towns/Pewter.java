@@ -81,12 +81,10 @@ public class Pewter implements Town {
         return route2North;
     }
 
-    // Method to set route2North - needed when coming from Route2North
     public void setRoute2North(Route route) {
         this.route2North = route;
     }
 
-    // Get the Pewter Gym
     public PewterGym getPewterGym() {
         return pewterGym;
     }

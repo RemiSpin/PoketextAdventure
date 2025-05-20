@@ -22,13 +22,14 @@
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PlayerRelated/LoadGame.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PlayerRelated/PCWindow.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PlayerRelated/Player.java
-/home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PlayerRelated/PokedexWindow.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PlayerRelated/SaveGame.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PokemonLogic/IPokemon.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PokemonLogic/Pokemon.java
-/home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/PokemonLogic/PokemonInfo.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/Launcher.java
+/home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/PCWindow.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/PokeText_Adventure.java
+/home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/PokedexWindow.java
+/home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/PokemonInfo.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/StarterSelectionWindow.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/exploreWindow.java
 /home/Remilia/Downloads/Projects/PoketextAdventure/src/main/java/WindowThings/mainWindow.java

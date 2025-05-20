@@ -37,7 +37,7 @@ public class EncounterPool {
     /**
      * Get a random Pokemon from the route's encounter pool
      * 
-     * @param routeName Name of the route (e.g., "Route 1")
+     * @param routeName Name of the route
      * @return A randomly generated Pokemon from the route's encounter pool, or null
      *         if no encounters defined
      */

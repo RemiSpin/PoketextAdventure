@@ -45,8 +45,7 @@ public class Route22 extends Route {
                             javafx.application.Platform.runLater(() -> startRivalBattle(player));
                         }
                     },
-                    1500 // Delay of 1.5 seconds
-            );
+                    1500);
         }
     }
 
@@ -93,8 +92,8 @@ public class Route22 extends Route {
             // Create trainer with rival's Pokemon
             Trainer rival = new Trainer("Gary", 144, pidgey, rivalStarter);
 
-            // Start the battle
-            Battle battleWindow = new Battle(player, rival, postBattleDialogue);
+            // Start the battle with field background (Route 22)
+            Battle battleWindow = new Battle(player, rival, postBattleDialogue, "field");
 
             // Mark the battle as occurred
             rivalBattleOccurred = true;

@@ -1,7 +1,7 @@
 package BattleLogic;
 
 import java.io.IOException;
-import java.io.InputStream; // Import InputStream
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ public class moveFactory {
     public Map<String, Map<Integer, List<String>>> pokemonLearnsets = new HashMap<>(); // Map of pokemon names and their
                                                                                        // learnsets, with their name
                                                                                        // being the key
-    private static JSONObject typeChart; // JSON object of the type chart
+    private static JSONObject typeChart;
 
     public moveFactory() {
         // Load the type chart from the JSON file using getResourceAsStream
@@ -33,7 +33,6 @@ public class moveFactory {
             JSONTokener tokener = new JSONTokener(reader);
             typeChart = new JSONObject(tokener);
         } catch (IOException e) {
-            // Catch IOException instead of URISyntaxException
             throw new RuntimeException("Failed to load type chart: " + e.getMessage(), e);
         }
     }

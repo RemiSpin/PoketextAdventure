@@ -29,7 +29,7 @@ public class ViridianForest extends Route {
                 "A dense forest full of Bug-type Pokémon and winding paths.",
                 "ViridianForest.png",
                 route2South,
-                route2North); // Route2North will be connected later
+                route2North);
 
         // Increase encounter chance in the forest
         setEncounterChance(40);
@@ -63,29 +63,24 @@ public class ViridianForest extends Route {
         defeatedTrainers = new ArrayList<>();
 
         try {
-            // Bug catcher Doug
             trainerPokemon weedle1 = new trainerPokemon("Weedle", 7, "Poison Sting", "String Shot");
             trainerPokemon kakuna = new trainerPokemon("Kakuna", 7, "Harden");
             trainerPokemon weedle2 = new trainerPokemon("Weedle", 7, "Poison Sting", "String Shot");
             forestTrainers.add(new Trainer("Bug Catcher Doug", 84, weedle1, kakuna, weedle2));
 
-            // Bug catcher Rick
             trainerPokemon weedle3 = new trainerPokemon("Weedle", 6, "Poison Sting", "String Shot");
             trainerPokemon caterpie1 = new trainerPokemon("Caterpie", 6, "Tackle", "String Shot");
             forestTrainers.add(new Trainer("Bug Catcher Rick", 74, weedle3, caterpie1));
 
-            // Bug catcher Anthony
             trainerPokemon caterpie2 = new trainerPokemon("Caterpie", 7, "Tackle", "String Shot");
             trainerPokemon caterpie3 = new trainerPokemon("Caterpie", 8, "Tackle", "String Shot");
             forestTrainers.add(new Trainer("Bug Catcher Anthony", 96, caterpie2, caterpie3));
 
-            // Bug catcher Charlie
             trainerPokemon metapod1 = new trainerPokemon("Metapod", 7, "Harden");
             trainerPokemon caterpie4 = new trainerPokemon("Caterpie", 7, "Tackle", "String Shot");
             trainerPokemon metapod2 = new trainerPokemon("Metapod", 7, "Harden");
             forestTrainers.add(new Trainer("Bug Catcher Charlie", 84, metapod1, caterpie4, metapod2));
 
-            // Bug catcher Sammy
             trainerPokemon weedle4 = new trainerPokemon("Weedle", 9, "Poison Sting", "String Shot");
             forestTrainers.add(new Trainer("Bug Catcher Sammy", 108, weedle4));
 
@@ -153,8 +148,8 @@ public class ViridianForest extends Route {
                 String trainerName = currentTrainer.getName();
                 mainWindow.appendToOutput(trainerName + " wants to battle!");
 
-                // Start the battle
-                Battle battleWindow = new Battle(player, currentTrainer, "");
+                // Start the battle with forest background
+                Battle battleWindow = new Battle(player, currentTrainer, "", "forest");
 
                 // The trainer will be marked as defeated in the Battle class
                 defeatCurrentTrainer();

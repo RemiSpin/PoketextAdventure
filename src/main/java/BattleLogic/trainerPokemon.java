@@ -327,28 +327,16 @@ public class trainerPokemon implements IPokemon {
         return Defense;
     }
 
-    /**
-     * Get the nickname of this Pokemon.
-     * Required for IPokemon interface implementation.
-     */
     @Override
     public String getNickname() {
         return nickname != null ? nickname : name;
     }
 
-    /**
-     * Get the list of moves this Pokemon knows.
-     * This method name is standardized for the IPokemon interface.
-     */
     @Override
     public List<Move> getMovesList() {
         return getMoves();
     }
 
-    /**
-     * Get the speed stat of this Pokemon.
-     * Required for IPokemon interface implementation.
-     */
     @Override
     public int getSpeed() {
         return Speed;

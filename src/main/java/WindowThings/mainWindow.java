@@ -8,10 +8,8 @@ import java.util.List;
 
 import Overworld.Town;
 import PlayerRelated.Player;
-import PlayerRelated.PokedexWindow;
 import PlayerRelated.SaveGame;
 import PokemonLogic.Pokemon;
-import PokemonLogic.PokemonInfo;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -101,12 +99,10 @@ public class mainWindow extends Application {
 
             textFlow.getChildren().addAll(prefix, text);
 
-            // Improved auto-scroll to ensure we reach the bottom
             scrollToBottom();
         });
     }
 
-    // New method with color support using string color names
     public static void appendToOutput(String message, String colorName) {
         Platform.runLater(() -> {
             Text prefix = new Text("> ");
@@ -531,13 +527,13 @@ public class mainWindow extends Application {
     private javafx.scene.control.Button createStyledButton(String text, String baseColor) {
         javafx.scene.control.Button button = new javafx.scene.control.Button(text);
 
-        // Try to use the Pokémon font if available - with smaller font size
+        // Try to use the Pokémon font if available
         try {
             javafx.scene.text.Font pokemonFont = javafx.scene.text.Font.loadFont(
-                    getClass().getResourceAsStream("/RBYGSC.ttf"), 12); // Reduced from 14
+                    getClass().getResourceAsStream("/RBYGSC.ttf"), 12);
             button.setFont(pokemonFont);
         } catch (Exception e) {
-            button.setFont(javafx.scene.text.Font.font("Arial", 12)); // Reduced from 14
+            button.setFont(javafx.scene.text.Font.font("Arial", 12));
         }
 
         // White background with black text styling

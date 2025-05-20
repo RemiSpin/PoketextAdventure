@@ -11,7 +11,7 @@ public class Route2South extends Route {
                 "A path connecting Viridian City to Viridian Forest.",
                 "R2S.png",
                 viridianCity,
-                null); // Will be set to Viridian Forest
+                null);
     }
 
     @Override
@@ -24,8 +24,7 @@ public class Route2South extends Route {
     // Add a method to get/create Viridian Forest
     public ViridianForest getViridianForest() {
         if (viridianForest == null) {
-            viridianForest = new ViridianForest(this, null); // Route2North will be connected later
-            // Set destination2 to Viridian Forest
+            viridianForest = new ViridianForest(this, null);
             super.destination2 = viridianForest;
         }
         return viridianForest;

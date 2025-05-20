@@ -12,7 +12,7 @@ public class Route2North extends Route {
                 "The northern section of Route 2, leading from Viridian Forest toward Pewter City.",
                 "R2N.png",
                 viridianForest,
-                null); // Will be set to Pewter City
+                null);
     }
 
     @Override
@@ -25,9 +25,7 @@ public class Route2North extends Route {
     public Pewter getPewterCity() {
         if (pewterCity == null) {
             pewterCity = new Pewter();
-            // Set destination2 to Pewter City
             super.destination2 = pewterCity;
-            // Set Route2North in Pewter City for the return trip
             pewterCity.setRoute2North(this);
         }
         return pewterCity;

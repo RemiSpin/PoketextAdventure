@@ -80,7 +80,7 @@ public class Route implements Town {
         Pokemon wildPokemon = EncounterPool.getRandomEncounter(name);
 
         if (wildPokemon == null) {
-            return; // No encounters defined for this route
+            return;
         }
 
         WindowThings.mainWindow.appendToOutput("A wild " + wildPokemon.getName() + " (Lv. " +
@@ -89,8 +89,16 @@ public class Route implements Town {
         // Start battle in a separate thread to not block UI
         Platform.runLater(() -> {
             try {
-                // Use the new constructor for wild battles
-                Battle battle = new Battle(player.getCurrentPokemon(), wildPokemon, player, true);
+                // Use the constructor for wild battles with location-specific background
+                // Default "field" for most routes, special cases handled by name
+                String battleLocation = "field";
+
+                // Check for special locations
+                if (name.contains("Viridian Forest")) {
+                    battleLocation = "forest";
+                }
+
+                Battle battle = new Battle(player.getCurrentPokemon(), wildPokemon, player, true, null, battleLocation);
             } catch (Exception e) {
                 System.out.println("Error starting battle: " + e.getMessage());
             }

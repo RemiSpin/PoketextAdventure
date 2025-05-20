@@ -35,9 +35,9 @@ public class Player {
     private String currentTownName;
     private static Font pokemonFont;
     private static Font pokemonFontSmall;
-    private String chosenStarter; // Add field to track which starter Pokémon was chosen
-    private boolean hasOaksParcel = false; // Track if player has Oak's Parcel
-    private boolean deliveredOaksParcel = false; // Track if player has delivered the parcel
+    private String chosenStarter;
+    private boolean hasOaksParcel = false;
+    private boolean deliveredOaksParcel = false;
     private final Set<Integer> pokedexCaught;
 
     static {
@@ -56,18 +56,18 @@ public class Player {
         this.party = new ArrayList<>();
         this.pc = new ArrayList<>();
         this.badges = new ArrayList<>();
-        this.chosenStarter = null; // Initialize to null
+        this.chosenStarter = null;
         this.pokedexCaught = new HashSet<>();
     }
 
     // Constructor that takes a name parameter
     public Player(String playerName) {
-        this.money = 0; // Initial money will be set later
+        this.money = 0;
         this.party = new ArrayList<>();
         this.pc = new ArrayList<>();
         this.badges = new ArrayList<>();
-        this.chosenStarter = null; // Initialize to null
-        name = playerName; // Set the static name field
+        this.chosenStarter = null;
+        name = playerName;
         this.pokedexCaught = new HashSet<>();
     }
 
@@ -107,12 +107,12 @@ public class Player {
         dialogStage.setTitle("Player Name");
         dialogStage.setResizable(false);
 
-        // Main container with monochrome background
+        // Main container
         BorderPane dialogPane = new BorderPane();
         dialogPane.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0);");
         dialogPane.setPadding(new Insets(20));
 
-        // Title label with monochrome styling
+        // Title label
         Label titleLabel = new Label("Enter Your Name");
         titleLabel.setFont(pokemonFont);
         titleLabel.setTextFill(Color.BLACK);
@@ -140,7 +140,7 @@ public class Player {
         inputBox.setAlignment(Pos.CENTER);
         inputBox.setPadding(new Insets(15, 0, 15, 0));
 
-        // Create the buttons with monochrome styling
+        // Create the buttons
         Button okButton = createStyledButton("OK", "#404040");
         Button cancelButton = createStyledButton("Cancel", "#606060");
 
@@ -187,7 +187,6 @@ public class Player {
         Button button = new Button(text);
         button.setFont(pokemonFontSmall);
 
-        // White background with black text styling
         String buttonStyle = "-fx-background-color: white; " +
                 "-fx-text-fill: black; " +
                 "-fx-border-color: #000000; " +
@@ -232,12 +231,12 @@ public class Player {
             dialogStage.setTitle("Message");
             dialogStage.setResizable(false);
 
-            // Main container with monochrome background
+            // Main container
             BorderPane dialogPane = new BorderPane();
             dialogPane.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0);");
             dialogPane.setPadding(new Insets(20));
 
-            // Message text with monochrome style box
+            // Message text
             Label messageLabel = new Label(message);
             messageLabel.setFont(pokemonFontSmall);
             messageLabel.setWrapText(true);
@@ -326,12 +325,12 @@ public class Player {
         dialogStage.setTitle("Nickname for " + pokemon.getName());
         dialogStage.setResizable(false);
 
-        // Main container with monochrome background
+        // Main container
         BorderPane dialogPane = new BorderPane();
         dialogPane.setStyle("-fx-background-color: linear-gradient(to bottom, #f0f0f0, #d0d0d0);");
         dialogPane.setPadding(new Insets(20));
 
-        // Title label with monochrome styling
+        // Title label
         Label titleLabel = new Label("Enter a nickname for your newly caught " + pokemon.getName() + "!");
         titleLabel.setFont(pokemonFontSmall);
         titleLabel.setTextFill(Color.BLACK);
@@ -360,7 +359,6 @@ public class Player {
         inputBox.getChildren().add(nicknameField);
         inputBox.setPadding(new Insets(15, 0, 15, 0));
 
-        // Create the buttons with monochrome styling
         Button okButton = createStyledButton("OK", "#404040");
         Button cancelButton = createStyledButton("Cancel", "#606060");
 
@@ -371,7 +369,6 @@ public class Player {
                 pokemon.setNickname(nickname);
             }
             dialogStage.close();
-            // Execute the callback if provided
             if (afterNicknameCallback != null) {
                 afterNicknameCallback.run();
             }
@@ -380,7 +377,6 @@ public class Player {
         cancelButton.setOnAction(e -> {
             // Keep default name (pokemon's name)
             dialogStage.close();
-            // Execute the callback if provided
             if (afterNicknameCallback != null) {
                 afterNicknameCallback.run();
             }
@@ -465,7 +461,7 @@ public class Player {
         if (party != null && !party.isEmpty()) {
             return party.get(0);
         }
-        return null; // or throw an exception if no Pokemon in party
+        return null;
     }
 
     private Set<String> visitedTowns = new HashSet<>();

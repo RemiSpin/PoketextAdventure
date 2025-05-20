@@ -86,12 +86,10 @@ public class PewterGym implements Town {
         defeatedTrainers = new ArrayList<>();
 
         try {
-            // Camper Lian with Geodude and Sandshrew
             trainerPokemon geodude1 = new trainerPokemon("Geodude", 10, "Tackle", "Defense Curl");
             trainerPokemon sandshrew = new trainerPokemon("Sandshrew", 11, "Scratch", "Defense Curl", "Sand-Attack");
             gymTrainers.add(new Trainer("Camper Lian", 220, geodude1, sandshrew));
 
-            // Gym Leader Brock with Geodude and Onix
             trainerPokemon geodude2 = new trainerPokemon("Geodude", 12, "Tackle", "Defense Curl");
             trainerPokemon onix = new trainerPokemon("Onix", 14, "Tackle", "Bind", "Rock Tomb");
             gymTrainers.add(new Trainer("Gym Leader Brock", 1400, geodude2, onix));
@@ -185,8 +183,8 @@ public class PewterGym implements Town {
                 final int trainerIndexBeforeBattle = currentTrainerIndex;
                 final String trainerNameBeforeBattle = currentTrainer.getName();
 
-                // Start the battle
-                Battle battleWindow = new Battle(player, currentTrainer, "");
+                // Start the battle with Pewter Gym background
+                Battle battleWindow = new Battle(player, currentTrainer, "", "pewter");
 
                 // Use Battle's post-battle dialogue callback to mark trainer as defeated after
                 // win
