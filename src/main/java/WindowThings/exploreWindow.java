@@ -15,6 +15,7 @@ import Overworld.Town;
 import Overworld.Towns.Pallet;
 import Overworld.Towns.Pewter;
 import PokemonLogic.Pokemon;
+import Utils.MusicManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
@@ -132,6 +133,8 @@ public class exploreWindow {
             updateButtonsForTown();
             // Animate the map name when entering a new area
             animateMapName(currentTown.getName());
+            // Play location music for the initial location
+            MusicManager.getInstance().playLocationMusic(currentTown.getName());
         });
 
         // Automatically show the window upon construction
@@ -551,6 +554,9 @@ public class exploreWindow {
         playerCurrentTown = newTown;
 
         stage.setTitle(newTown.getName());
+
+        // Play location music
+        MusicManager.getInstance().playLocationMusic(newTown.getName());
 
         // Choose animation based on type
         switch (animationType) {

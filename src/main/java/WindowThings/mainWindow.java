@@ -321,6 +321,7 @@ public class mainWindow extends Application {
                 appendToOutput("Lead : Change which Pokemon appears first in your party");
                 appendToOutput("Area : Shows information about your current location");
                 appendToOutput("Pokedex : Opens the Pokedex to track caught Pokemon");
+                appendToOutput("Sound : Opens the sound settings window");
                 appendToOutput(Player.getName() + " : Shows your trainer information");
                 appendToOutput("Help : Shows this help message");
             }
@@ -328,6 +329,11 @@ public class mainWindow extends Application {
                 // Open the Pokedex window
                 PokedexWindow pokedexWindow = new PokedexWindow();
                 pokedexWindow.show();
+            }
+            case "sound" -> {
+                // Open the Sound Settings window
+                SoundSettingsWindow soundWindow = new SoundSettingsWindow();
+                soundWindow.show();
             }
             case "area" -> {
                 if (exploreWindow.playerCurrentTown != null) {
@@ -564,4 +570,5 @@ public class mainWindow extends Application {
 
         return button;
     }
+
 }

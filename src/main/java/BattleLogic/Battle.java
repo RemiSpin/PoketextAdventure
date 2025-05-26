@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import PlayerRelated.Player;
 import PokemonLogic.IPokemon;
 import PokemonLogic.Pokemon;
+import Utils.MusicManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -110,6 +111,13 @@ public class Battle extends Application {
         player.setCurrentPokemon(player.getParty().get(0));
         opponent.setCurrentPokemon(opponent.getPokemonList().get(0));
 
+        // Play appropriate battle music
+        if (opponent.getName().toLowerCase().contains("leader") || opponent.getName().toLowerCase().contains("gym")) {
+            MusicManager.getInstance().playBattleMusic("GYM_LEADER");
+        } else {
+            MusicManager.getInstance().playBattleMusic("TRAINER");
+        }
+
         Stage battleStage = new Stage();
         try {
             start(battleStage);
@@ -136,6 +144,9 @@ public class Battle extends Application {
         this.postBattleDialogue = postBattleDialogue;
         this.battleLocation = location;
         player.setCurrentPokemon(playerPokemon);
+
+        // Play wild battle music
+        MusicManager.getInstance().playBattleMusic("WILD");
 
         Stage battleStage = new Stage();
         try {
@@ -2826,6 +2837,10 @@ public class Battle extends Application {
             postBattleAction.run();
             battleComplete = true;
         }
+
+        // Restore location music after battle ends
+        MusicManager.getInstance().restorePreviousMusic();
+
         WindowThings.mainWindow.unregisterWindow(stage);
         stage.close();
     }
