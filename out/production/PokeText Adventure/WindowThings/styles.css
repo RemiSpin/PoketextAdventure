@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'CustomFont';
-    src: url('C:/Users/Darian/IdeaProjects/PokeText Adventure/src/WindowThings/RBYGSC.ttf');
-}
-
-.custom-text-area {
-    -fx-font-family: 'CustomFont';
-    /* Additional styling for your TextArea */
-}

@@ -46,6 +46,7 @@ buildNumber.properties
 .settings/
 *.swp
 *.swo
+out/
 
 # OS Files
 .DS_Store
