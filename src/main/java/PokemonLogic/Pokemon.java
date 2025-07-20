@@ -410,7 +410,7 @@ public class Pokemon implements Cloneable, IPokemon {
                 for (String moveName : moveNames) {
                     Move move = findMoveByName(moveName);
                     if (move != null && !moveset.contains(move)) {
-                        if (moveset.size() < 4) { // Limit the moveset size to 4
+                        if (moveset.size() < 4) {
                             moveset.add(move);
                         }
                     }
@@ -421,46 +421,27 @@ public class Pokemon implements Cloneable, IPokemon {
 
     public void assignMovesBasedOnLevel() {
         Map<Integer, List<String>> learnset = moveFactory.pokemonLearnsets.get(name);
-
-        for (int currentLevel = this.level; currentLevel >= level; currentLevel--) {
-            List<String> moveNames = learnset.get(currentLevel);
-            if (moveNames != null) {
-                for (String moveName : moveNames) {
-                    Move move = findMoveByName(moveName);
-                    if (move != null && !moveset.contains(move)) {
-                        boolean learnedInCurrentLevel = currentLevel == this.level;
-
-                        if (moveset.size() < 4) {
-                            moveset.add(move);
-
-                            // Display the move learned message only for the current level
-                            if (learnedInCurrentLevel) {
-                                System.out.println(name + " learned " + moveName + "!");
-                            }
+        List<String> moveNames = learnset.get(this.level);
+        if (moveNames != null) {
+            for (String moveName : moveNames) {
+                Move move = findMoveByName(moveName);
+                if (move != null && !moveset.contains(move)) {
+                    if (moveset.size() < 4) {
+                        moveset.add(move);
+                        System.out.println(name + " learned " + moveName + "!");
+                    } else {
+                        System.out.println(name + " is trying to learn " + moveName + "!");
+                        System.out.println("But " + name + " already knows 4 moves.");
+                        int moveIndex = promptUserForMove();
+                        if (moveIndex >= 1 && moveIndex <= 4) {
+                            Move replacedMove = moveset.set(moveIndex - 1, move);
+                            System.out.println(
+                                    name + " forgot " + replacedMove.getName() + " and learned " + moveName + "!");
+                        } else if (moveIndex == 5) {
+                            System.out.println(name + " did not learn " + moveName + ".");
+                            return;
                         } else {
-                            System.out.println(name + " is trying to learn " + moveName + "!");
-                            System.out.println("But " + name + " already knows 4 moves.");
-
-                            // Prompt the player to choose a move to replace or skip
-                            int moveIndex = promptUserForMove();
-
-                            // Check if the input is within the valid range or 5 to skip
-                            if (moveIndex >= 1 && moveIndex <= 4) {
-                                // Replace the chosen move with the new move
-                                Move replacedMove = moveset.set(moveIndex - 1, move);
-
-                                // Display the move learned message only for the current level
-                                if (learnedInCurrentLevel) {
-                                    System.out.println(name + " forgot " + replacedMove.getName() + " and learned "
-                                            + moveName + "!");
-                                }
-                            } else if (moveIndex == 5) {
-                                // Skip move replacement
-                                System.out.println(name + " did not learn " + moveName + ".");
-                                return;
-                            } else {
-                                System.out.println("Invalid move index. " + name + " couldn't learn " + moveName + ".");
-                            }
+                            System.out.println("Invalid move index. " + name + " couldn't learn " + moveName + ".");
                         }
                     }
                 }

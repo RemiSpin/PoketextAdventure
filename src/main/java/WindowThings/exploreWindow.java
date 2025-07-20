@@ -1015,6 +1015,12 @@ public class exploreWindow {
 
     private Button createEncounterButton() {
         return createButtonWithIcon("/Icons/Grass.png", "Look for Pokémon", e -> {
+            // Check if player has any usable Pokémon before encountering wild Pokémon
+            if (!PokeText_Adventure.player.hasUsablePokemon()) {
+                WindowThings.mainWindow.appendToOutput("You don't think it's a great idea.");
+                return;
+            }
+
             Pokemon wildPokemon = EncounterPool.getRandomEncounter(currentTown.getName());
 
             if (wildPokemon != null) {

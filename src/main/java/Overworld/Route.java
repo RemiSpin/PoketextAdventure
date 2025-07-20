@@ -15,7 +15,7 @@ public class Route implements Town {
     private String description;
     private String imageFile;
     private Town destination1;
-    protected Town destination2; // Change from private to protected for subclass access
+    protected Town destination2;
     private Random random = new Random();
     private int encounterChance = 30;
 
@@ -76,6 +76,12 @@ public class Route implements Town {
     }
 
     private void triggerWildPokemonEncounter(Player player) {
+        // Check if player has any usable Pokémon before triggering encounter
+        if (!player.hasUsablePokemon()) {
+            WindowThings.mainWindow.appendToOutput("You don't think it's a great idea.");
+            return;
+        }
+
         // Get a random Pokemon from the encounter pool
         Pokemon wildPokemon = EncounterPool.getRandomEncounter(name);
 

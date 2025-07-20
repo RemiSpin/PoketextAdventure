@@ -151,9 +151,10 @@ public class PokemonInfo {
             root.addRow(19, speedLabel);
             root.addRow(20, new Label());
             root.addRow(21, movesLabel);
+            root.addRow(22, new Label());
 
             // Add a close button to the window
-            Button closeButton = new Button("Close");
+            Button closeButton = createStyledButton("Close", "#202020");
             closeButton.setOnAction(e -> {
                 activeWindows.remove(this);
                 WindowThings.mainWindow.unregisterWindow(stage);
@@ -162,7 +163,7 @@ public class PokemonInfo {
 
             // Add the close button to a new row in the GridPane
             GridPane.setHalignment(closeButton, HPos.CENTER);
-            root.addRow(22, closeButton);
+            root.addRow(23, closeButton);
 
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -189,5 +190,45 @@ public class PokemonInfo {
                 }
             });
         }
+    }
+
+    private Button createStyledButton(String text, String baseColor) {
+        Button button = new Button(text);
+
+        // Try to use the Pokémon font if available
+        try {
+            Font pokemonFont = Font.loadFont(getClass().getResourceAsStream("/RBYGSC.ttf"), 12);
+            button.setFont(pokemonFont);
+        } catch (Exception e) {
+            button.setFont(Font.font("Arial", 12));
+        }
+
+        // White background with black text styling
+        String buttonStyle = "-fx-background-color: white; " +
+                "-fx-text-fill: black; " +
+                "-fx-border-color: #000000; " +
+                "-fx-border-width: 2px; " +
+                "-fx-border-radius: 5; " +
+                "-fx-background-radius: 5; " +
+                "-fx-padding: 8 15 8 15; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 3, 0, 0, 1);";
+
+        String hoverStyle = "-fx-background-color: #f0f0f0; " +
+                "-fx-scale-x: 1.03; " +
+                "-fx-scale-y: 1.03; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0, 0, 2);";
+
+        String pressedStyle = "-fx-background-color: #e0e0e0; " +
+                "-fx-scale-x: 0.98; " +
+                "-fx-scale-y: 0.98; " +
+                "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 2, 0, 0, 1);";
+
+        button.setStyle(buttonStyle);
+        button.setOnMouseEntered(e -> button.setStyle(buttonStyle + hoverStyle));
+        button.setOnMouseExited(e -> button.setStyle(buttonStyle));
+        button.setOnMousePressed(e -> button.setStyle(buttonStyle + pressedStyle));
+        button.setOnMouseReleased(e -> button.setStyle(buttonStyle));
+
+        return button;
     }
 }

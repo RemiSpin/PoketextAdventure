@@ -21,7 +21,14 @@ public class SaveGame {
     public SaveGame(Player player) {
         this.player = player;
         try {
-            String url = "jdbc:sqlite:" + System.getProperty("user.dir") + File.separator + "savegame.db";
+            // Create save directory if it doesn't exist
+            String saveDir = System.getProperty("user.home") + File.separator + ".poketextadventure";
+            File dir = new File(saveDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String url = "jdbc:sqlite:" + saveDir + File.separator + "savegame.db";
             conn = DriverManager.getConnection(url);
 
             try (Statement stmt = conn.createStatement()) {
@@ -39,8 +46,6 @@ public class SaveGame {
                         "CREATE TABLE IF NOT EXISTS CurrentLocation (town_name TEXT NOT NULL)");
                 stmt.execute(
                         "CREATE TABLE IF NOT EXISTS Pokedex (pokemon_id INTEGER PRIMARY KEY)");
-                stmt.execute(
-                        "CREATE TABLE IF NOT EXISTS GameSettings (setting_name TEXT PRIMARY KEY, setting_value TEXT NOT NULL)");
                 stmt.execute(
                         "CREATE TABLE IF NOT EXISTS RouteTrainers (route_name TEXT NOT NULL, trainer_index INTEGER NOT NULL, defeated BOOLEAN NOT NULL, PRIMARY KEY (route_name, trainer_index))");
                 stmt.execute(
@@ -63,7 +68,6 @@ public class SaveGame {
             stmt.execute("DELETE FROM VisitedTowns");
             stmt.execute("DELETE FROM CurrentLocation");
             stmt.execute("DELETE FROM Pokedex");
-            stmt.execute("DELETE FROM GameSettings");
             stmt.execute("DELETE FROM RouteTrainers");
             stmt.execute("DELETE FROM RouteBattleFlags");
 

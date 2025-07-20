@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * A robust music manager designed to work reliably on Arch Linux
  * Uses Java Sound API with proper mixing support
  */
 public class MusicManager {
@@ -18,7 +17,7 @@ public class MusicManager {
     private final Map<String, String> locationMusicMap;
     private final AtomicReference<String> currentTrack = new AtomicReference<>();
     private final AtomicReference<String> previousTrack = new AtomicReference<>();
-    private final AtomicReference<String> intendedTrack = new AtomicReference<>(); // Track what should be playing
+    private final AtomicReference<String> intendedTrack = new AtomicReference<>();
     private final AtomicBoolean isPlaying = new AtomicBoolean(false);
     private final AtomicBoolean isMuted = new AtomicBoolean(false);
     private volatile Clip currentClip;
@@ -64,7 +63,7 @@ public class MusicManager {
         // Town music mappings
         locationMusicMap.put("Pallet Town", "PalletTown.mp3");
         locationMusicMap.put("Viridian City", "ViridianCity.mp3");
-        locationMusicMap.put("Pewter City", "ViridianCity.mp3"); // Reuse Viridian City music for now
+        locationMusicMap.put("Pewter City", "ViridianCity.mp3");
 
         // Building music mappings
         locationMusicMap.put("Pokemon Center", "Center.mp3");

@@ -141,6 +141,12 @@ public class ViridianForest extends Route {
 
     // Start a battle with the current trainer
     public void startTrainerBattle(Player player) {
+        // Check if player has any usable Pokémon before starting trainer battle
+        if (!player.hasUsablePokemon()) {
+            mainWindow.appendToOutput("You don't think it's a great idea.");
+            return;
+        }
+
         Trainer currentTrainer = getNextTrainer();
         if (currentTrainer != null) {
             try {

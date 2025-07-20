@@ -22,7 +22,14 @@ public class LoadGame {
 
     public LoadGame() {
         try {
-            String url = "jdbc:sqlite:" + System.getProperty("user.dir") + File.separator + "savegame.db";
+            // Create save directory if it doesn't exist
+            String saveDir = System.getProperty("user.home") + File.separator + ".poketextadventure";
+            File dir = new File(saveDir);
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            String url = "jdbc:sqlite:" + saveDir + File.separator + "savegame.db";
             conn = DriverManager.getConnection(url);
         } catch (SQLException e) {
             System.err.println("Database connection error: " + e.getMessage());

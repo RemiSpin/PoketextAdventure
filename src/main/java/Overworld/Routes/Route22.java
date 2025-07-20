@@ -50,6 +50,18 @@ public class Route22 extends Route {
     }
 
     private void startRivalBattle(Player player) {
+        // Check if player has any usable Pokémon before starting trainer battle
+        if (!player.hasUsablePokemon()) {
+            mainWindow.appendToOutput("You have no Pokémon that can battle! All your Pokémon have fainted!");
+            // Show Gary's dialogue but don't start battle
+            mainWindow.appendToOutput("As you explore Route 22, a familiar voice calls out.");
+            mainWindow.appendToOutput("Gary: Hey! " + Player.getName() + "!", "green");
+            mainWindow.appendToOutput(
+                    "Gary: What? All your Pokémon are fainted? How pathetic! Come back when you're actually prepared for a battle!",
+                    "green");
+            return;
+        }
+
         try {
             // Get the player's starter choice to determine rival's Pokemon
             String playerStarter = player.getChosenStarter();

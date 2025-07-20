@@ -21,8 +21,8 @@ import javafx.stage.Stage;
 public class PokeText_Adventure extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
-        // Check if a save file exists
-        File saveFile = new File("savegame.db");
+        String saveDir = System.getProperty("user.home") + File.separator + ".poketextadventure";
+        File saveFile = new File(saveDir + File.separator + "savegame.db");
         if (saveFile.exists()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Load Game");

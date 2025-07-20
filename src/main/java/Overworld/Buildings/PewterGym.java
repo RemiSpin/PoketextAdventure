@@ -157,6 +157,12 @@ public class PewterGym implements Town {
 
     // Start a battle with the current trainer
     public void startTrainerBattle(Player player) {
+        // Check if player has any usable Pokémon before starting trainer battle
+        if (!player.hasUsablePokemon()) {
+            mainWindow.appendToOutput("You don't think it's a great idea.");
+            return;
+        }
+
         Trainer currentTrainer = getNextTrainer();
         if (currentTrainer != null) {
             try {
@@ -335,7 +341,7 @@ public class PewterGym implements Town {
 
         // White background with black text styling
         String buttonStyle = "-fx-background-color: white; " +
-                "-fx-text-fill: black; " +
+                "-fx-text-fill: " + baseColor + "; " +
                 "-fx-border-color: #000000; " +
                 "-fx-border-width: 2px; " +
                 "-fx-border-radius: 5; " +
