@@ -402,7 +402,16 @@ public class Pokemon implements Cloneable, IPokemon {
     }
 
     public void initializeMoves() {
+        if (moveFactory == null || moveFactory.pokemonLearnsets == null) {
+            System.err.println("Warning: moveFactory or pokemonLearnsets is null for Pokemon: " + name);
+            return;
+        }
+        
         Map<Integer, List<String>> learnset = moveFactory.pokemonLearnsets.get(name);
+        if (learnset == null) {
+            System.err.println("Warning: No learnset found for Pokemon: " + name);
+            return;
+        }
 
         for (int currentLevel = this.level; currentLevel >= 1; currentLevel--) {
             List<String> moveNames = learnset.get(currentLevel);
@@ -420,8 +429,18 @@ public class Pokemon implements Cloneable, IPokemon {
     }
 
     public void assignMovesBasedOnLevel() {
+        if (moveFactory == null || moveFactory.pokemonLearnsets == null) {
+            System.err.println("Warning: moveFactory or pokemonLearnsets is null for Pokemon: " + name);
+            return;
+        }
+        
         Map<Integer, List<String>> learnset = moveFactory.pokemonLearnsets.get(name);
-        List<String> moveNames = learnset.get(this.level);
+        if (learnset == null) {
+            System.err.println("Warning: No learnset found for Pokemon: " + name);
+            return;
+        }
+        
+        List<String> moveNames = learnset.get((int)this.level);
         if (moveNames != null) {
             for (String moveName : moveNames) {
                 Move move = findMoveByName(moveName);
